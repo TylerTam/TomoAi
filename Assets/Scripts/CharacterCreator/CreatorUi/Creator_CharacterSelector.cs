@@ -41,14 +41,14 @@ public class Creator_CharacterSelector : MonoBehaviour
             btn.transform.localPosition = Vector3.zero;
             btn.transform.localScale = Vector3.one;
             btn.transform.localRotation = Quaternion.identity;
-            btn.InitButton(allSavedCharacters[i], this);
+            btn.InitButton(allSavedCharacters[i], this, i);
         }
 
     }
-    public void SelectCharacter(CharacterData selectChar)
+    public void SelectCharacter(CharacterData selectChar, int selectedCharIndex)
     {
 
-        creatorManager.SelectedCharacter = selectChar;
+        creatorManager.SetSelectedChar( selectChar, selectedCharIndex);
         characterNameText.text = selectChar.Name;
         creatorText.text = "Creator: " + selectChar.Creator;
     }

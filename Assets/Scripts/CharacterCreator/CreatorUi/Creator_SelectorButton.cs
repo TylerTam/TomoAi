@@ -15,23 +15,25 @@ public class Creator_SelectorButton : Button
     [SerializeField] private TMPro.TextMeshProUGUI CharacterName;
     private CharacterData characterData;
     private Creator_CharacterSelector selector;
-    public void InitButton(CharacterData charData, Creator_CharacterSelector characterSelector)
+    private int charIndex;
+    public void InitButton(CharacterData charData, Creator_CharacterSelector characterSelector, int buttonIndex)
     {
         characterData = charData;
         CharacterName.text = charData.Name;
         //CharacterImage.sprite = null;
         selector = characterSelector;
+        charIndex = buttonIndex;
     }
 
     public override void OnSubmit(BaseEventData eventData)
     {
         base.OnSubmit(eventData);
-        selector.SelectCharacter(characterData);
+        selector.SelectCharacter(characterData, charIndex);
     }
     public override void OnSelect(BaseEventData eventData)
     {
         base.OnSelect(eventData);
-        selector.SelectCharacter(characterData);
+        selector.SelectCharacter(characterData, charIndex);
     }
 }
 

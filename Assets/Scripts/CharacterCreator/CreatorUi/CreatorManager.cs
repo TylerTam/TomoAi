@@ -12,12 +12,19 @@ public class CreatorManager : MonoBehaviour
     }
 
     [SerializeField] private Creator_CharacterSelector SelectorRoot;
-    [SerializeField] private GameObject SelectorPreviewRoot;
-    [SerializeField] private GameObject EditorRoot;
-    public CharacterData SelectedCharacter;
+    [SerializeField] private EditorMenu EditorRoot;
+    [SerializeField]private CharacterData SelectedCharacter;
+    [SerializeField]private int selectedCharIndex;
 
+
+    public void SetSelectedChar(CharacterData charData, int charIndex)
+    {
+        SelectedCharacter = charData;
+        selectedCharIndex = charIndex;
+    }
     private void Start()
     {
+        ChangeMenu(0);
         SelectorRoot.PopulateCharacters(0);
     }
     public void ChangeMenu(int menuType)
@@ -35,16 +42,14 @@ public class CreatorManager : MonoBehaviour
         switch (newMenu)
         {
             case CreatorMenu.Selector:
-                EditorRoot.SetActive(false);
+                EditorRoot.gameObject.SetActive(false);
                 SelectorRoot.gameObject.SetActive(true);
-                SelectorPreviewRoot.SetActive(true);
                 break;
             case CreatorMenu.Editor:
-                EditorRoot.SetActive(true);
+                EditorRoot.gameObject.SetActive(true);
+                EditorRoot.OpenEditor(SelectedCharacter, selectedCharIndex);
                 SelectorRoot.gameObject.SetActive(false);
-                SelectorPreviewRoot.SetActive(false);
                 break;
-
         }
     }
 }

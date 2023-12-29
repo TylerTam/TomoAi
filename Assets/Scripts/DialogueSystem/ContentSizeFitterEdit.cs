@@ -34,6 +34,13 @@ public class ContentSizeFitterEdit : ContentSizeFitter
         SetLayoutVertical();
         Canvas.ForceUpdateCanvases();
     }
+
+    public void ForceUpdateFitter()
+    {
+        SetLayoutHorizontal();
+        SetLayoutVertical();
+        Canvas.ForceUpdateCanvases();
+    }
 }
 
 #if UNITY_EDITOR

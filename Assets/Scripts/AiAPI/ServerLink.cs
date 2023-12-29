@@ -53,6 +53,10 @@ public class ServerLink : MonoBehaviour
 
     public void StartGenerator(string prompt,string speakingChar, System.Action<bool, string, string> resonseAction, GenerationType genType = GenerationType.Default)
     {
+        if (!isCalling)
+        {
+
+        }
         StartCoroutine(GenerateText(prompt, speakingChar, resonseAction, genType));
     }
 
