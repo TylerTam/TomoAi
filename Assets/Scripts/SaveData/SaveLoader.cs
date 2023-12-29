@@ -45,39 +45,28 @@ public class SaveLoader : MonoBehaviour
         Debug.Log("Save Loc: " + PATH);
     }
 
-    public void UpdateCharacter(CharacterData characterData, bool isNewCharacter)
+    public void UpdateCharacter(CharacterData characterData, bool isNewCharacter, int savedIndex)
     {
 
         int index = -1;
         if (!isNewCharacter)
         {
-            index = FindSavedCharacterIndex(characterData);
+            index = savedIndex;
         }
         if(index == -1)
         {
-            characterData.Creator = LoadedData.Player.PlayerName;
-            characterData.Creator_Id = GenerateCharacterId();
             LoadedData.SavedCharacters.Add(characterData);
         }
         else
         {
             LoadedData.SavedCharacters[index] = characterData;
+            
         }
-        
+        SaveData();
+
     }
 
-    private int FindSavedCharacterIndex (CharacterData data)
-    {
-        for(int i =0; i < LoadedData.SavedCharacters.Count; i++)
-        {
-            if (LoadedData.SavedCharacters[i].IsEqual(data))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-    private float GenerateCharacterId()
+    public float GenerateCharacterId()
     {
         int id = 0;
         for (int i = 0; i < LoadedData.SavedCharacters.Count; i++)
@@ -90,7 +79,7 @@ public class SaveLoader : MonoBehaviour
         return id;
     }
 
-    public void TestSvaeCharToData()
+    public void TestSaveCharToData()
     {
         LoadedData.SavedCharacters.Add(saveCharData.characterData.Clone());
 
@@ -109,7 +98,7 @@ public class SaveLoaderInspector : Editor
         }
         if(GUILayout.Button("Add Test Char Data"))
         {
-            (target as SaveLoader).TestSvaeCharToData();
+            (target as SaveLoader).TestSaveCharToData();
         }
         base.OnInspectorGUI();
     }
@@ -127,4 +116,10 @@ public class SaveData
 public class PlayerData
 {
     [SerializeField] public string PlayerName;
+
+    public CharacterData ToCharData()
+    {
+        CharacterData playerChar = new CharacterData(PlayerName, PlayerName, -1);
+        return playerChar;
+    }
 }

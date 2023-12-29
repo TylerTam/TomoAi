@@ -31,14 +31,19 @@ public class MoveTargetInBounds : MonoBehaviour
     }
     private void NewPosition()
     {
-        Vector3 newPos = new Vector3(Random.Range(-Bounds.x/2, Bounds.x/2), Random.Range(-Bounds.y/2, Bounds.y/2), Random.Range(-Bounds.z / 2, Bounds.z / 2));
-        newPos += transform.position + BoundsOffset;
-        Target.transform.position = newPos;
+        
+        
+        Target.transform.position = GetRandomPos();
         timerTarget = Random.Range(RandomStillTime.x, RandomStillTime.y);
         currentTimer = 0;
     }
 
-    
+    public Vector3 GetRandomPos()
+    {
+        Vector3 newPos = new Vector3(Random.Range(-Bounds.x / 2, Bounds.x / 2), Random.Range(-Bounds.y / 2, Bounds.y / 2), Random.Range(-Bounds.z / 2, Bounds.z / 2));
+        newPos += transform.position + BoundsOffset;
+        return newPos;
+    }
 
     private void OnDrawGizmos()
     {

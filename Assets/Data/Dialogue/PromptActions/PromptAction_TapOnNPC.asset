@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6a6cc03c51dd3744ba18a67350939b6, type: 3}
+  m_Name: PromptAction_TapOnNPC
+  m_EditorClassIdentifier: 
+  npcTag: <NPC>
+  playerTag: <USER>
+  promptActions:
+  - <USER> pokes <NPC> to get their attention.
+  - I poke <NPC> to get their attention.
+  - <USER> yells towards <NPC> to get their attention.
+  - I yell towards <NPC> to get their attention.
+  - <USER> calls towards <NPC> to get their attention
+  - I call towards <NPC> to get their attention
+  - <USER> descends from the sky infront of <NPC>
+  - I descend from the sky infront of <NPC>

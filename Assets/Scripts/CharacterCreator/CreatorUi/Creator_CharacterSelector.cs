@@ -18,9 +18,17 @@ public class Creator_CharacterSelector : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI creatorText;
 
 
-    public void PopulateCharacters(int forceIndex = 0)
+    public void PopulateCharacters(int forceIndex = 0, bool selectFinalIndex = false)
     {
         PopulateSelectorUI();
+        if (!selectFinalIndex)
+        {
+            SelectCharacter(forceIndex);
+        }
+        else
+        {
+            SelectCharacter(selectorButtonParent.childCount - 1);
+        }
     }
     private void ClearExistingSelectButtons()
     {
@@ -30,7 +38,7 @@ public class Creator_CharacterSelector : MonoBehaviour
             ObjectPooler.ReturnToPool(selectorButtonParent.GetChild(0).gameObject);
         }
     }
-    private void PopulateSelectorUI()
+    private void PopulateSelectorUI(int forceLoadIndex = 0)
     {
         ClearExistingSelectButtons();
         List<CharacterData> allSavedCharacters = GameManager.Instance.SaveLoader.LoadedData.SavedCharacters;
@@ -45,16 +53,18 @@ public class Creator_CharacterSelector : MonoBehaviour
         }
 
     }
+    public void SelectCharacter(int selectCharIndex)
+    {
+        if(selectorButtonParent.childCount > selectCharIndex)
+        {
+            selectorButtonParent.GetChild(selectCharIndex).GetComponent<Creator_SelectorButton>().SelectCharacter();
+        }
+    }
     public void SelectCharacter(CharacterData selectChar, int selectedCharIndex)
     {
 
         creatorManager.SetSelectedChar( selectChar, selectedCharIndex);
         characterNameText.text = selectChar.Name;
         creatorText.text = "Creator: " + selectChar.Creator;
-    }
-
-    public void SampleText()
-    {
-
     }
 }

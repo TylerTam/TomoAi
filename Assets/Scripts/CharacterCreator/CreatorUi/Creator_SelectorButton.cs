@@ -28,11 +28,16 @@ public class Creator_SelectorButton : Button
     public override void OnSubmit(BaseEventData eventData)
     {
         base.OnSubmit(eventData);
-        selector.SelectCharacter(characterData, charIndex);
+        SelectCharacter();
     }
     public override void OnSelect(BaseEventData eventData)
     {
         base.OnSelect(eventData);
+        SelectCharacter();
+    }
+
+    public void SelectCharacter()
+    {
         selector.SelectCharacter(characterData, charIndex);
     }
 }

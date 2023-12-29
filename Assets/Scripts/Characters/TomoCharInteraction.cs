@@ -16,7 +16,7 @@ public class TomoCharInteraction : MonoBehaviour, IInteractable
     public void Tapped()
     {
         CharacterTapped?.Invoke();
-        person.StartConversation();
+        person.StartConversation(AllPromptActions.ActionType.TapOnNPC);
     }
 
     public void TapHold()

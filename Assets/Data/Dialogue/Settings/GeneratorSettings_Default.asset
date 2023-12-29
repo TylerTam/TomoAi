@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generationSettings:
     prompt: 
-    gui_settings: 0
-    singline: 0
     use_story: 0
+    gui_settings: 0
     use_memory: 0
+    use_authors_note: 0
+    use_world_info: 0
     max_context_length: 1314
-    max_length: 80
+    max_length: 40
     rep_pen: 1.06
     rep_pen_range: 1600
     rep_pen_slope: 0.9
@@ -27,6 +28,8 @@ MonoBehaviour:
     tfs: 1
     top_a: 0
     top_k: 0
-    top_p: 0.69
+    top_p: 0.9
     typical: 1
     sampling_order: 06000000000000000100000002000000030000000400000005000000
+    singleline: 1
+    max_history_count: 30

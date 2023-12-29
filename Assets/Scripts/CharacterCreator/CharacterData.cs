@@ -15,17 +15,24 @@ public class CharacterData
     [SerializeField] public string Creator;
     [SerializeField] public float Creator_Id;
 
+    public CharacterData (string charName, string creator, float creatorId)
+    {
+        Name = charName;
+        Creator = creator;
+        Creator_Id = creatorId;
+        Examples_Of_Dialogue = new string[0];
+        CharacterAppearence = new CharacterAppearance();
+    }
     public CharacterData Clone()
     {
-        CharacterData cloneChar = new CharacterData();
-        cloneChar.Name = Name;
+        CharacterData cloneChar = new CharacterData(Name, Creator, Creator_Id);
+
         cloneChar.Description = Description;
         cloneChar.Personality_Summary = Personality_Summary;
         cloneChar.AppearanceDescription = AppearanceDescription;
         cloneChar.Examples_Of_Dialogue = Examples_Of_Dialogue;
         cloneChar.CharacterAppearence = CharacterAppearence;
-        cloneChar.Creator = Creator;
-        cloneChar.Creator_Id = Creator_Id;
+
         return cloneChar;
     }
 
@@ -73,6 +80,14 @@ public class CharacterAppearance
     [SerializeField] public SlotWithPieces MouthSlot;
     [SerializeField] public EyesSlot Eyes;
 
+    public CharacterAppearance()
+    {
+        HeadSlot = new SlotWithPieces();
+        MouthSlot = new SlotWithPieces();
+        Eyes = new EyesSlot();
+    }
+
+
     [System.Serializable]
     public class AppearenceSlot
     {
@@ -84,12 +99,21 @@ public class CharacterAppearance
     [System.Serializable]
     public class SlotWithPieces : AppearenceSlot
     {
+        public SlotWithPieces()
+        {
+            AppearancePieces = new AppearancePieces[0];
+        }
         [SerializeField] public AppearancePieces[] AppearancePieces;
     }
 
     [System.Serializable]
     public class EyesSlot : AppearenceSlot
     {
+        public EyesSlot()
+        {
+            LeftEye = new EyePieces();
+            RightEye = new EyePieces();
+        }
         [SerializeField] public EyePieces LeftEye;
         [SerializeField] public EyePieces RightEye;
     }
@@ -97,6 +121,10 @@ public class CharacterAppearance
     [System.Serializable]
     public class EyePieces
     {
+        public EyePieces()
+        {
+            AttachedEyePieces = new AppearancePieces[0];
+        }
         [SerializeField] public string BaseEyeId;
         [SerializeField] public AppearancePieces[] AttachedEyePieces;
     }

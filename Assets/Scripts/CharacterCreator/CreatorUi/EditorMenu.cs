@@ -18,6 +18,6 @@ public class EditorMenu : MonoBehaviour
     {
         charData = saveCharData;
         Debug.Log(savedCharacterIndex);
-        //GameManager.Instance.SaveLoader.UpdateCharacter(loadedCharacter, false);
+        GameManager.Instance.SaveLoader.UpdateCharacter(charData, false, savedCharacterIndex);
     }
 }

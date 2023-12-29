@@ -20,12 +20,14 @@ public class DialogueSystem_Main : MonoBehaviour
     private static DialogueSystem_Main _instance;
 
 
-    public DialogueUiSystem DialogueUi;
-    public ConversationData CurrentConversation;
+    [SerializeField] private DialogueUiSystem dialogueUi;
+    [SerializeField] private ConversationData currentConversation;
     public CharacterData PlayerData;
 
     public System.Action StartedDataFetch;
     public System.Action<CharacterData, string> DataFetchRes;
+
+    [SerializeField] private AllPromptActions allPromptActions;
 
 #if UNITY_EDITOR
     [Header("Test Dialogue")]
@@ -36,17 +38,27 @@ public class DialogueSystem_Main : MonoBehaviour
     const string TEST_STRING = "hello there, I am the monitor of installation 04. I am called penetant Tangent.A reclaimer? Here? Brilliant! There is much to do, and no time to waste.We must start immediately, if we want to control this outbreak";
     private void Awake()
     {
-        DialogueUi.CloseMenu(true);
+        dialogueUi.CloseMenu(true);
     }
-    public void StartConversation(CharacterData targetData, TomoCharPerson targetGameObject, bool aiSpeaksFirst = false, string scenarioPrompt = "")
+    private void Start()
     {
-        CurrentConversation = new ConversationData();
-        CurrentConversation.RelevantCharacters.Add(PlayerData.Name, PlayerData);
-        CurrentConversation.RelevantCharacters.Add(targetData.Name, targetData);
-        CurrentConversation.currentConversationGenSettings = ServerLink.Instance.GetGenSettType(ServerLink.GenerationType.Default).generationSettings;
-        CurrentConversation.RelevantCharsController.Add(targetData.Name, targetGameObject);
+        PlayerData = GameManager.Instance.SaveLoader.LoadedData.Player.ToCharData();
+    }
 
-        DialogueUi.OpenMenu(/*CurrentConversation*/);
+    public string GetPromptAction(AllPromptActions.ActionType promptAction, string charName)
+    {
+        return allPromptActions.GetPrompt(promptAction, charName);
+    }
+    public void StartConversation(CharacterData targetData, TomoCharPerson targetGameObject, bool aiSpeaksFirst = false, string scenarioPrompt = "", string startingActionPrompt = "")
+    {
+        currentConversation = new ConversationData();
+        currentConversation.RelevantCharacters.Add(PlayerData.Name, PlayerData);
+        currentConversation.RelevantCharacters.Add(targetData.Name, targetData);
+        currentConversation.currentConversationGenSettings = ServerLink.Instance.GetGenSettType(ServerLink.GenerationType.Default).generationSettings;
+        currentConversation.RelevantCharsController.Add(targetData.Name, targetGameObject);
+        currentConversation.scenarioPrompt = scenarioPrompt;
+        currentConversation.startingActionPrompt = startingActionPrompt;
+        dialogueUi.OpenMenu(/*CurrentConversation*/);
         //SetupPersonaPrompt
         if (aiSpeaksFirst)
         {
@@ -57,27 +69,27 @@ public class DialogueSystem_Main : MonoBehaviour
     public void AddPlayerDialogue(string playerText)
     {
         Debug.Log("Call the API here to send: " + playerText);
-        DialogueUi.DisplayNewDialogue(PlayerData, playerText, true);
+        dialogueUi.DisplayNewDialogue(PlayerData, playerText, true);
         AddDialogue(PlayerData, true, playerText);
-        SendToGenerator(CurrentConversation.GetNextSpeaker(playerText));
+        SendToGenerator(currentConversation.GetNextSpeaker(playerText));
     }
     public void AddDialogue(CharacterData speakingChar, bool isPlayer, string spokenText)
     {
-        if(CurrentConversation == null)
+        if (currentConversation == null)
         {
-            CurrentConversation = new ConversationData();
+            currentConversation = new ConversationData();
         }
-        CurrentConversation.AddDialogue(speakingChar, isPlayer, spokenText);
+        currentConversation.AddDialogue(speakingChar, isPlayer, spokenText);
     }
 
     public void SendToGenerator(string speakingChar)
     {
-        if (CurrentConversation != null)
+        if (currentConversation != null)
         {
-            CurrentConversation.RelevantCharsController[speakingChar].ShowThinkingBubble();
+            currentConversation.RelevantCharsController[speakingChar].ShowThinkingBubble();
 
-            string dialogueToSend = CurrentConversation.BuildCurrentPrompt() + " \n" + speakingChar + ":";
-            
+            string dialogueToSend = currentConversation.BuildCurrentPrompt() + " \n" + speakingChar + ":";
+
             Debug.Log(dialogueToSend);
 
             ServerLink.Instance.StartGenerator(dialogueToSend, speakingChar, GeneratorResponse);
@@ -94,28 +106,28 @@ public class DialogueSystem_Main : MonoBehaviour
     /// <param name="generated"></param>
     /// <param name="speakingChar"></param>
     /// <param name="generatedText"></param>
-    private void GeneratorResponse(bool generated,string speakingChar, string generatedText)
+    private void GeneratorResponse(bool generated, string speakingChar, string generatedText)
     {
 
 
-        CurrentConversation.AddDialogue(speakingChar, generatedText);
+        currentConversation.AddDialogue(speakingChar, generatedText);
         //Seach the game's data for a character that matches the name
         CharacterData charData = null;
-        if (CurrentConversation.RelevantCharacters.ContainsKey(speakingChar))
+        if (currentConversation.RelevantCharacters.ContainsKey(speakingChar))
         {
-            charData = CurrentConversation.RelevantCharacters[speakingChar];
+            charData = currentConversation.RelevantCharacters[speakingChar];
         }
         else
         {
-            charData = new CharacterData();
-            charData.Name = speakingChar;
-            CurrentConversation.RelevantCharacters.Add(speakingChar, charData);
+            Debug.Log("Error!!!!!!!!");
             Debug.Log("Implement solution to find the character's data in the game data");
+            Debug.Break();
+
         }
         DataFetchRes?.Invoke(charData, generatedText);
-        if (CurrentConversation.RelevantCharsController.ContainsKey(speakingChar))
+        if (currentConversation.RelevantCharsController.ContainsKey(speakingChar))
         {
-            CurrentConversation.RelevantCharsController[speakingChar].WorldDialoguePopUp(charData, generatedText);
+            currentConversation.RelevantCharsController[speakingChar].WorldDialoguePopUp(charData, generatedText);
         }
 
     }
@@ -124,12 +136,12 @@ public class DialogueSystem_Main : MonoBehaviour
 
     public void EndConversation()
     {
-        DialogueUi.CloseMenu(true);
-        foreach(KeyValuePair<string, TomoCharPerson> per in CurrentConversation.RelevantCharsController)
+        dialogueUi.CloseMenu(true);
+        foreach (KeyValuePair<string, TomoCharPerson> per in currentConversation.RelevantCharsController)
         {
             per.Value.DialogueEnded();
         }
-        CurrentConversation = null;
+        currentConversation = null;
     }
 
 }
@@ -155,18 +167,19 @@ public class ConversationData
     public Dictionary<string, TomoCharPerson> RelevantCharsController = new Dictionary<string, TomoCharPerson>();
 
     public string scenarioPrompt;
+    public string startingActionPrompt;
     public GenerationSettings currentConversationGenSettings;
     public string BuildCurrentPrompt()
     {
         StringBuilder sb = new StringBuilder();
-        foreach(KeyValuePair<string, CharacterData> keys in RelevantCharacters)
+        foreach (KeyValuePair<string, CharacterData> keys in RelevantCharacters)
         {
-            if(keys.Value != DialogueSystem_Main.Instance.PlayerData)
+            if (keys.Value != DialogueSystem_Main.Instance.PlayerData)
             {
                 sb.Append(keys.Value.ToString());
             }
         }
-        if(scenarioPrompt != "" && string.IsNullOrWhiteSpace(scenarioPrompt))
+        if (scenarioPrompt != "" && !string.IsNullOrWhiteSpace(scenarioPrompt))
         {
             sb.AppendLine("Scenario:" + scenarioPrompt);
         }
@@ -175,21 +188,24 @@ public class ConversationData
         {
             sb.AppendLine(sd.ToString());
         }
-
-        
+        if (startingActionPrompt != "" && !string.IsNullOrWhiteSpace(startingActionPrompt))
+        {
+            sb.AppendLine(startingActionPrompt);
+            startingActionPrompt = "";
+        }
         return sb.Replace("\r", "").ToString();
     }
     public void AddDialogue(CharacterData speakingChar, bool isPlayer, string spokenText)
     {
-        SpokenDialogue spokenDialogue = new SpokenDialogue(isPlayer? "You" : speakingChar.Name, spokenText);
+        SpokenDialogue spokenDialogue = new SpokenDialogue(isPlayer ? "You" : speakingChar.Name, spokenText);
         SpokenDialogues.Add(spokenDialogue);
     }
     public void AddDialogue(string speakingChar, string spokenText)
     {
         SpokenDialogue spokenDialogue = new SpokenDialogue(speakingChar, spokenText);
         SpokenDialogues.Add(spokenDialogue);
-        
-        if(SpokenDialogues.Count >= currentConversationGenSettings.max_history_count)
+
+        if (SpokenDialogues.Count >= currentConversationGenSettings.max_history_count)
         {
             SpokenDialogues.RemoveAt(0);
         }
@@ -198,9 +214,9 @@ public class ConversationData
     public string GetNextSpeaker(string currentScentence)
     {
         List<string> currentChars = new List<string>();
-        foreach(KeyValuePair <string, CharacterData> val in RelevantCharacters)
+        foreach (KeyValuePair<string, CharacterData> val in RelevantCharacters)
         {
-            if(val.Value != DialogueSystem_Main.Instance.PlayerData)
+            if (val.Value != DialogueSystem_Main.Instance.PlayerData)
             {
                 currentChars.Add(val.Value.Name);
             }

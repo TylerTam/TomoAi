@@ -10,14 +10,16 @@ public class TomoCharPerson : MonoBehaviour
     [SerializeField] private TomoCharAppearenceConstructor tomoCharAppearenceConstructor;
     [SerializeField] private CharacterData personData;
     [SerializeField] private float speakFirstChance;
+    [SerializeField] private TMPro.TextMeshProUGUI charNameTemp;
 
     public void ConstructTomoChar(CharacterData characterData)
     {
         personData = characterData;
         tomoCharAppearenceConstructor.ConstructCharacter(characterData.CharacterAppearence);
+        charNameTemp.text = characterData.Name;
     }
 
-    public void StartConversation()
+    public void StartConversation(AllPromptActions.ActionType promptAction)
     {
 
         //Can change this so that they start speaking, if they have a '...' over their head, like in tomodachi life when they want to talk to you.
@@ -29,12 +31,12 @@ public class TomoCharPerson : MonoBehaviour
         }
 
 
-        DialogueSystem_Main.Instance.StartConversation(personData, this, speakFirst, GenerateScenarioPrompt());
+        DialogueSystem_Main.Instance.StartConversation(personData, this, speakFirst, "", GenerateScenarioPrompt(promptAction));
     }
 
-    private string GenerateScenarioPrompt()
+    private string GenerateScenarioPrompt(AllPromptActions.ActionType promptAction)
     {
-        return "";
+        return DialogueSystem_Main.Instance.GetPromptAction(promptAction, personData.Name);  
     }
 
     public void DialogueEnded()

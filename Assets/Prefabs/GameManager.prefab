@@ -119,7 +119,7 @@ MonoBehaviour:
     _keys: 0100000000000000
     _values:
     - {fileID: 11400000, guid: 1355649e72ab9d248b5ba8809b547ae1, type: 2}
-    - {fileID: 0}
+    - {fileID: 11400000, guid: 1355649e72ab9d248b5ba8809b547ae1, type: 2}
 --- !u!1 &1466853541142810306
 GameObject:
   m_ObjectHideFlags: 0

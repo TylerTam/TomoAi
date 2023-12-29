@@ -11,6 +11,7 @@ using UnityEditor;
 public class Creator_SelectedCharacterAttribs : MonoBehaviour
 {
     [SerializeField] private EditorMenu editorMenu;
+    [SerializeField] private CreatorManager creatorManager;
     [SerializeField] private TomoCharPerson tomoChar;
     [SerializeField] private Creator_InputSection charName, charDescription, charPersonality, charAppearenceDescription;
     [SerializeField] private Creator_InputSection creatorInput;
@@ -35,27 +36,30 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
     }
     public void LoadTomoChar(CharacterData charData)
     {
-
         ClearAttribs();
+        loadedCharacter = charData;
 
         charName.Init(charData.Name,this);
         charDescription.Init(charData.Description,this);
         charPersonality.Init(charData.Personality_Summary,this);
         charAppearenceDescription.Init(charData.AppearanceDescription,this);
-
+        creatorInput.Init(charData.Creator, this);
         addedDialogues.Clear();
-        for (int i = 0; i < charData.Examples_Of_Dialogue.Length; i++)
-        {
-            Creator_DialogueExampleInput dialEx = ObjectPooler.NewObject(dialogueExPrefab, Vector3.zero, Quaternion.identity).GetComponent<Creator_DialogueExampleInput>();
-            dialEx.transform.parent = dialogueExRoot;
-            dialEx.transform.localPosition = Vector3.zero;
-            dialEx.transform.localRotation = Quaternion.identity;
-            dialEx.transform.localScale = Vector3.one;
-            dialEx.InitDialogueExample(charData.Examples_Of_Dialogue[i], this);
-            dialEx.gameObject.SetActive(false);
-            dialEx.gameObject.SetActive(true);
-            addedDialogues.Add(dialEx);
-        }
+        
+            for (int i = 0; i < charData.Examples_Of_Dialogue.Length; i++)
+            {
+                Creator_DialogueExampleInput dialEx = ObjectPooler.NewObject(dialogueExPrefab, Vector3.zero, Quaternion.identity).GetComponent<Creator_DialogueExampleInput>();
+                dialEx.transform.parent = dialogueExRoot;
+                dialEx.transform.localPosition = Vector3.zero;
+                dialEx.transform.localRotation = Quaternion.identity;
+                dialEx.transform.localScale = Vector3.one;
+                dialEx.InitDialogueExample(charData.Examples_Of_Dialogue[i], this);
+                dialEx.gameObject.SetActive(false);
+                dialEx.gameObject.SetActive(true);
+                addedDialogues.Add(dialEx);
+            }
+        
+        
 
         
         addDialogueButton.transform.SetAsLastSibling();
@@ -72,15 +76,19 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
     {
         if (markedDirty)
         {
-            PromptWindow.Instance.YesPressed.AddListener(delegate {SaveCharData(); Debug.Log("Exit Herer"); });
+            PromptWindow.Instance.YesPressed.AddListener(delegate {SaveCharData(); creatorManager.ChangeMenu(0); });
             //PromptWindow.Instance.NoPressed.AddListener();
             PromptWindow.Instance.ShowPromptWindow("Are you sure you want to leave? Any unsaved changes will not save", true);
+        }
+        else
+        {
+            creatorManager.ChangeMenu(0);
         }
 
     }
     public void SaveCharData()
     {
-        editorMenu.SaveCharacterData(loadedCharacter);
+        editorMenu.SaveCharacterData(ConstructCharacterData());
         
         markedDirty = false;
     }
@@ -167,6 +175,26 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
         StartCoroutine(DelayForceUpdateFitters());
     }
         
+
+    private CharacterData ConstructCharacterData()
+    {
+        CharacterData savedCharData = loadedCharacter.Clone();
+
+        //[SerializeField] private Creator_InputSection charName, charDescription, charPersonality, charAppearenceDescription;
+        //[SerializeField] private Creator_InputSection creatorInput;
+        savedCharData.Name = charName.Text;
+        savedCharData.Description = charDescription.Text;
+        savedCharData.Personality_Summary = charPersonality.Text;
+        savedCharData.AppearanceDescription = charAppearenceDescription.Text;
+        //savedCharData.Creator = creatorInput.Text;
+        savedCharData.Examples_Of_Dialogue = new string[addedDialogues.Count];
+        for (int i = 0; i < addedDialogues.Count; i++)
+        {
+            savedCharData.Examples_Of_Dialogue[i] = addedDialogues[i].GetDialogue;
+        }
+        //savedCharData.CharacterAppearence = new CharacterAppearance();
+        return savedCharData;
+    }
 }
 
 #if UNITY_EDITOR

@@ -389,6 +389,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_BackBar_FlatBottom
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 677
+        width: 126
+        height: 81
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 42, y: 0, z: 42, w: 43}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c5223fcca452ae4cb30fe3d7a6ebd32
+      internalID: -1315988785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -401,6 +422,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Ui-Sheet_BackBar: 896209222
+      Ui-Sheet_BackBar_FlatBottom: -1315988785
       Ui-Sheet_ChatHistory: 1441040984
       Ui-Sheet_Circle: -61571624
       Ui-Sheet_CloseButton: -1303452604
