@@ -6,6 +6,11 @@ using UnityEngine;
 public class TestingCharacterData : ScriptableObject
 {
     public CharacterData characterData;
+    public string Name => characterData.Name;
+    public string BuildPersona()
+    {
+        return characterData.BuildPersona();
+    }
 }
 
 

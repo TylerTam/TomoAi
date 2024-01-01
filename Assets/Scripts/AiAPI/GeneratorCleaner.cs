@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
@@ -14,7 +15,13 @@ public class GeneratorCleaner
         {
             resString = resString.Substring(0, indexOfEnd);
         }
-        resString = resString.Replace("<USER>", DialogueSystem_Main.Instance.PlayerData.Name);
+        try
+        {
+            resString = resString.Replace("<USER>", GameManager.Instance.PlayerCharacterData.Name);
+        }catch
+        {
+            resString = resString.Replace("<USER>", "Test User");
+        }
 
         if (clearAtLastPeriod)
         {
@@ -37,7 +44,40 @@ public class GeneratorCleaner
         if (sentenceEnd2 > sentenceEnd) sentenceEnd = sentenceEnd2;
 
         resString = resString.Substring(0, sentenceEnd + 1);
+
         resString = resString.Trim();
         return resString;
+    }
+
+    public string RemoveAsteriskActions(string editString)
+    {
+
+        string returnString = editString;
+        
+        List<int> asteriskIndexes = new List<int>();
+        for (int i = 0;; i+= 1)
+        {
+            i = editString.IndexOf("*",i);
+            if (i == -1)
+                break;
+            asteriskIndexes.Add(i);
+        }
+
+        asteriskIndexes.Reverse();
+        if(asteriskIndexes.Count > 1)
+        {
+            bool hasAsterisk = true;
+            while (hasAsterisk)
+            {
+                int secondIndex = asteriskIndexes[0];
+                asteriskIndexes.RemoveAt(0);
+                if (asteriskIndexes.Count <=0) break;
+                int firstIndex = asteriskIndexes[0];
+                asteriskIndexes.RemoveAt(0);
+                returnString = returnString.Remove(firstIndex, secondIndex - firstIndex+1);
+                if(asteriskIndexes.Count <=1) hasAsterisk = false;
+            }
+        }
+        return returnString;
     }
 }

@@ -31,7 +31,7 @@ public class TomoCharPerson : MonoBehaviour
         }
 
 
-        DialogueSystem_Main.Instance.StartConversation(personData, this, speakFirst, "", GenerateScenarioPrompt(promptAction));
+        DialogueSystem_Main.Instance.StartConversationWithPlayer(personData, this, speakFirst, "", GenerateScenarioPrompt(promptAction));
     }
 
     private string GenerateScenarioPrompt(AllPromptActions.ActionType promptAction)

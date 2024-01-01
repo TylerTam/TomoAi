@@ -19,4 +19,11 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public ItemDictionary AllItems;
     public SaveLoader SaveLoader;
+    public RelationshipMatrix RelationshipMatrix;
+    public CharacterData PlayerCharacterData;
+
+    private void Start()
+    {
+        PlayerCharacterData = SaveLoader.LoadedData.Player.ToCharData();
+    }
 }

@@ -29,6 +29,8 @@ public class SaveLoader : MonoBehaviour
         {
             string saveFileText = System.IO.File.ReadAllText(PATH);
             LoadedData = JsonUtility.FromJson<SaveData>(saveFileText);
+            LoadedData.InitSaveData();
+            SaveData();
         }
         else
         {
@@ -45,6 +47,30 @@ public class SaveLoader : MonoBehaviour
         Debug.Log("Save Loc: " + PATH);
     }
 
+    public CharacterData GetCharacterByID(int characterId)
+    {
+        foreach(CharacterData chardata in LoadedData.SavedCharacters)
+        {
+            if(chardata.LocalId == characterId)
+            {
+                return chardata;
+            }
+        }
+        Debug.Log("Couldn't find character");
+        return saveCharData.characterData;
+    }
+    public List<int> GetCharacterIdsByName(string characterName)
+    {
+        List<int> returnIndexes = new List<int>();
+        for (int i = 0; i < LoadedData.SavedCharacters.Count; i++)
+        {
+            if (LoadedData.SavedCharacters[i].Name == characterName)
+            {
+                returnIndexes.Add(LoadedData.SavedCharacters[i].LocalId);
+            }
+        }
+        return returnIndexes;
+    }
     public void UpdateCharacter(CharacterData characterData, bool isNewCharacter, int savedIndex)
     {
 
@@ -55,12 +81,15 @@ public class SaveLoader : MonoBehaviour
         }
         if(index == -1)
         {
+            characterData.UpdateForNewVersion();
+            characterData.LocalId = LoadedData.SavedCharacters.Count;
             LoadedData.SavedCharacters.Add(characterData);
         }
         else
         {
+            characterData.UpdateForNewVersion();
+            characterData.LocalId = index;
             LoadedData.SavedCharacters[index] = characterData;
-            
         }
         SaveData();
 
@@ -110,7 +139,22 @@ public class SaveData
 {
     [SerializeField] public PlayerData Player;
     [SerializeField] public List<CharacterData> SavedCharacters;
+
+    public void InitSaveData()
+    {
+        InitCharacterDatas();
+    }
+    private void InitCharacterDatas()
+    {
+        foreach(CharacterData charData in SavedCharacters)
+        {
+            charData.UpdateForNewVersion();
+            charData.InitRuntimeData();
+        }
+    }
 }
+
+
 
 [System.Serializable]
 public class PlayerData
@@ -120,6 +164,7 @@ public class PlayerData
     public CharacterData ToCharData()
     {
         CharacterData playerChar = new CharacterData(PlayerName, PlayerName, -1);
+        playerChar.LocalId = -1;
         return playerChar;
     }
 }

@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ee0614ff499f05469579c3e2cd389f9, type: 3}
+  m_Name: TestingCharData_Nilou
+  m_EditorClassIdentifier: 
+  characterData:
+    Name: Nilou
+    Description: Furina loves observing the people of Fontaine, and their daily lives.
+      While she still enjoys watching shows at the opera, they quickly became repetitive
+      to her, and she recently became interested in the real, unscripted, lives of
+      the common folk. Aside from that, she loves all kinds of sweets.
+    Personality_Summary: As an actor, Furina has two sides to her. To the public,
+      she acts flamboyant and bratty, speaking with bravado and drama. But underneath
+      that mask, she is quite timid, insecure and shy. While she loves to tease and
+      prod others, she will quickly retreat should they tease back. That said, Furina
+      loves her country of Fontaine and it's people, and would do anything to protect
+      them, as deep down she is a very empathetic girl, who wants to be loved
+    AppearanceDescription: Furina is a beautiful young slender woman with white hair
+      and shining blue eyes. She often wears a combination of blues and whites, making
+      sure to match the fashion sense that a god should have.
+    Examples_Of_Dialogue:
+    - Boring... Isn't there anything else more interesting to do?
+    - '*sigh* Being too popular can be such a hassle. Who knew the people would adore
+      me so much?'
+    - Good morning... Must I really get up this early? Just let me sleep a little
+      longer...
+    - My story has already come to an end, and so the next act shall be about OUR
+      story...
+    - Recently, I've been wondering if I've been a little too hard on myself in the
+      past. In my efforts to maintain the reserved manner of a deity, I never got
+      the chance to enjoy my life, which is why I've become obsessed with shopping
+      lately.
+    - 'I didn''t know you cared so much about me. Does that mean that you still need
+      my power? '
+    - Given the way I am now... there's a chance I won't be able to give you everything
+      you need. Hmm? All you really care about is... me? In that case, then let us
+      act out our future journey together!
+    - Don't look at me... like this...
+    - I still... couldn't do it...
+    - Witness my magnificence, and be amazed, for it is I... Furina, God of Justice,
+      and Fontaine's most beloved star!
+    - I do, indeed, hope that you might have something that may prove to be of interest,
+      for I have quite the busy schedule.
+    CharacterAppearence:
+      HeadSlot:
+        slotPosition: {x: 0, y: 0}
+        slotScale: {x: 0, y: 0}
+        BaseEyeZRot: 0
+        AppearancePieces: []
+      MouthSlot:
+        slotPosition: {x: 0, y: 0}
+        slotScale: {x: 0, y: 0}
+        BaseEyeZRot: 0
+        AppearancePieces: []
+      Eyes:
+        slotPosition: {x: 0, y: 0}
+        slotScale: {x: 0, y: 0}
+        BaseEyeZRot: 0
+        LeftEye:
+          BaseEyeId: 
+          AttachedEyePieces: []
+        RightEye:
+          BaseEyeId: 
+          AttachedEyePieces: []
+    Creator: Tyler
+    Creator_Id: 0
+    serializedRelationships: []
+    LocalId: 0

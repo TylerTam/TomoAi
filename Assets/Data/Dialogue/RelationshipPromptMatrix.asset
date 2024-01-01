@@ -1,0 +1,438 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1d2e22cacb83b4b85e9d0ffc886c5e, type: 3}
+  m_Name: RelationshipPromptMatrix
+  m_EditorClassIdentifier: 
+  char1Tag: <Char1>
+  char2Tag: <Char2>
+  NullRelationPrompt: <Char1> doesn't know <Char2>
+  AllRelationshipPrompts:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+    _keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+    _values:
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> knows <Char2>, but hates them, and starts fights with them.
+        - <Char1> knows <Char2>, but doesn't speak to them.
+        - <Char1> knows <Char2>, but not well enough to call them a friend
+        - <Char1> knows <Char2>, and waves 'hi' whenever they see eachother
+        - <Char1> knows <Char2>, and starts a conversation whenever they see eachother
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> considers <Char2> to be a friend, but they are fighting and not
+          on speaking terms.
+        - <Char1> considers <Char2> to be a friend, but is starting to regret that
+          decision.
+        - <Char1> is friends with <Char2>, and enjoys their company.
+        - <Char1> is friends with <Char2>, really likes hanging out with them.
+        - <Char1> is great friends with <Char2>, and they never have a dull moment
+          together.
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> used to be very close friends with <Char2>, but they get into heated
+          arguments quite often.
+        - <Char1> used to be very close friends with <Char2>, but they are not on
+          speaking terms.
+        - <Char1> is very close friends with <Char2>, and they like spending time
+          together.
+        - <Char1> is very close friends with <Char2>, and they do lots of things
+          together.
+        - <Char1> is very close friends with <Char2>, and they are almost inseparable.
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> is in a relationship with <Char2>, but they are falling apart as
+          they get into heated arguments all the time.
+        - <Char1> is in a relationship with <Char2>, but they are considering a breakup.
+        - <Char1> is in a relationship with <Char2>, and they spend lots of time
+          together.
+        - <Char1> loves <Char2>, and spends all their time together.
+        - <Char1> loves <Char2>, and cannot see a future without them
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> is married to <Char2>, but they are falling apart as they get into
+          heated arguments all the time.
+        - <Char1> is married <Char2>, but is unhappy and considering a divorce.
+        - <Char1> is married to <Char2>, and they spend lots of time together.
+        - <Char1> is married to <Char2>, and spends all their time together.
+        - <Char1> is married <Char2>, and cannot see a future without them
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char2> is <Char1>'s ex, and they argue whenever they see each other.
+        - <Char2> is <Char1>'s ex, and they actively avoid each other.
+        - <Char2> is <Char1>'s ex, and they have moved on, but dont speak to each
+          other.
+        - <Char2> is <Char1>'s ex, and they have forgiven the, and moved on, are
+          occasionally speak to each other.
+        - <Char2> is <Char1>'s ex, but they remain friends.
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> is divorced from <Char2>, and they argue whenever they see each
+          other.
+        - <Char1> is divorced from <Char2>, and they actively avoid each other.
+        - <Char1> is divorced from <Char2>, and they have moved on, but dont speak
+          to each other.
+        - <Char1> is divorced from <Char2>, and they have forgiven the, and moved
+          on, are occasionally speak to each other.
+        - <Char1> is divorced from <Char2>, but they remain friends.
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> is <Char2>'s child, but they argue whenever they see each other.
+        - <Char1> is <Char2>'s child, but they actively avoid each other.
+        - <Char1> is <Char2>'s child, and enjoys spending time together with them.
+        - <Char1> is <Char2>'s child, and they have a close relationship with their
+          parent.
+        - <Char1> is <Char2>'s child, and they really love having <Char2> as their
+          parent.
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> is <Char2>'s parent, but they argue whenever they see each other.
+        - <Char1> is <Char2>'s parent, but they actively avoid each other.
+        - <Char1> is <Char2>'s parent, and enjoys spending time together with them.
+        - <Char1> is <Char2>'s parent, and they have a close relationship with their
+          child.
+        - <Char1> is <Char2>'s parent, and they really love having <Char2> as their
+          child.
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> is <Char2>'s sibling, but they argue whenever they see each other.
+        - <Char1> is <Char2>'s sibling, but they actively avoid each other.
+        - <Char1> is <Char2>'s sibling, and enjoys spending time together with them.
+        - <Char1> is <Char2>'s sibling, and they have a close relationship with their
+          sibling.
+        - <Char1> is <Char2>'s sibling, and they really love having <Char2> as their
+          sibling.
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> is <Char2>'s family, but they argue whenever they see each other.
+        - <Char1> is <Char2>'s family, but they actively avoid each other.
+        - <Char1> is <Char2>'s family, and enjoys spending time together with them.
+        - <Char1> is <Char2>'s family, and they have a close relationship with them.
+        - <Char1> is <Char2>'s family, and they really love having <Char2> in their
+          family.
+    - promptText:
+        reorderableList:
+          canAdd: 1
+          canRemove: 1
+          draggable: 1
+          expandable: 1
+          multipleSelection: 1
+          isExpanded: 1
+          label:
+            m_Text: Keys
+            m_Image: {fileID: 0}
+            m_Tooltip: 
+          headerHeight: 18
+          footerHeight: 13
+          slideEasing: 0.15
+          verticalSpacing: 2
+          showDefaultBackground: 1
+          elementDisplayType: 0
+          elementNameProperty: 
+          elementNameOverride: 
+          elementIcon: {fileID: 0}
+        reqReferences: {fileID: 0}
+        isExpanded: 1
+        _keyValues: 0000000001000000020000000300000004000000
+        _keys: 0000000001000000020000000300000004000000
+        _values:
+        - <Char1> is <Char2>'s family, but they argue whenever they see each other.
+        - <Char1> is <Char2>'s family, but they actively avoid each other.
+        - <Char1> is <Char2>'s family, and enjoys spending time together with them.
+        - <Char1> is <Char2>'s family, and they have a close relationship with them.
+        - <Char1> is <Char2>'s family, and they really love having <Char2> in their
+          family.

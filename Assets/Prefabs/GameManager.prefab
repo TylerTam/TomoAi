@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shouldConnect: 0
+  debugPrompt: 1
   generationTypes:
     reorderableList:
       canAdd: 1
@@ -169,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllItems: {fileID: 0}
   SaveLoader: {fileID: 1466853541250828432}
+  RelationshipMatrix: {fileID: 11400000, guid: 21f96b6382df2f04496946f3e309bdf1, type: 2}
 --- !u!1 &1466853541250856815
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +280,8 @@ MonoBehaviour:
             AttachedEyePieces: []
       Creator: Tyler
       Creator_Id: 0
+      serializedRelationships: []
+      LocalId: 0
   SaveDataLoaded:
     m_PersistentCalls:
       m_Calls: []

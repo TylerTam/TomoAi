@@ -28,6 +28,7 @@ public class ServerLink : MonoBehaviour
     private bool isCalling = false;
     private bool isConnected = false;
     [SerializeField] private bool shouldConnect = true;
+    [SerializeField] private bool debugPrompt = true;
 
     private GeneratorCleaner sentenceCleaner;
 
@@ -38,6 +39,10 @@ public class ServerLink : MonoBehaviour
     }
     [SerializeField] private RotaryHeart.Lib.SerializableDictionary.SerializableDictionaryBase<GenerationType, GeneratorSettings> generationTypes;
     
+    public string CleanString(string inputString)
+    {
+        return sentenceCleaner.CleanSentence(inputString);
+    }
     public GeneratorSettings GetGenSettType (GenerationType genType)
     {
         return generationTypes[genType];
@@ -60,7 +65,7 @@ public class ServerLink : MonoBehaviour
         StartCoroutine(GenerateText(prompt, speakingChar, resonseAction, genType));
     }
 
-    public IEnumerator GenerateText(string inputPrompt, string speakingChar,System.Action <bool, string, string> response, GenerationType genType = GenerationType.Default, bool debugResponse = false)
+    public IEnumerator GenerateText(string inputPrompt, string speakingChar, System.Action<bool, string, string> response, GenerationType genType = GenerationType.Default, bool debugResponse = false)
     {
 
         if (!isConnected)
@@ -80,39 +85,44 @@ public class ServerLink : MonoBehaviour
 
         GenerationSettings settings = generationTypes[genType].generationSettings.Clone();
         settings.prompt = inputPrompt;
+#if UNITY_EDITOR
+        if (debugPrompt) Debug.Log(settings.prompt);
+#endif
         string data = JsonUtility.ToJson(settings);
         yield return null;
 
         isCalling = true;
 
 
-        var uwr = new UnityWebRequest(serverURL + "generate_unity/", "POST");
-        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(data);
-        uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
-        uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        uwr.SetRequestHeader("Content-Type", "application/json");
-        yield return uwr.SendWebRequest();
-
-
-        switch (uwr.result)
+        using (UnityWebRequest wr = new UnityWebRequest(serverURL + "generate_unity/", "POST"))
         {
-            case UnityWebRequest.Result.Success:
-                Debug.Log("Success");
-                if (debugResponse)
-                {
-                    Debug.Log(uwr.downloadHandler.text);
-                }
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(data);
+            wr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+            wr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            wr.SetRequestHeader("Content-Type", "application/json");
+            yield return wr.SendWebRequest();
 
-                ServerResponse res = JsonUtility.FromJson<ServerResponse>(uwr.downloadHandler.text);
-                response?.Invoke(true, speakingChar, sentenceCleaner.CleanSentence(res.results[0].text));
-                
-                break;
-            default:
-                Debug.Log("Error: " + uwr.responseCode);
-                response?.Invoke(false, speakingChar, "oops");
-                break;
+
+            switch (wr.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    Debug.Log("Success");
+                    if (debugResponse)
+                    {
+                        Debug.Log(wr.downloadHandler.text);
+                    }
+
+                    ServerResponse res = JsonUtility.FromJson<ServerResponse>(wr.downloadHandler.text);
+                    response?.Invoke(true, speakingChar, sentenceCleaner.CleanSentence(res.results[0].text));
+
+                    break;
+                default:
+                    Debug.Log("Error: " + wr.responseCode);
+                    response?.Invoke(false, speakingChar, "oops");
+                    break;
+            }
+            isCalling = false;
         }
-        isCalling = false;
 
     }
 
