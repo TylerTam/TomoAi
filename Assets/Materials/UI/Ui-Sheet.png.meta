@@ -410,6 +410,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_SharperBox
+      rect:
+        serializedVersion: 2
+        x: 796
+        y: 782
+        width: 83
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 9, y: 9, z: 9, w: 9}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53e060700fae1b647b4d55c5a3518119
+      internalID: 2043270536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -432,6 +453,7 @@ TextureImporter:
       Ui-Sheet_MicrophoneBtn: 1896939387
       Ui-Sheet_SendButton: -1920982522
       Ui-Sheet_SharperBar: -1133508870
+      Ui-Sheet_SharperBox: 2043270536
       Ui-Sheet_TypingBack: -881440791
       Ui-Sheet_TypingDots: 826229451
       Ui-Sheet_WorldChatBox: -1002002107

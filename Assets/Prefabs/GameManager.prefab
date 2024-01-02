@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shouldConnect: 0
-  debugPrompt: 1
+  debugPrompt: 0
   generationTypes:
     reorderableList:
       canAdd: 1
@@ -171,6 +171,38 @@ MonoBehaviour:
   AllItems: {fileID: 0}
   SaveLoader: {fileID: 1466853541250828432}
   RelationshipMatrix: {fileID: 11400000, guid: 21f96b6382df2f04496946f3e309bdf1, type: 2}
+  PlayerCharacterData:
+    Name: 
+    Description: 
+    Personality_Summary: 
+    AppearanceDescription: 
+    FavouriteColor: {r: 0, g: 0, b: 0, a: 0}
+    Examples_Of_Dialogue: []
+    CharacterAppearence:
+      HeadSlot:
+        slotPosition: {x: 0, y: 0}
+        slotScale: {x: 0, y: 0}
+        BaseEyeZRot: 0
+        AppearancePieces: []
+      MouthSlot:
+        slotPosition: {x: 0, y: 0}
+        slotScale: {x: 0, y: 0}
+        BaseEyeZRot: 0
+        AppearancePieces: []
+      Eyes:
+        slotPosition: {x: 0, y: 0}
+        slotScale: {x: 0, y: 0}
+        BaseEyeZRot: 0
+        LeftEye:
+          BaseEyeId: 
+          AttachedEyePieces: []
+        RightEye:
+          BaseEyeId: 
+          AttachedEyePieces: []
+    Creator: 
+    Creator_Id: 0
+    serializedRelationships: []
+    LocalId: 0
 --- !u!1 &1466853541250856815
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +266,7 @@ MonoBehaviour:
       AppearanceDescription: Furina is a beautiful young slender woman with white
         hair and shining blue eyes. She often wears a combination of blues and whites,
         making sure to match the fashion sense that a god should have.
+      FavouriteColor: {r: 0, g: 0, b: 0, a: 0}
       Examples_Of_Dialogue:
       - Boring... Isn't there anything else more interesting to do?
       - '*sigh* Being too popular can be such a hassle. Who knew the people would

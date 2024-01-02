@@ -185,9 +185,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prompt: Furina, are you friends with Nilou?
   prompt2: Furina, what is your relationship with Navia?
-  prompt3: '*sighs\* I don''t really have any relationship with her. We''re just
-    good friends. I suppose we talk sometimes when I''m bored.'
-  testingChar: {fileID: 11400000, guid: 72dc989d76049af4aab2968e01734314, type: 2}
+  prompt3: '*Furina immediately turns her attention to the door, as though she had
+    not even heard him.*'
+  testingChar: {fileID: 11400000, guid: f9c53c2060d0246488c5d224db747d9a, type: 2}
   testChar2: {fileID: 11400000, guid: 08b28e59a6139e94fb68a2915076391e, type: 2}
 --- !u!4 &141019629
 Transform:
@@ -464,7 +464,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1466853541054481796, guid: ae2f9bacfa277c44e99ea705c1f048fa, type: 3}
       propertyPath: shouldConnect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1466853541142810306, guid: ae2f9bacfa277c44e99ea705c1f048fa, type: 3}
       propertyPath: m_Name

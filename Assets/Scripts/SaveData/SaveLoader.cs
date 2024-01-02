@@ -165,6 +165,7 @@ public class PlayerData
     {
         CharacterData playerChar = new CharacterData(PlayerName, PlayerName, -1);
         playerChar.LocalId = -1;
+        playerChar.FavouriteColor = new Color(0.5f, 0.5f, 0.5f);
         return playerChar;
     }
 }

@@ -57,6 +57,7 @@ public class DialogueUiSystem : MonoBehaviour
         newBubble.transform.parent = DialogueParent;
         newBubble.transform.localPosition = Vector3.zero;
         DialogueBubble bub = newBubble.GetComponent<DialogueBubble>();
+        bub.SetBubbleColor(speakingCharData.FavouriteColor);
         bub.DialogueInit(speakingCharData, spokenDialogue);
         bubbles.Add(bub);
         TypingBubble.transform.SetAsLastSibling();

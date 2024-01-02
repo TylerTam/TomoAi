@@ -25,6 +25,7 @@ public class DialogueSystem_Main : MonoBehaviour
 
     public System.Action StartedDataFetch;
     public System.Action<CharacterData, string> DataFetchRes;
+    public ScenarioPromptManager scenarioPromptManager;
 
     [SerializeField] private AllPromptActions allPromptActions;
 
@@ -45,14 +46,24 @@ public class DialogueSystem_Main : MonoBehaviour
     {
         return allPromptActions.GetPrompt(promptAction, charName);
     }
-    public void StartConversationWithPlayer(CharacterData targetData, TomoCharPerson targetGameObject, bool aiSpeaksFirst = false, string scenarioPrompt = "", string startingActionPrompt = "")
+    public void StartConversationWithPlayer(CharacterData targetData, TomoCharPerson targetGameObject, bool aiSpeaksFirst = false, string startingActionPrompt = "", string scenarioPrompt = "")
     {
         currentConversation = new ConversationData();
         currentConversation.RelevantCharacters.Add(GameManager.Instance.PlayerCharacterData.Name, GameManager.Instance.PlayerCharacterData);
         currentConversation.RelevantCharacters.Add(targetData.Name, targetData);
         currentConversation.currentConversationGenSettings = ServerLink.Instance.GetGenSettType(ServerLink.GenerationType.Default).generationSettings;
         currentConversation.RelevantCharsController.Add(targetData.Name, targetGameObject);
+
         currentConversation.scenarioPrompt = scenarioPrompt;
+        if (string.IsNullOrWhiteSpace(scenarioPrompt))
+        {
+            List<string> names = new List<string>();
+            names.Add(GameManager.Instance.PlayerCharacterData.Name);
+            names.Add(targetData.Name);
+            currentConversation.scenarioPrompt = scenarioPromptManager.GetPrompt(names);
+        }
+
+
         currentConversation.startingActionPrompt = startingActionPrompt;
         dialogueUi.OpenMenu(/*CurrentConversation*/);
         //SetupPersonaPrompt
@@ -86,7 +97,8 @@ public class DialogueSystem_Main : MonoBehaviour
 
             string dialogueToSend = currentConversation.BuildCurrentPrompt() + " \n" + speakingChar + ":";
 
-            Debug.Log(dialogueToSend);
+            
+            //Debug.Log(dialogueToSend);
 
             ServerLink.Instance.StartGenerator(dialogueToSend, speakingChar, GeneratorResponse);
         }
@@ -132,6 +144,7 @@ public class DialogueSystem_Main : MonoBehaviour
 
     public void EndConversation()
     {
+        if (currentConversation == null) return;
         dialogueUi.CloseMenu(true);
         foreach (KeyValuePair<string, TomoCharPerson> per in currentConversation.RelevantCharsController)
         {
@@ -166,17 +179,23 @@ public class ConversationData
     public string scenarioPrompt;
     public string startingActionPrompt;
     public GenerationSettings currentConversationGenSettings;
+    public Dictionary<string, int> appendedRelationshipPrompts = new Dictionary<string, int>();
 
+    private const int keepRelationshipPrompt = 10;
     public List<string> GetRelevantCharactersInText()
     {
-        List<string> result = new List<string>();
+
+        //if (SpokenDialogues == null || SpokenDialogues.Count <= 0) return new List<string>();
+        
+            List<string> result = new List<string>();
         foreach(KeyValuePair<string, CharacterData> keys in RelevantCharacters)
         {
             if(keys.Value.LocalId != GameManager.Instance.PlayerCharacterData.LocalId)
             {
                 foreach(CharacterRelationShip characterRelationShip in keys.Value.serializedRelationships)
                 {
-                    if (characterRelationShip.characterName == keys.Value.Name) continue;
+                    if (characterRelationShip.characterName == keys.Value.Name ||
+                        string.IsNullOrWhiteSpace(characterRelationShip.characterName)) continue;
                     if (!result.Contains(characterRelationShip.characterName))
                     {
                         result.Add(characterRelationShip.characterName);
@@ -185,22 +204,43 @@ public class ConversationData
             }
         }
 
-        for (int i = result.Count-1; i >=0; i--)
+
+        if (SpokenDialogues != null && SpokenDialogues.Count > 0)
         {
-            
-            if (!SpokenDialogues[SpokenDialogues.Count - 1].SpokenText.Contains(result[i]))
+
+            for (int i = result.Count - 1; i >= 0; i--)
             {
-                result.RemoveAt(i);
+                if (!SpokenDialogues[SpokenDialogues.Count - 1].SpokenText.Contains(result[i]))
+                {
+                    result.RemoveAt(i);
+                }
             }
         }
+
         return result;
     }
     public string BuildCurrentPrompt()
     {
 
         List<string> relationshipNames = GetRelevantCharactersInText();
-        
+        foreach(string nam in relationshipNames)
+        {
+            if (appendedRelationshipPrompts.ContainsKey(nam))
+            {
+                appendedRelationshipPrompts[nam] = keepRelationshipPrompt;
+            }
+            else
+            {
+                appendedRelationshipPrompts.Add(nam, keepRelationshipPrompt);
+            }
+        }
 
+        relationshipNames.Clear();
+        foreach(KeyValuePair<string, int> nam in appendedRelationshipPrompts)
+        {
+            relationshipNames.Add(nam.Key);
+        }
+        
 
         StringBuilder sb = new StringBuilder();
         foreach (KeyValuePair<string, CharacterData> keys in RelevantCharacters)
@@ -208,7 +248,6 @@ public class ConversationData
             if (keys.Value.LocalId != GameManager.Instance.PlayerCharacterData.LocalId)
             {
                 sb.Append(keys.Value.BuildPersona(relationshipNames));
-
             }
         }
         if (scenarioPrompt != "" && !string.IsNullOrWhiteSpace(scenarioPrompt))
@@ -227,11 +266,21 @@ public class ConversationData
         }
         return sb.Replace("\r", "").ToString();
     }
+
+    /// <summary>
+    /// Typically Player Dialogue
+    /// </summary>
     public void AddDialogue(CharacterData speakingChar, bool isPlayer, string spokenText)
     {
         SpokenDialogue spokenDialogue = new SpokenDialogue(isPlayer ? "You" : speakingChar.Name, spokenText);
         SpokenDialogues.Add(spokenDialogue);
+        ReduceReleventCharacterCounters();
     }
+
+    /// <summary>
+    /// NPC Dialogue
+    /// </summary>
+
     public void AddDialogue(string speakingChar, string spokenText)
     {
         SpokenDialogue spokenDialogue = new SpokenDialogue(speakingChar, spokenText);
@@ -241,8 +290,21 @@ public class ConversationData
         {
             SpokenDialogues.RemoveAt(0);
         }
+        ReduceReleventCharacterCounters();
     }
 
+    public void ReduceReleventCharacterCounters()
+    {
+        List<string> relationShipKeys = new List<string>(appendedRelationshipPrompts.Keys);
+        for (int i = 0; i < relationShipKeys.Count; i++)
+        {
+            appendedRelationshipPrompts[relationShipKeys[i]] -= 1;
+            if (appendedRelationshipPrompts[relationShipKeys[i]]<=0)
+            {
+                appendedRelationshipPrompts.Remove(relationShipKeys[i]);
+            }
+        }
+    }
     public string GetNextSpeaker(string currentScentence)
     {
         List<string> currentChars = new List<string>();

@@ -12,13 +12,14 @@ public class TomoCharController : MonoBehaviour
         Speaking
     }
     private ControllerState _state;
-    public float MaxSpeed;
-    public float MoveAcceleration;
-    public float MoveDecelleration;
-    public float RotateSpeed;
-    public float StopDistance;
+    [SerializeField] private float MaxSpeed;
+    [SerializeField] private float MoveAcceleration;
+    [SerializeField] private float MoveDecelleration;
+    [SerializeField] private float RotateSpeed;
+    [SerializeField] private float StopDistance;
 
-    public Transform TargetTransform;
+    private Vector3 idleTargetPos;
+    private Vector3 cameraLookPos;
 
 
     private Rigidbody _rigidBody;
@@ -38,11 +39,6 @@ public class TomoCharController : MonoBehaviour
         TomoCharInteraction interaction = GetComponent<TomoCharInteraction>();
         interaction.CharacterTapped += delegate { SwitchState(ControllerState.LookAtCamera); };
         interaction.DialogueEnded += delegate { SwitchState(ControllerState.Idle); };
-
-        if (TargetTransform == null)
-        {
-            TargetTransform = GameObject.Find("TOMOCHARTargetPos").transform;
-        }
     }
     private void Update()
     {
@@ -69,16 +65,27 @@ public class TomoCharController : MonoBehaviour
     public void SwitchState(ControllerState newState)
     {
         _state = newState;
+        switch (newState)
+        {
+            case ControllerState.Idle:
+                break;
+            case ControllerState.LookAtCamera:
+                cameraLookPos = Camera.main.transform.position;
+                break;
+            case ControllerState.Speaking:
+                break;
+        }
     }
 
     #region Idle Behaviour
     private void PerformIdleBehaviour()
     {
-        distance = Vector3.Distance(transform.position, MH.VectorOnYPlane(TargetTransform.position, transform.position.y));
+        
+        distance = Vector3.Distance(transform.position, MH.VectorOnYPlane(idleTargetPos, transform.position.y));
         if (distance > StopDistance)
         {
 
-            transform.Rotate(Vector3.up, CalcRotateSpeed(TargetTransform.position));
+            transform.Rotate(Vector3.up, CalcRotateSpeed(idleTargetPos));
 
             Vector3 vel = transform.forward * CalcMoveSpeed(MoveAcceleration);
             _rigidBody.velocity = new Vector3(vel.x, _rigidBody.velocity.y, vel.z);
@@ -122,7 +129,8 @@ public class TomoCharController : MonoBehaviour
     #region Look At Camera
     private void PerformLookAtCamera()
     {
-        Vector3 flattenedCamPos = Camera.main.transform.position;
+        Vector3 flattenedCamPos = cameraLookPos;
+        flattenedCamPos.y = transform.position.y;
 
         transform.Rotate(Vector3.up, CalcRotateSpeed(MH.VectorOnYPlane(flattenedCamPos, transform.position.y)));
 
@@ -139,7 +147,7 @@ public class TomoCharController : MonoBehaviour
     {
         _animator.SetFloat("MoveSpeed", _currentSpeed / MaxSpeed);
     }
-    
-    
-    
+
+
+
 }

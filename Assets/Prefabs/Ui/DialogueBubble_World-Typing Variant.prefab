@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3095802742665403005, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
       propertyPath: m_Name
-      value: DialogueBubble_World-Typing
+      value: DialogueBubble_World-Typing Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4212375114531231297, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -42,6 +42,18 @@ PrefabInstance:
     - target: {fileID: 4212375114531231297, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878621345758486793, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.6509434
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878621345758486793, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6509434
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878621345758486793, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6509434
       objectReference: {fileID: 0}
     - target: {fileID: 5897695470919902557, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -165,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6174722885306445164, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.2
+      value: 0.2000122
       objectReference: {fileID: 0}
     - target: {fileID: 6174722885306445164, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -282,6 +294,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3357048387511201414 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5878621345758486793, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
+  m_PrefabInstance: {fileID: 9152351623422513039}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6193909082321180146 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3095802742665403005, guid: bc8544f828f9f5147a52ccec0922765c, type: 3}
@@ -301,6 +324,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 0}
   dialogueText: {fileID: 0}
-  sizeFitter: {fileID: 0}
+  bubbleImage: {fileID: 3357048387511201414}
   DotsPerSecond: 3
   Dots: {fileID: 2079830511}

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TomoCharPerson : MonoBehaviour
@@ -17,6 +15,7 @@ public class TomoCharPerson : MonoBehaviour
         personData = characterData;
         tomoCharAppearenceConstructor.ConstructCharacter(characterData.CharacterAppearence);
         charNameTemp.text = characterData.Name;
+        tomoCharUi.SetBubbleColors(characterData.FavouriteColor);
     }
 
     public void StartConversation(AllPromptActions.ActionType promptAction)
@@ -30,11 +29,10 @@ public class TomoCharPerson : MonoBehaviour
             tomoCharUi.DisplayUi(TomoCharUi.UiState.Thinking);
         }
 
-
-        DialogueSystem_Main.Instance.StartConversationWithPlayer(personData, this, speakFirst, "", GenerateScenarioPrompt(promptAction));
+        DialogueSystem_Main.Instance.StartConversationWithPlayer(personData, this, speakFirst, GenerateStartingActionPrompt(promptAction),"");
     }
 
-    private string GenerateScenarioPrompt(AllPromptActions.ActionType promptAction)
+    private string GenerateStartingActionPrompt(AllPromptActions.ActionType promptAction)
     {
         return DialogueSystem_Main.Instance.GetPromptAction(promptAction, personData.Name);  
     }

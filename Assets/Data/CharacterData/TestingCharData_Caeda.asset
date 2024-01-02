@@ -27,6 +27,7 @@ MonoBehaviour:
     AppearanceDescription: Furina is a beautiful young slender woman with white hair
       and shining blue eyes. She often wears a combination of blues and whites, making
       sure to match the fashion sense that a god should have.
+    FavouriteColor: {r: 0.12156863, g: 0.53333336, b: 1, a: 1}
     Examples_Of_Dialogue:
     - Boring... Isn't there anything else more interesting to do?
     - '*sigh* Being too popular can be such a hassle. Who knew the people would adore
@@ -74,4 +75,4 @@ MonoBehaviour:
     Creator: Tyler
     Creator_Id: 0
     serializedRelationships: []
-    LocalId: 0
+    LocalId: 2

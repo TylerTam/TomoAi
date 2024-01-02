@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 388146288550553611}
   dialogueText: {fileID: 2836396086843335646}
-  sizeFitter: {fileID: 1209881177442615922}
+  bubbleImage: {fileID: 5542996113680383614}
 --- !u!1 &170326607777392862
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,6 +250,8 @@ MonoBehaviour:
   MaxLength: 300
   MinHeight: 10
   MaxHeight: 500
+  LengthAdditive: 0
+  HeightAdditive: 0
 --- !u!1 &2976257118149651546
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,6 +471,8 @@ MonoBehaviour:
   MaxLength: 360
   MinHeight: 10
   MaxHeight: 500
+  LengthAdditive: 0
+  HeightAdditive: 0
 --- !u!1 &6782432171344805389
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +672,8 @@ MonoBehaviour:
   MaxLength: 360
   MinHeight: 10
   MaxHeight: 500
+  LengthAdditive: 0
+  HeightAdditive: 0
 --- !u!1 &8491612118985889737
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class CharacterData
     [SerializeField][TextArea] public string Description; //Personality and other characteristics
     [SerializeField][TextArea] public string Personality_Summary;
     [SerializeField][TextArea] public string AppearanceDescription;
+    [SerializeField] public Color FavouriteColor;
     [SerializeField][TextArea] public string[] Examples_Of_Dialogue;
     [SerializeField] public CharacterAppearance CharacterAppearence;
     [SerializeField] public string Creator;
@@ -30,6 +31,7 @@ public class CharacterData
 
     public void UpdateForNewVersion()
     {
+
         if (serializedRelationships == null || serializedRelationships.Count == 0)
         {
             serializedRelationships = new List<CharacterRelationShip>();
@@ -38,6 +40,7 @@ public class CharacterData
             selfRelation.relationshipType = RelationshipMatrix.RelationShipType.Themself;
             selfRelation.relationshipStatus = RelationshipMatrix.RelationshipStatus.Okay;
             serializedRelationships.Add(selfRelation);
+
         }
     }
 
@@ -91,7 +94,7 @@ public class CharacterData
             sb.Append(Name + "'s Relationships: ");
             foreach (string relName in relevantCharacterRelationships)
             {
-                sb.Append(BuildRelationshipPrompt(relName) + " ");
+                sb.Append(BuildRelationshipPrompt(relName) + "");
             }
             sb.Append("\n");
         }

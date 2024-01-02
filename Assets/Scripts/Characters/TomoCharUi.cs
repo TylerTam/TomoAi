@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TomoCharUi : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class TomoCharUi : MonoBehaviour
     [SerializeField] private AnimationCurve xSizeCurve, ySizeCurve;
     [SerializeField] private float showBubbleDuration;
     [SerializeField] private float fadeBubbleDuration;
+
+    [SerializeField] private List<Image> promptImages;
     public enum UiState
     {
         None,
@@ -38,6 +41,13 @@ public class TomoCharUi : MonoBehaviour
         SetUiScale(0);
     }
 
+    public void SetBubbleColors(Color userColor)
+    {
+        foreach(Image img in promptImages)
+        {
+            img.color = userColor;
+        }
+    }
     public void SetNextSpeechText(CharacterData charData, string dialogue)
     {
         tempCharName = charData.Name;
@@ -121,7 +131,7 @@ public class TomoCharUi : MonoBehaviour
             if (currentUi == UiState.SpeechBubble)
             {
                 showBubbleTime += (uiBubbles.SpeechBubbleDialogue.text.Length * 0.05f);
-                Debug.Log(showBubbleTime);
+                
             }
             yield return new WaitForSeconds(showBubbleTime);
         }
