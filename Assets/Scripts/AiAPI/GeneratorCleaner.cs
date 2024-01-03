@@ -27,13 +27,17 @@ public class GeneratorCleaner
         {
             resString = FindLastSentenceEnd(resString);
         }
-        resString = ReplaceAsterisksWithItalics(resString);
+
         
 
         //Debug.Log("Cleaned up string: " + resString);
         return resString;
     }
 
+    public string AdjustScentenceForRichText(string sentence)
+    {
+        return ReplaceAsterisksWithItalics(sentence);
+    }
     private string FindLastSentenceEnd(string editString)
     {
 

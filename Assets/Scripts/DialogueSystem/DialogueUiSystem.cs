@@ -7,8 +7,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class DialogueUiSystem : MonoBehaviour
+public class DialogueUiSystem : ToggleableInGameUI
 {
+
     [Header("Conversation History")]
     public GameObject DialogueDisplayPrefab;
     public GameObject PlayerDialogueDisplayPrefab;
@@ -34,9 +35,18 @@ public class DialogueUiSystem : MonoBehaviour
     private bool chatHistoryOpen;
     private Coroutine lerpHistoryCor;
     #endregion
+
+    #region OpenAnim
+    [SerializeField] private RectTransform typingBoxRect;
+    [SerializeField] private AnimationCurve typingBoxAnimCurve;
+    [SerializeField] private float typingBoxAnimTime;
+    [SerializeField] private float typingBoxHiddenPos;
+    #endregion
+
+
     private void Awake()
     {
-        
+
         DialogueSystem_Main.Instance.StartedDataFetch += TextGenerationStarted;
         DialogueSystem_Main.Instance.DataFetchRes += RecievedGeneratedDialogue;
         TypingBubble.gameObject.SetActive(false);
@@ -48,12 +58,14 @@ public class DialogueUiSystem : MonoBehaviour
     {
         string playerText = PlayerInput.text;
         DialogueSystem_Main.Instance.AddPlayerDialogue(playerText);
+        
+        DisplayNewDialogue(GameManager.Instance.PlayerCharacterData, playerText, true);
         PlayerInput.text = "";
     }
 
     public void DisplayNewDialogue(CharacterData speakingCharData, string spokenDialogue, bool isPlayerSpeaking = false)
     {
-        GameObject newBubble = ObjectPooler.NewObject((isPlayerSpeaking? PlayerDialogueDisplayPrefab : DialogueDisplayPrefab), Vector3.zero, Quaternion.identity);
+        GameObject newBubble = ObjectPooler.NewObject((isPlayerSpeaking ? PlayerDialogueDisplayPrefab : DialogueDisplayPrefab), Vector3.zero, Quaternion.identity);
         newBubble.transform.parent = DialogueParent;
         newBubble.transform.localPosition = Vector3.zero;
         DialogueBubble bub = newBubble.GetComponent<DialogueBubble>();
@@ -87,7 +99,7 @@ public class DialogueUiSystem : MonoBehaviour
 
     public void ClearConversation()
     {
-        for (int i = bubbles.Count-1; i >= 0; i--)
+        for (int i = bubbles.Count - 1; i >= 0; i--)
         {
             ObjectPooler.ReturnToPool(bubbles[i].gameObject);
         }
@@ -95,27 +107,50 @@ public class DialogueUiSystem : MonoBehaviour
     }
 
 
-    public void CloseMenu(bool immediateClose = false)
+    public override bool ToggleMenu(bool enable)
     {
-        if (immediateClose)
+        if (!base.ToggleMenu(enable)) return false;
+
+        if (enable)
         {
-            gameObject.SetActive(false);
+            ToggleChatHistory(true);
+            StartCoroutine(ToggleTypingBox(true));
         }
+        else
+        {
+            StartCoroutine(ToggleTypingBox(false));
+            if(chatHistoryOpen) ToggleChatHistory(false);
+        }
+        return true;
     }
 
-    public void OpenMenu()
+    public void ResetConversation()
     {
         ClearConversation();
-        gameObject.SetActive(true);
-    }
-
-    public void ExitConversation()
-    {
         DialogueSystem_Main.Instance.EndConversation();
     }
 
-    
+    public override void ForceClose()
+    {
+        typingBoxRect.anchoredPosition = new Vector2(typingBoxRect.anchoredPosition.x, typingBoxHiddenPos);
+        ToggleChatHistory(true);
+        base.ForceClose();
+    }
 
+    private IEnumerator ToggleTypingBox(bool enable)
+    {
+        float timer = 0;
+        while (timer < typingBoxAnimTime)
+        {
+            timer += Time.deltaTime;
+            typingBoxRect.anchoredPosition = new Vector2(typingBoxRect.anchoredPosition.x,
+                Mathf.LerpUnclamped(typingBoxHiddenPos, 0, typingBoxAnimCurve.Evaluate(enable ? (timer / typingBoxAnimTime) : 1 - (timer / typingBoxAnimTime))));
+            yield return null;
+        }
+        typingBoxRect.anchoredPosition = new Vector2(typingBoxRect.anchoredPosition.x, enable ? 0 : typingBoxHiddenPos);
+        yield return null;
+        if(!enable) ForceClose();
+    }
     /// <summary>
     /// Called from the unity button event;
     /// </summary>
@@ -130,9 +165,9 @@ public class DialogueUiSystem : MonoBehaviour
             return;
         }
         ToggleMenuImage.sprite = chatHistoryOpen ? MinimizeHistorySprite : OpenHistorySprite;
-        if(lerpHistoryCor == null)
+        if (lerpHistoryCor == null)
         {
-            lerpHistoryCor = StartCoroutine(LerpHistoryAnim(chatHistoryOpen? 0 : LerpHistoryTime));
+            lerpHistoryCor = StartCoroutine(LerpHistoryAnim(chatHistoryOpen ? 0 : LerpHistoryTime));
         }
 
     }
@@ -161,9 +196,14 @@ public class DialogueUiSystem : MonoBehaviour
             LerpHistoryMenu(timer / LerpHistoryTime);
             yield return null;
             if (timer <= 0 || timer >= LerpHistoryTime) performAnim = false;
-            
+
         }
         lerpHistoryCor = null;
+    }
+
+    public void CloseMenu()
+    {
+        InGameUIManager.Instance.CloseMenu(InGameUIManager.InGameUIType.Dialogue);
     }
 }
 

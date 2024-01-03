@@ -57,7 +57,7 @@ public class SaveLoader : MonoBehaviour
             }
         }
         Debug.Log("Couldn't find character");
-        return saveCharData.characterData;
+        return null;
     }
     public List<int> GetCharacterIdsByName(string characterName)
     {

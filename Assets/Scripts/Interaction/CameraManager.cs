@@ -23,13 +23,12 @@ public class CameraManager : MonoBehaviour
         MainCam,
         DialogueCam
     }
-    [SerializeField] private PlayerController playerController;
     [SerializeField] private CamType camType;
     [SerializeField] private CinemachineVirtualCamera apartmentSelectCam, mainCam, dialogueCam;
 
     public void SwitchCam(CamType newCamType)
     {
-        playerController.ToggleInteractionInput(false);
+        PlayerController.Instance.ToggleInteractionInput(false);
         switch (newCamType)
         {
             case CamType.ApartmentSelectCam:
@@ -53,7 +52,7 @@ public class CameraManager : MonoBehaviour
 
     public void OpenApartmentCam()
     {
-        playerController.ResetCamPos();
+        PlayerController.Instance.ResetCamPos();
         SwitchCam(CamType.MainCam);
     }
 
@@ -78,7 +77,8 @@ public class CameraManager : MonoBehaviour
     private IEnumerator DelayPlayerInput()
     {
         yield return new WaitForSeconds(1);
-        playerController.ToggleInteractionInput(true);
+        PlayerController.Instance.ToggleInteractionInput(true);
     }
 
+    
 }

@@ -419,7 +419,7 @@ TextureImporter:
         width: 83
         height: 83
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 9, y: 9, z: 9, w: 9}
       outline: []
       physicsShape: []
@@ -427,6 +427,69 @@ TextureImporter:
       bones: []
       spriteID: 53e060700fae1b647b4d55c5a3518119
       internalID: 2043270536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_RoundExit
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 531
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fa9f341fea3a9d4da91390515786764
+      internalID: 377454477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_RoundMessage
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 530
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 572006840000ab944a1b1313bf6c740e
+      internalID: 1104630462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_RoundRelationship
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 398
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b76097cfc05fb240a571d997a7c0b90
+      internalID: 809107881
       vertices: []
       indices: 
       edges: []
@@ -451,6 +514,9 @@ TextureImporter:
       Ui-Sheet_Dialogue-Left: 257390338
       Ui-Sheet_Dialogue-Right: -1835107624
       Ui-Sheet_MicrophoneBtn: 1896939387
+      Ui-Sheet_RoundExit: 377454477
+      Ui-Sheet_RoundMessage: 1104630462
+      Ui-Sheet_RoundRelationship: 809107881
       Ui-Sheet_SendButton: -1920982522
       Ui-Sheet_SharperBar: -1133508870
       Ui-Sheet_SharperBox: 2043270536

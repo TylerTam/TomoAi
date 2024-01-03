@@ -47,6 +47,7 @@ public class ApartmentUiManager : MonoBehaviour
     }
     public void OpenSelectMenu()
     {
+        InGameUIManager.Instance.OpenMenu(InGameUIManager.InGameUIType.None);
         DialogueSystem_Main.Instance.EndConversation();
         CameraManager.Instance.SwitchCam(CameraManager.CamType.ApartmentSelectCam);
         StartCoroutine(ToggleUi(true));

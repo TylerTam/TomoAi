@@ -30,7 +30,7 @@ public class ServerLink : MonoBehaviour
     [SerializeField] private bool shouldConnect = true;
     [SerializeField] private bool debugPrompt = true;
 
-    private GeneratorCleaner sentenceCleaner;
+    public static GeneratorCleaner sentenceCleaner;
 
     public enum GenerationType
     {
@@ -56,18 +56,24 @@ public class ServerLink : MonoBehaviour
         sentenceCleaner = new GeneratorCleaner();
     }
 
-    public void StartGenerator(string prompt,string speakingChar, System.Action<bool, string, string> resonseAction, GenerationType genType = GenerationType.Default)
+    public void StartGenerator(string prompt,string speakingChar, double aiTemperature, System.Action<bool, string, string> resonseAction, GenerationType genType = GenerationType.Default)
     {
         if (!isCalling)
         {
 
         }
-        StartCoroutine(GenerateText(prompt, speakingChar, resonseAction, genType));
+        StartCoroutine(GenerateText(prompt, speakingChar, aiTemperature, resonseAction, genType));
     }
 
-    public IEnumerator GenerateText(string inputPrompt, string speakingChar, System.Action<bool, string, string> response, GenerationType genType = GenerationType.Default, bool debugResponse = false)
+    public IEnumerator GenerateText(string inputPrompt, string speakingChar, double aiTemperature, System.Action<bool, string, string> response, GenerationType genType = GenerationType.Default, bool debugResponse = false)
     {
 
+        GenerationSettings settings = generationTypes[genType].generationSettings.Clone();
+        settings.prompt = inputPrompt;
+        settings.temperature = aiTemperature;
+#if UNITY_EDITOR
+        if (debugPrompt) Debug.Log(settings.prompt);
+#endif
         if (!isConnected)
         {
             if (!shouldConnect)
@@ -83,11 +89,7 @@ public class ServerLink : MonoBehaviour
             }
         }
 
-        GenerationSettings settings = generationTypes[genType].generationSettings.Clone();
-        settings.prompt = inputPrompt;
-#if UNITY_EDITOR
-        if (debugPrompt) Debug.Log(settings.prompt);
-#endif
+
         string data = JsonUtility.ToJson(settings);
         yield return null;
 

@@ -11,7 +11,9 @@ public class CharacterData
     [SerializeField][TextArea] public string Description; //Personality and other characteristics
     [SerializeField][TextArea] public string Personality_Summary;
     [SerializeField][TextArea] public string AppearanceDescription;
+    [SerializeField][TextArea] public string ElevatorDescription;//Used for when they are brought up in other character dialogues
     [SerializeField] public Color FavouriteColor;
+    [SerializeField] public double Intensity = 0.7f;
     [SerializeField][TextArea] public string[] Examples_Of_Dialogue;
     [SerializeField] public CharacterAppearance CharacterAppearence;
     [SerializeField] public string Creator;
@@ -19,6 +21,47 @@ public class CharacterData
     [SerializeField] public List<CharacterRelationShip> serializedRelationships;
     [SerializeField] public int LocalId;
     private Dictionary<int, CharacterRelationShip> searchableRelationships;
+
+    public Mood currentMood = Mood.Neutral;
+    public enum Mood
+    {
+        Neutral,
+        Happy,
+        Excited,
+        Sad,
+        Depressed,
+        Mad,
+        Furious
+    }
+    public double GetIntensity
+    {
+        get
+        {
+            double ret = Intensity;
+            switch (currentMood)
+            {
+                case Mood.Happy:
+                case Mood.Mad:
+                    ret += 0.1;
+                    break;
+                case Mood.Excited:
+                case Mood.Furious:
+                    ret += 0.2;
+                    break;
+                case Mood.Sad:
+                    ret -= 0.1;
+                    break;
+                case Mood.Depressed:
+                    ret -= 0.2;
+                    break;
+
+                default:
+                case Mood.Neutral:
+                    break;
+            }
+            return ret;
+        }
+    }
     public CharacterData (string charName, string creator, float creatorId)
     {
         Name = charName;
@@ -72,11 +115,11 @@ public class CharacterData
         return compareData.Creator_Id == Creator_Id;
     }
 
-    public string BuildPersona(List<string> relevantCharacterRelationships = null)
+    public string BuildPersona(List<int> charIdRelationships = null)
     {
-        return CreateCharacterPrompt(relevantCharacterRelationships);
+        return CreateCharacterPrompt(charIdRelationships);
     }
-    public string CreateCharacterPrompt(List<string> relevantCharacterRelationships = null)
+    public string CreateCharacterPrompt(List<int> charIdRelationships = null)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -89,15 +132,7 @@ public class CharacterData
         sb.Append("Personality: ");
         sb.AppendLine(Personality_Summary);
 
-        if (relevantCharacterRelationships != null && relevantCharacterRelationships.Count > 0)
-        {
-            sb.Append(Name + "'s Relationships: ");
-            foreach (string relName in relevantCharacterRelationships)
-            {
-                sb.Append(BuildRelationshipPrompt(relName) + "");
-            }
-            sb.Append("\n");
-        }
+
         sb.Append("<START>\n");
 
         foreach (string str in Examples_Of_Dialogue)
@@ -106,33 +141,44 @@ public class CharacterData
             sb.Append(str + "\n");
             //sb.AppendLine();
         }
+        sb.AppendLine("<START>");
+        if (charIdRelationships != null && charIdRelationships.Count > 0)
+        {
+            sb.Append(Name + "'s Relationships: ");
+            foreach (int relId in charIdRelationships)
+            {
+                sb.Append(BuildRelationshipPrompt(relId) + " " /*+ CharacterData.GetQuickCharDescription(relId) + " "*/);
+            }
+            
+            sb.AppendLine("<START>");
+        }
         return sb.ToString();
 
     }
 
-    public string BuildRelationshipPrompt(string characterName)
+    public string BuildRelationshipPrompt(int charId)
     {
-        List<int> ids = GameManager.Instance.SaveLoader.GetCharacterIdsByName(characterName);
-        if(ids == null || ids.Count == 0)
+
+        CharacterData charData = GameManager.Instance.SaveLoader.GetCharacterByID(charId);
+        if (charData == null) return "";
+        if (searchableRelationships.ContainsKey(charId))
         {
-            return "";
+            return searchableRelationships[charId].GetRelationShipPrompt(Name);
         }
-        List<CharacterRelationShip> relationshipIndexes = new List<CharacterRelationShip>();
-        foreach(int id in ids)
-        {
-            if (searchableRelationships.ContainsKey(id))
-            {
-                relationshipIndexes.Add(searchableRelationships[id]);
-            }
-        }
-        if(relationshipIndexes.Count == 0)
-        {
-            return CharacterRelationShip.GetNoRelationshipPrompt(Name, characterName);
-        }
-        else
-        {
-            return relationshipIndexes[Random.Range(0, relationshipIndexes.Count)].GetRelationShipPrompt(Name);
-        }
+        return CharacterRelationShip.GetNoRelationshipPrompt(Name, charData.Name);
+    }
+
+
+    public List<CharacterRelationShip> SortRelationships()
+    {
+        List<CharacterRelationShip> sortedList = new List<CharacterRelationShip>(serializedRelationships);
+        sortedList.Sort();
+        return sortedList;
+    }
+
+    public static string GetQuickCharDescription(int charId)
+    {
+        return GameManager.Instance.SaveLoader.GetCharacterByID(charId).ElevatorDescription;
     }
 }
 
@@ -204,13 +250,14 @@ public class CharacterAppearance
 }
 
 [System.Serializable]
-public class CharacterRelationShip
+public class CharacterRelationShip: System.IComparable
 {
     [SerializeField] public string characterName;
     [SerializeField] public int characterId;
     [SerializeField] public RelationshipMatrix.RelationShipType relationshipType;
     [SerializeField] public RelationshipMatrix.RelationshipStatus relationshipStatus;
 
+    
     /// <summary>
     /// Used to create the relationship prompt for the character <br/>
     /// The character who you are asking is the parameter. <br/>
@@ -230,6 +277,26 @@ public class CharacterRelationShip
     {
         string prompt = GameManager.Instance.RelationshipMatrix.GetNullRelation(char1Name, char2Name);
         return prompt;
+    }
+
+    public int CompareTo(object obj)
+    {
+        CharacterRelationShip relation = (CharacterRelationShip)obj;
+        if (relation.relationshipType != relationshipType)
+        {
+            return relation.relationshipType > relationshipType ? -1 : 1;
+        }
+        else
+        {
+            if (relation.relationshipStatus != relationshipStatus)
+            {
+                return relation.relationshipStatus > relationshipStatus ? -1 : 1;
+            }
+            else
+            {
+                return relation.characterName.CompareTo(characterName);
+            }
+        }
     }
 }
 

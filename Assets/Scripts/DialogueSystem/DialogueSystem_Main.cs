@@ -20,7 +20,6 @@ public class DialogueSystem_Main : MonoBehaviour
     private static DialogueSystem_Main _instance;
 
 
-    [SerializeField] private DialogueUiSystem dialogueUi;
     [SerializeField] private ConversationData currentConversation;
 
     public System.Action StartedDataFetch;
@@ -35,11 +34,7 @@ public class DialogueSystem_Main : MonoBehaviour
     public TestDialogue TestDialogue;
 #endif
 
-    const string TEST_STRING = "hello there, I am the monitor of installation 04. I am called penetant Tangent.A reclaimer? Here? Brilliant! There is much to do, and no time to waste.We must start immediately, if we want to control this outbreak";
-    private void Awake()
-    {
-        dialogueUi.CloseMenu(true);
-    }
+    const string TEST_STRING = "hello there, I am the monitor of installation 04. I am called penetant Tangent.A reclaimer? Here? At last! There is much to do, and no time to waste.We must act quickly, if we are to control this outbreak";
 
 
     public string GetPromptAction(AllPromptActions.ActionType promptAction, string charName)
@@ -65,7 +60,6 @@ public class DialogueSystem_Main : MonoBehaviour
 
 
         currentConversation.startingActionPrompt = startingActionPrompt;
-        dialogueUi.OpenMenu(/*CurrentConversation*/);
         //SetupPersonaPrompt
         if (aiSpeaksFirst)
         {
@@ -75,8 +69,7 @@ public class DialogueSystem_Main : MonoBehaviour
 
     public void AddPlayerDialogue(string playerText)
     {
-        Debug.Log("Call the API here to send: " + playerText);
-        dialogueUi.DisplayNewDialogue(GameManager.Instance.PlayerCharacterData, playerText, true);
+
         AddDialogue(GameManager.Instance.PlayerCharacterData, true, playerText);
         SendToGenerator(currentConversation.GetNextSpeaker(playerText));
     }
@@ -97,10 +90,10 @@ public class DialogueSystem_Main : MonoBehaviour
 
             string dialogueToSend = currentConversation.BuildCurrentPrompt() + " \n" + speakingChar + ":";
 
-            
+
             //Debug.Log(dialogueToSend);
 
-            ServerLink.Instance.StartGenerator(dialogueToSend, speakingChar, GeneratorResponse);
+            ServerLink.Instance.StartGenerator(dialogueToSend, speakingChar, currentConversation.GetGeneratorTemperature(speakingChar), GeneratorResponse);
         }
         else
         {
@@ -145,13 +138,9 @@ public class DialogueSystem_Main : MonoBehaviour
     public void EndConversation()
     {
         if (currentConversation == null) return;
-        dialogueUi.CloseMenu(true);
-        foreach (KeyValuePair<string, TomoCharPerson> per in currentConversation.RelevantCharsController)
-        {
-            per.Value.DialogueEnded();
-        }
         currentConversation = null;
     }
+
 
 }
 
@@ -178,21 +167,28 @@ public class ConversationData
 
     public string scenarioPrompt;
     public string startingActionPrompt;
+    public double tempAddition = 0.0f;
     public GenerationSettings currentConversationGenSettings;
-    public Dictionary<string, int> appendedRelationshipPrompts = new Dictionary<string, int>();
+    public Dictionary<int, int> appendedRelationshipPrompts = new Dictionary<int, int>();
 
     private const int keepRelationshipPrompt = 10;
+
+    public double GetGeneratorTemperature(string speakingCharName)
+    {
+        if (!RelevantCharacters.ContainsKey(speakingCharName)) return 0.8f + tempAddition;
+        return RelevantCharacters[speakingCharName].GetIntensity + tempAddition;
+    }
     public List<string> GetRelevantCharactersInText()
     {
 
-        //if (SpokenDialogues == null || SpokenDialogues.Count <= 0) return new List<string>();
-        
-            List<string> result = new List<string>();
-        foreach(KeyValuePair<string, CharacterData> keys in RelevantCharacters)
+        if (SpokenDialogues == null || SpokenDialogues.Count <= 0) return new List<string>();
+
+        List<string> result = new List<string>();
+        foreach (KeyValuePair<string, CharacterData> keys in RelevantCharacters)
         {
-            if(keys.Value.LocalId != GameManager.Instance.PlayerCharacterData.LocalId)
+            if (keys.Value.LocalId != GameManager.Instance.PlayerCharacterData.LocalId)
             {
-                foreach(CharacterRelationShip characterRelationShip in keys.Value.serializedRelationships)
+                foreach (CharacterRelationShip characterRelationShip in keys.Value.serializedRelationships)
                 {
                     if (characterRelationShip.characterName == keys.Value.Name ||
                         string.IsNullOrWhiteSpace(characterRelationShip.characterName)) continue;
@@ -210,7 +206,7 @@ public class ConversationData
 
             for (int i = result.Count - 1; i >= 0; i--)
             {
-                if (!SpokenDialogues[SpokenDialogues.Count - 1].SpokenText.Contains(result[i]))
+                if (!SpokenDialogues[SpokenDialogues.Count - 1].SpokenText.ToLower().Contains(result[i].ToLower()))
                 {
                     result.RemoveAt(i);
                 }
@@ -221,39 +217,81 @@ public class ConversationData
     }
     public string BuildCurrentPrompt()
     {
-
+        #region Relevant Characters
         List<string> relationshipNames = GetRelevantCharactersInText();
-        foreach(string nam in relationshipNames)
+        foreach (string nam in relationshipNames)
         {
-            if (appendedRelationshipPrompts.ContainsKey(nam))
+            List<int> sharedCharacterIndexes = new List<int>();
+            sharedCharacterIndexes = GameManager.Instance.SaveLoader.GetCharacterIdsByName(nam);
+            bool hasIndex = false;
+            for (int i = 0; i < sharedCharacterIndexes.Count; i++)
             {
-                appendedRelationshipPrompts[nam] = keepRelationshipPrompt;
+                if (appendedRelationshipPrompts.ContainsKey(sharedCharacterIndexes[i]))
+                {
+                    appendedRelationshipPrompts[sharedCharacterIndexes[i]] = keepRelationshipPrompt;
+                    hasIndex = true;
+                    break;
+                }
             }
-            else
+            if (!hasIndex)
             {
-                appendedRelationshipPrompts.Add(nam, keepRelationshipPrompt);
+                appendedRelationshipPrompts.Add(sharedCharacterIndexes[Random.Range(0, sharedCharacterIndexes.Count)], keepRelationshipPrompt);
             }
+
+
         }
 
-        relationshipNames.Clear();
-        foreach(KeyValuePair<string, int> nam in appendedRelationshipPrompts)
+        List<int> characterIds = new List<int>();
+        foreach (KeyValuePair<int, int> nam in appendedRelationshipPrompts)
         {
-            relationshipNames.Add(nam.Key);
+            characterIds.Add(nam.Key);
         }
-        
+        #endregion
 
+        #region Persona / Scenario
         StringBuilder sb = new StringBuilder();
         foreach (KeyValuePair<string, CharacterData> keys in RelevantCharacters)
         {
             if (keys.Value.LocalId != GameManager.Instance.PlayerCharacterData.LocalId)
             {
-                sb.Append(keys.Value.BuildPersona(relationshipNames));
+                sb.Append(keys.Value.BuildPersona(characterIds));
             }
         }
         if (scenarioPrompt != "" && !string.IsNullOrWhiteSpace(scenarioPrompt))
         {
             sb.AppendLine("Scenario:" + scenarioPrompt);
+            foreach(KeyValuePair<string, CharacterData> key in RelevantCharacters)
+            {
+                if (key.Value.LocalId == GameManager.Instance.PlayerCharacterData.LocalId) continue;
+                if(key.Value.currentMood != CharacterData.Mood.Neutral)
+                {
+                    sb.Append(" " + key.Key + " is " + key.Value.currentMood + " at something. ");
+                }
+            }
+            sb.Append("\n");
         }
+        else
+        {
+            StringBuilder moodSb = new StringBuilder();
+            bool hasMood = false;
+            moodSb.Append("Scenario:");
+            foreach (KeyValuePair<string, CharacterData> key in RelevantCharacters)
+            {
+                if (key.Value.LocalId == GameManager.Instance.PlayerCharacterData.LocalId) continue;
+                if (key.Value.currentMood != CharacterData.Mood.Neutral)
+                {
+                    hasMood = true;
+                    moodSb.Append(" " + key.Key + " is " + key.Value.currentMood + " at something. ");
+                }
+            }
+            if (hasMood)
+            {
+                sb.AppendLine(moodSb.ToString());
+            }
+        }
+        #endregion
+
+
         sb.AppendLine("<START>");
         foreach (SpokenDialogue sd in SpokenDialogues)
         {
@@ -295,11 +333,11 @@ public class ConversationData
 
     public void ReduceReleventCharacterCounters()
     {
-        List<string> relationShipKeys = new List<string>(appendedRelationshipPrompts.Keys);
+        List<int> relationShipKeys = new List<int>(appendedRelationshipPrompts.Keys);
         for (int i = 0; i < relationShipKeys.Count; i++)
         {
             appendedRelationshipPrompts[relationShipKeys[i]] -= 1;
-            if (appendedRelationshipPrompts[relationShipKeys[i]]<=0)
+            if (appendedRelationshipPrompts[relationShipKeys[i]] <= 0)
             {
                 appendedRelationshipPrompts.Remove(relationShipKeys[i]);
             }

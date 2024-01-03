@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance
+    {
+        get
+        {
+            if(_instance == null) _instance = FindAnyObjectByType<PlayerController>();
+            return _instance;
+        }
+    }
+    private static PlayerController _instance;
+
     [SerializeField] private Camera CurrentCamera;
     [SerializeField] private LayerMask InteractableLayer;
     [Header("Cam Rotate")]
@@ -17,7 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private Vector2 moveBounds;
 
-    private bool canInteract = true;
+    [SerializeField] private bool canInteract = false;
 
     void Update()
     {

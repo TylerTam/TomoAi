@@ -12,7 +12,7 @@ public class DialogueBubble : MonoBehaviour
     public virtual void DialogueInit(CharacterData characterData, string spokenText)
     {
         nameText.text = characterData.Name;
-        dialogueText.text = spokenText;
+        dialogueText.text = ServerLink.sentenceCleaner.AdjustScentenceForRichText( spokenText);
     }
     public virtual void SetBubbleColor(Color col)
     {

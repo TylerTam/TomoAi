@@ -318,6 +318,42 @@ MonoBehaviour:
   ToggleMenuImage: {fileID: 2639113731743588223}
   OpenHistorySprite: {fileID: 826229451, guid: 62d7f9a3280ac2643bdf70e8a7a7efae, type: 3}
   MinimizeHistorySprite: {fileID: 1441040984, guid: 62d7f9a3280ac2643bdf70e8a7a7efae, type: 3}
+  typingBoxRect: {fileID: 2909847866865146617}
+  typingBoxAnimCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -1.2990965
+      outSlope: -1.2990965
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.16353887
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.5
+      inSlope: 3.924543
+      outSlope: 3.924543
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11540818
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -1.5177397
+      outSlope: -1.5177397
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.18766761
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  typingBoxAnimTime: 0.75
+  typingBoxHiddenPos: -250
 --- !u!1 &2909847866520779451
 GameObject:
   m_ObjectHideFlags: 0
@@ -2113,7 +2149,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2909847866409698056}
         m_TargetAssemblyTypeName: DialogueUiSystem, Assembly-CSharp
-        m_MethodName: ExitConversation
+        m_MethodName: CloseMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

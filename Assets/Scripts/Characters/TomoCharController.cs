@@ -38,7 +38,7 @@ public class TomoCharController : MonoBehaviour
 
         TomoCharInteraction interaction = GetComponent<TomoCharInteraction>();
         interaction.CharacterTapped += delegate { SwitchState(ControllerState.LookAtCamera); };
-        interaction.DialogueEnded += delegate { SwitchState(ControllerState.Idle); };
+        interaction.SelectEnded += delegate { SwitchState(ControllerState.Idle); };
     }
     private void Update()
     {

@@ -7,12 +7,14 @@ public class AllPromptActions : ScriptableObject
 {
     public enum ActionType
     {
-        TapOnNPC
+        None
+        ,TapOnNPC
     }
     [SerializeField] private RotaryHeart.Lib.SerializableDictionary.SerializableDictionaryBase<ActionType, PromptAction> allPromptActions;
 
     public string GetPrompt(ActionType actType, string charName)
     {
+        
         return allPromptActions[actType].GetRandomPrompt(charName);
     }
 }

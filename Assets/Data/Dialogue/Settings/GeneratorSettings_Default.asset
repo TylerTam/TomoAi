@@ -19,12 +19,12 @@ MonoBehaviour:
     use_memory: 0
     use_authors_note: 0
     use_world_info: 0
-    max_context_length: 1314
+    max_context_length: 1400
     max_length: 40
     rep_pen: 1.06
     rep_pen_range: 1600
     rep_pen_slope: 0.9
-    temperature: 0.69
+    temperature: 0.8
     tfs: 1
     top_a: 0
     top_k: 0

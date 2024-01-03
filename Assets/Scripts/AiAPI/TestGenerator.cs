@@ -24,7 +24,7 @@ public class TestGenerator : MonoBehaviour
         {
 
             
-            ServerLink.Instance.StartGenerator(BuildTestConvo(), testingChar.characterData.Name, Response);
+            ServerLink.Instance.StartGenerator(BuildTestConvo(), testingChar.characterData.Name, testingChar.characterData.GetIntensity, Response);
         }
         if (Input.GetKeyDown(KeyCode.L))
         {
