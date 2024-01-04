@@ -24,7 +24,7 @@ public class TestGenerator : MonoBehaviour
         {
 
             
-            ServerLink.Instance.StartGenerator(BuildTestConvo(), testingChar.characterData.Name, testingChar.characterData.GetIntensity, Response);
+            ServerLink.Instance.StartGenerator(BuildTestConvo(), testingChar.characterData.LocalId, testingChar.characterData.GetIntensity, Response);
         }
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -50,22 +50,23 @@ public class TestGenerator : MonoBehaviour
         sb.AppendLine(testingChar.characterData.Name + ": ");
         return sb.ToString();
     }
-    private void Response(bool success, string speakingChar, string response)
+    private void Response(bool success, int speakingCharId, string response)
     {
-        Debug.Log("Success: " + success + " | Char: " + speakingChar + " | Res: " + response);
+        string charName = GameManager.Instance.SaveLoader.GetCharacterByID(speakingCharId).Name;
+        Debug.Log("Success: " + success + " | Char: " + charName + " | Res: " + response);
     }
 
     private string BuildTestConvo()
     {
         ConversationData currentConversation = new ConversationData();
-        currentConversation.RelevantCharacters.Add(PlayerData.Name, PlayerData);
-        currentConversation.RelevantCharacters.Add(testingChar.characterData.Name, GameManager.Instance.SaveLoader.GetCharacterByID( testingChar.characterData.LocalId));
+        currentConversation.RelevantCharacters.Add(PlayerData.LocalId, PlayerData);
+        currentConversation.RelevantCharacters.Add(testingChar.characterData.LocalId, GameManager.Instance.SaveLoader.GetCharacterByID( testingChar.characterData.LocalId));
         currentConversation.currentConversationGenSettings = ServerLink.Instance.GetGenSettType(ServerLink.GenerationType.Default).generationSettings;
         //currentConversation.RelevantCharsController.Add(targetData.Name, targetGameObject);
         currentConversation.scenarioPrompt = "";
         currentConversation.startingActionPrompt = "";
 
-        currentConversation.AddDialogue(PlayerData.Name, prompt);
+        currentConversation.AddDialogue(PlayerData.LocalId, prompt);
 
         return currentConversation.BuildCurrentPrompt() + " \n" + testingChar.characterData.Name + ":";
     }

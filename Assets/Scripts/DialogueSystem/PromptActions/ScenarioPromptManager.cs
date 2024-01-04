@@ -11,9 +11,9 @@ public class ScenarioPromptManager : MonoBehaviour
     [SerializeField] private ScenarioPrompt_SO defScenarioPrompt;
     [SerializeField] private List<ScenarioPrompt_SO> relevantScenarioPrompts;
 
-    public void SetScenarioPrompt(ScenarioPrompt_SO scenarioPrompt, List<string> relevantCharacters)
+    public void SetScenarioPrompt(ScenarioPrompt_SO scenarioPrompt, int characterCount)
     {
-        if (scenarioPrompt.CanUsePrompt(relevantCharacters.Count))
+        if (scenarioPrompt.CanUsePrompt(characterCount))
         {
             currentScenarioPrompt = scenarioPrompt;
         }

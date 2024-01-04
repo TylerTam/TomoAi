@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,5 +26,10 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         PlayerCharacterData = SaveLoader.LoadedData.Player.ToCharData();
+    }
+
+    public static int GetCurrentInGameHour()
+    {
+        return DateTime.Now.Hour;
     }
 }

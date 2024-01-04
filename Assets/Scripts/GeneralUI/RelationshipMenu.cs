@@ -48,7 +48,7 @@ public class RelationshipMenu : ToggleableInGameUI
 
     private void OpenMenu()
     {
-        if (previousChar == charData) return;
+        //if (previousChar == charData) return;
         previousChar = charData;
         for (int i = 0; i < relationshipBars.Count; i++)
         {

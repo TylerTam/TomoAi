@@ -29,6 +29,7 @@ public class TomoCharUi : MonoBehaviour
     [SerializeField] private float fadeBubbleDuration;
 
     [SerializeField] private List<Image> promptImages;
+    [SerializeField] private float timePerLetter = 0.05f;
     public enum UiState
     {
         None,
@@ -53,7 +54,7 @@ public class TomoCharUi : MonoBehaviour
         tempCharName = charData.Name;
         tempDialogueText = dialogue;
     }
-    public void DisplayUi(UiState newUiState, System.Action completeAction = null)
+    public void DisplayUi(UiState newUiState, System.Action completeAction = null, System.Action dialogueSpokenAction = null)
     {
 
         StopAllCoroutines();
@@ -67,7 +68,7 @@ public class TomoCharUi : MonoBehaviour
             }
             else
             {
-                StartCoroutine(HideCurrentUi(delegate { ShowNewBubble(); StartCoroutine(ShowBubbleAnim(delegate { completeAction?.Invoke(); StartCoroutine(HideBubbleAnim()); })); }));
+                StartCoroutine(HideCurrentUi(delegate { ShowNewBubble(); StartCoroutine(ShowBubbleAnim(delegate { completeAction?.Invoke(); StartCoroutine(HideBubbleAnim(true, dialogueSpokenAction)); })); }));
             }
         }
         else
@@ -123,14 +124,14 @@ public class TomoCharUi : MonoBehaviour
         }
         completeAction?.Invoke();
     }
-    private IEnumerator HideBubbleAnim(bool waitForDisplayTime = true)
+    private IEnumerator HideBubbleAnim(bool waitForDisplayTime = true, System.Action dialogueSaid = null)
     {
         if (waitForDisplayTime)
         {
             float showBubbleTime = showBubbleDuration;
             if (currentUi == UiState.SpeechBubble)
             {
-                showBubbleTime += (uiBubbles.SpeechBubbleDialogue.text.Length * 0.05f);
+                showBubbleTime += (uiBubbles.SpeechBubbleDialogue.text.Length * timePerLetter);
                 
             }
             yield return new WaitForSeconds(showBubbleTime);
@@ -144,6 +145,7 @@ public class TomoCharUi : MonoBehaviour
         }
         uiCg.alpha = 0;
         uiRoot.localScale = new Vector3(0, 0, 1);
+        dialogueSaid?.Invoke();
     }
     private void SetUiScale(float percent)
     {

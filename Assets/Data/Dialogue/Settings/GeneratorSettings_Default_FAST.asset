@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e08dce600e8bb44802667f98ef080e, type: 3}
+  m_Name: GeneratorSettings_Default_FAST
+  m_EditorClassIdentifier: 
+  generationSettings:
+    prompt: 
+    use_story: 0
+    gui_settings: 0
+    use_memory: 0
+    use_authors_note: 0
+    use_world_info: 0
+    max_context_length: 50
+    max_length: 10
+    rep_pen: 1.06
+    rep_pen_range: 1600
+    rep_pen_slope: 0.9
+    temperature: 0.2
+    tfs: 1
+    top_a: 0
+    top_k: 0
+    top_p: 0.9
+    typical: 1
+    sampling_order: 06000000000000000100000002000000030000000400000005000000
+    singleline: 1
+    max_history_count: 30

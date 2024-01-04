@@ -7,4 +7,5 @@ public interface IInteractable
     public void Tapped();
     public void TapHold();
     public void TapReleased();
+    public void EndTap();
 }

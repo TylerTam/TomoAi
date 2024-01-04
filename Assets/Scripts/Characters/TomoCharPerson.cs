@@ -45,9 +45,14 @@ public class TomoCharPerson : MonoBehaviour
     {
         tomoCharUi.DisplayUi(TomoCharUi.UiState.Thinking);
     }
-    public void WorldDialoguePopUp(CharacterData charData, string dialogue)
+    public void WorldDialoguePopUp(string dialogue)
     {
-        tomoCharUi.SetNextSpeechText(charData, ServerLink.sentenceCleaner.AdjustScentenceForRichText(dialogue));
-        tomoCharUi.DisplayUi(TomoCharUi.UiState.SpeechBubble);
+        tomoCharUi.SetNextSpeechText(CharData, ServerLink.sentenceCleaner.AdjustScentenceForRichText(dialogue));
+        tomoCharUi.DisplayUi(TomoCharUi.UiState.SpeechBubble, null);
+    }
+    public void WorldDialoguePopUp(string dialogue ,System.Action dialogueFinished)
+    {
+        tomoCharUi.SetNextSpeechText(CharData, ServerLink.sentenceCleaner.AdjustScentenceForRichText(dialogue));
+        tomoCharUi.DisplayUi(TomoCharUi.UiState.SpeechBubble, null, dialogueFinished);
     }
 }

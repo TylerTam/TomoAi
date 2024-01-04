@@ -1,11 +1,14 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 
 
 [System.Serializable]
-public class CharacterData
+public class CharacterData: IComparable
 {
     [SerializeField] public string Name;
     [SerializeField][TextArea] public string Description; //Personality and other characteristics
@@ -78,7 +81,7 @@ public class CharacterData
         if (serializedRelationships == null || serializedRelationships.Count == 0)
         {
             serializedRelationships = new List<CharacterRelationShip>();
-            CharacterRelationShip selfRelation = new CharacterRelationShip();
+            CharacterRelationShip selfRelation = new CharacterRelationShip(Name, LocalId, RelationshipMatrix.RelationShipType.Themself);
             selfRelation.characterId = LocalId;
             selfRelation.relationshipType = RelationshipMatrix.RelationShipType.Themself;
             selfRelation.relationshipStatus = RelationshipMatrix.RelationshipStatus.Okay;
@@ -180,6 +183,41 @@ public class CharacterData
     {
         return GameManager.Instance.SaveLoader.GetCharacterByID(charId).ElevatorDescription;
     }
+
+    public void UpdateRelationship(CharacterData charData, RelationshipMatrix.RelationShipType relType, RelationshipMatrix.RelationshipStatus relStatus)
+    {
+        CharacterRelationShip relationshipShip = null;
+        try
+        {
+            relationshipShip = serializedRelationships.Find(x => x.characterId == charData.LocalId);
+            relationshipShip.UpdateRelatioship(relType, relStatus);
+        }
+        catch
+        {
+            relationshipShip = new CharacterRelationShip(charData.Name, charData.LocalId, relType, relStatus);
+        }
+        
+    }
+
+    public void AdjustRelationshipLevel(CharacterData charData, int incrementAmount)
+    {
+        CharacterRelationShip relationshipShip = null;
+        try
+        {
+            relationshipShip = serializedRelationships.Find(x => x.characterId == charData.LocalId);
+        }
+        catch
+        {
+            relationshipShip = new CharacterRelationShip(charData.Name, charData.LocalId, RelationshipMatrix.RelationShipType.Acquaintance, RelationshipMatrix.RelationshipStatus.Okay);
+        }
+
+        relationshipShip.AdjustRelationshipLevel(incrementAmount);
+    }
+
+    public int CompareTo(object obj)
+    {
+        return LocalId.CompareTo(((CharacterData)obj).LocalId);
+    }
 }
 
 
@@ -257,6 +295,40 @@ public class CharacterRelationShip: System.IComparable
     [SerializeField] public RelationshipMatrix.RelationShipType relationshipType;
     [SerializeField] public RelationshipMatrix.RelationshipStatus relationshipStatus;
 
+    [SerializeField] private float relationShipLevel;
+
+    public CharacterRelationShip (string charName, int charId, RelationshipMatrix.RelationShipType relType, RelationshipMatrix.RelationshipStatus relStat = RelationshipMatrix.RelationshipStatus.Okay)
+    {
+        characterName = charName;
+        characterId = charId;
+        relationshipType = relType;
+        relationshipStatus = relStat;
+    }
+
+    public void UpdateRelatioship(RelationshipMatrix.RelationShipType relType, RelationshipMatrix.RelationshipStatus relStatus)
+    {
+        relationshipType = relType;
+        relationshipStatus = relStatus;
+    }
+
+    public void AdjustRelationshipLevel(int adjustmentLevel)
+    {
+        relationShipLevel = Mathf.Clamp(relationShipLevel + adjustmentLevel, 0, 100);
+        relationShipLevel = Mathf.Round(relationShipLevel * 1000) / 1000;
+        int relationshipLevels = System.Enum.GetNames(typeof(RelationshipMatrix.RelationshipStatus)).Length;
+        int increment = 100 / relationshipLevels;
+        int curLevel = 100 - increment;
+        for (int i = 0; i < relationshipLevels; i++)
+        {
+            if (relationShipLevel > curLevel)
+            {
+                relationshipStatus = (RelationshipMatrix.RelationshipStatus)i;
+                break;
+            }
+            curLevel -= increment;
+        }
+        
+    }
     
     /// <summary>
     /// Used to create the relationship prompt for the character <br/>

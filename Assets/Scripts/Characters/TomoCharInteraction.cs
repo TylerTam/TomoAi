@@ -36,7 +36,7 @@ public class TomoCharInteraction : MonoBehaviour, IInteractable
     }
     #endregion
 
-    public virtual void EndSelect()
+    public virtual void EndTap()
     {
         SelectEnded?.Invoke();
         CameraManager.Instance.SetDialogueCam(null);

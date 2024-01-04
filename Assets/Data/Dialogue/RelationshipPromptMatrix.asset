@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c1d2e22cacb83b4b85e9d0ffc886c5e, type: 3}
   m_Name: RelationshipPromptMatrix
   m_EditorClassIdentifier: 
+  increments: {fileID: 11400000, guid: 8d055324fe36fc5428058f22d5adea4e, type: 2}
   char1Tag: <Char1>
   char2Tag: <Char2>
   NullRelationPrompt: <Char1> doesn't know <Char2>

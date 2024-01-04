@@ -91,8 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20410d7ce256bc649a478f4fa2bcb0e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldConnect: 0
-  debugPrompt: 0
+  shouldConnect: 1
+  debugPrompt: 1
   generationTypes:
     reorderableList:
       canAdd: 1
@@ -116,11 +116,12 @@ MonoBehaviour:
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
     isExpanded: 1
-    _keyValues: 0100000000000000
-    _keys: 0100000000000000
+    _keyValues: 010000000000000002000000
+    _keys: 010000000000000002000000
     _values:
     - {fileID: 11400000, guid: 1355649e72ab9d248b5ba8809b547ae1, type: 2}
     - {fileID: 11400000, guid: 1355649e72ab9d248b5ba8809b547ae1, type: 2}
+    - {fileID: 11400000, guid: a93dd8a8e6c36ae42a8f1d36dd1b1df6, type: 2}
 --- !u!1 &1466853541142810306
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +177,9 @@ MonoBehaviour:
     Description: 
     Personality_Summary: 
     AppearanceDescription: 
+    ElevatorDescription: 
     FavouriteColor: {r: 0, g: 0, b: 0, a: 0}
+    Intensity: 0
     Examples_Of_Dialogue: []
     CharacterAppearence:
       HeadSlot:
@@ -203,6 +206,8 @@ MonoBehaviour:
     Creator_Id: 0
     serializedRelationships: []
     LocalId: 0
+    currentMood: 0
+  NpcsPlacements: {fileID: 0}
 --- !u!1 &1466853541250856815
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,7 +271,9 @@ MonoBehaviour:
       AppearanceDescription: Furina is a beautiful young slender woman with white
         hair and shining blue eyes. She often wears a combination of blues and whites,
         making sure to match the fashion sense that a god should have.
+      ElevatorDescription: 
       FavouriteColor: {r: 0, g: 0, b: 0, a: 0}
+      Intensity: 0
       Examples_Of_Dialogue:
       - Boring... Isn't there anything else more interesting to do?
       - '*sigh* Being too popular can be such a hassle. Who knew the people would
@@ -315,8 +322,10 @@ MonoBehaviour:
       Creator_Id: 0
       serializedRelationships: []
       LocalId: 0
+      currentMood: 0
   SaveDataLoaded:
     m_PersistentCalls:
       m_Calls: []
   saveLoaded: 0
   saveCharData: {fileID: 11400000, guid: 72dc989d76049af4aab2968e01734314, type: 2}
+  CanSaveData: 1

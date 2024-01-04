@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class TomoCharController : MonoBehaviour
@@ -40,7 +41,7 @@ public class TomoCharController : MonoBehaviour
         interaction.CharacterTapped += delegate { SwitchState(ControllerState.LookAtCamera); };
         interaction.SelectEnded += delegate { SwitchState(ControllerState.Idle); };
     }
-    private void Update()
+    protected virtual void Update()
     {
         switch (_state)
         {

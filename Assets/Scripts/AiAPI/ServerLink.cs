@@ -36,6 +36,7 @@ public class ServerLink : MonoBehaviour
     {
         Default,
         SingleLine,
+        TestFast
     }
     [SerializeField] private RotaryHeart.Lib.SerializableDictionary.SerializableDictionaryBase<GenerationType, GeneratorSettings> generationTypes;
     
@@ -56,16 +57,16 @@ public class ServerLink : MonoBehaviour
         sentenceCleaner = new GeneratorCleaner();
     }
 
-    public void StartGenerator(string prompt,string speakingChar, double aiTemperature, System.Action<bool, string, string> resonseAction, GenerationType genType = GenerationType.Default)
+    public void StartGenerator(string prompt,int speakingCharId, double aiTemperature, System.Action<bool, int, string> resonseAction, GenerationType genType = GenerationType.Default)
     {
         if (!isCalling)
         {
 
         }
-        StartCoroutine(GenerateText(prompt, speakingChar, aiTemperature, resonseAction, genType));
+        StartCoroutine(GenerateText(prompt, speakingCharId, aiTemperature, resonseAction, genType));
     }
 
-    public IEnumerator GenerateText(string inputPrompt, string speakingChar, double aiTemperature, System.Action<bool, string, string> response, GenerationType genType = GenerationType.Default, bool debugResponse = false)
+    public IEnumerator GenerateText(string inputPrompt, int speakingCharId, double aiTemperature, System.Action<bool, int, string> response,  GenerationType genType = GenerationType.Default, bool debugResponse = false)
     {
 
         GenerationSettings settings = generationTypes[genType].generationSettings.Clone();
@@ -78,13 +79,16 @@ public class ServerLink : MonoBehaviour
         {
             if (!shouldConnect)
             {
-                response.Invoke(false, speakingChar, "Not Connected");
+                yield return new WaitForSeconds(2f);
+                response.Invoke(false, speakingCharId, "Not Connected");
+                
                 yield break;
             }
             yield return LoginToServer();
             if (!isConnected)
             {
-                response.Invoke(false, speakingChar, "Not Connected");
+                yield return new WaitForSeconds(2f);
+                response.Invoke(false, speakingCharId, "Not Connected");
                 yield break;
             }
         }
@@ -115,12 +119,15 @@ public class ServerLink : MonoBehaviour
                     }
 
                     ServerResponse res = JsonUtility.FromJson<ServerResponse>(wr.downloadHandler.text);
-                    response?.Invoke(true, speakingChar, sentenceCleaner.CleanSentence(res.results[0].text));
+                    string scentence = sentenceCleaner.CleanSentence(res.results[0].text);
+                    response?.Invoke(true, speakingCharId, scentence);
+                    
 
                     break;
                 default:
                     Debug.Log("Error: " + wr.responseCode);
-                    response?.Invoke(false, speakingChar, "oops");
+                    response?.Invoke(false, speakingCharId, "oops");
+                    
                     break;
             }
             isCalling = false;

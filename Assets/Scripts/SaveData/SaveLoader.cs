@@ -14,6 +14,9 @@ public class SaveLoader : MonoBehaviour
     public UnityEvent SaveDataLoaded;
     public bool saveLoaded = false;
     public TestingCharacterData saveCharData;
+#if UNITY_EDITOR
+    [SerializeField] private bool CanSaveData = true;
+#endif
     public string PATH
     {
         get { return System.IO.Path.Combine( Application.persistentDataPath, "Save.sav"); }
@@ -43,9 +46,15 @@ public class SaveLoader : MonoBehaviour
     
     public void SaveData()
     {
+        if(!CanSaveData)
+        {
+            Debug.Log("Saving disabled!!!!!");
+            return;
+        }
         System.IO.File.WriteAllText(PATH, JsonUtility.ToJson(LoadedData,true));
         Debug.Log("Save Loc: " + PATH);
     }
+
 
     public CharacterData GetCharacterByID(int characterId)
     {

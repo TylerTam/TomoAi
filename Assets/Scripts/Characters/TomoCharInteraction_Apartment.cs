@@ -17,9 +17,9 @@ public class TomoCharInteraction_Apartment : TomoCharInteraction
 
     }
 
-    public override void EndSelect()
+    public override void EndTap()
     {
         isSelected = false;
-        base.EndSelect();
+        base.EndTap();
     }
 }

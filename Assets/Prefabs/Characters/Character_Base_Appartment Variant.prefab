@@ -38,6 +38,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8828255345468368129, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368130, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368130, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8828255345468368132, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
       propertyPath: dialogueCamPos
       value: 

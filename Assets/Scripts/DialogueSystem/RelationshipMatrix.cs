@@ -26,14 +26,15 @@ public class RelationshipMatrix : ScriptableObject
     }
     public enum RelationshipStatus
     {
-        Amazing,
-        Great,
-        Okay,
-        NotGood,
-        Terrible,
+        Amazing = 0,
+        Great = 1,
+        Okay = 2,
+        NotGood = 3,
+        Terrible = 4,
 
     }
 
+    [SerializeField] public RelationshipIncrements increments;
     [SerializeField] private string char1Tag = "<Char1>";
     [SerializeField] private string char2Tag = "<Char2>";
     [SerializeField] private string NullRelationPrompt;
