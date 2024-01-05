@@ -8,4 +8,5 @@ public interface IInteractable
     public void TapHold();
     public void TapReleased();
     public void EndTap();
+    public void HoverToggle(bool hoverOn);
 }

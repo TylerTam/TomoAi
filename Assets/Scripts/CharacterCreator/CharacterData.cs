@@ -75,6 +75,7 @@ public class CharacterData: IComparable
         serializedRelationships = new List<CharacterRelationShip>();
     }
 
+    
     public void UpdateForNewVersion()
     {
 
@@ -170,8 +171,19 @@ public class CharacterData: IComparable
         }
         return CharacterRelationShip.GetNoRelationshipPrompt(Name, charData.Name);
     }
+    public void DeleteRelationship(int charId)
+    {
+        if (searchableRelationships.ContainsKey(charId))
+        {
+            serializedRelationships.Remove(searchableRelationships[charId]);
+            searchableRelationships.Remove(charId);
+        }
+    }
 
-
+    public bool Knows(int charId)
+    {
+        return searchableRelationships.ContainsKey(charId);
+    }
     public List<CharacterRelationShip> SortRelationships()
     {
         List<CharacterRelationShip> sortedList = new List<CharacterRelationShip>(serializedRelationships);
@@ -195,6 +207,8 @@ public class CharacterData: IComparable
         catch
         {
             relationshipShip = new CharacterRelationShip(charData.Name, charData.LocalId, relType, relStatus);
+            serializedRelationships.Add(relationshipShip);
+            searchableRelationships.Add(charData.LocalId, relationshipShip);
         }
         
     }
@@ -303,6 +317,8 @@ public class CharacterRelationShip: System.IComparable
         characterId = charId;
         relationshipType = relType;
         relationshipStatus = relStat;
+        relationShipLevel = 100 - ((float)((int)relStat) * 20) - 1;
+
     }
 
     public void UpdateRelatioship(RelationshipMatrix.RelationShipType relType, RelationshipMatrix.RelationshipStatus relStatus)
@@ -327,9 +343,113 @@ public class CharacterRelationShip: System.IComparable
             }
             curLevel -= increment;
         }
-        
+
+        bool canChangeRelationshipType = false;
+        switch (relationshipType)
+        {
+            case RelationshipMatrix.RelationShipType.Themself:
+            case RelationshipMatrix.RelationShipType.Spouse:
+            case RelationshipMatrix.RelationShipType.Sibling:
+            case RelationshipMatrix.RelationShipType.ParentOf:
+            case RelationshipMatrix.RelationShipType.ChildOf:
+            case RelationshipMatrix.RelationShipType.Family:
+            case RelationshipMatrix.RelationShipType.Divorced:
+            case RelationshipMatrix.RelationShipType.Ex:
+            case RelationshipMatrix.RelationShipType.SignificantOther:
+                canChangeRelationshipType = false;
+                break;
+
+
+            case RelationshipMatrix.RelationShipType.CloseFriend:
+            case RelationshipMatrix.RelationShipType.Friend:
+            case RelationshipMatrix.RelationShipType.Acquaintance:
+                canChangeRelationshipType = true;
+                break;
+        }
+        if (canChangeRelationshipType)
+        {
+            float changeRate = UnityEngine.Random.Range(0f, 1f);
+            switch (relationshipStatus)
+            {
+                case RelationshipMatrix.RelationshipStatus.Amazing:
+                    if (changeRate < 0.4)
+                    {
+                        switch (relationshipType)
+                        {
+                            case RelationshipMatrix.RelationShipType.CloseFriend:
+                                break;
+                            case RelationshipMatrix.RelationShipType.Friend:
+                                relationshipType = RelationshipMatrix.RelationShipType.CloseFriend;
+                                relationShipLevel = 75;
+                                break;
+                            case RelationshipMatrix.RelationShipType.Acquaintance:
+                                relationshipType = RelationshipMatrix.RelationShipType.Friend;
+                                relationShipLevel = 75;
+                                break;
+                        }
+                    }
+                    break;
+                case RelationshipMatrix.RelationshipStatus.Great:
+                    if (changeRate < 0.1)
+                    {
+                        switch (relationshipType)
+                        {
+                            case RelationshipMatrix.RelationShipType.CloseFriend:
+                                break;
+                            case RelationshipMatrix.RelationShipType.Friend:
+                                relationshipType = RelationshipMatrix.RelationShipType.CloseFriend;
+                                relationShipLevel = 50;
+                                break;
+                            case RelationshipMatrix.RelationShipType.Acquaintance:
+                                relationshipType = RelationshipMatrix.RelationShipType.Friend;
+                                relationShipLevel = 50;
+                                break;
+                        }
+                    }
+                    break;
+                case RelationshipMatrix.RelationshipStatus.Okay:
+                    break;
+                case RelationshipMatrix.RelationshipStatus.NotGood:
+                    if (changeRate < 0.1)
+                    {
+                        switch (relationshipType)
+                        {
+                            case RelationshipMatrix.RelationShipType.CloseFriend:
+                                relationshipType = RelationshipMatrix.RelationShipType.Friend;
+                                relationShipLevel = 50;
+                                break;
+                            case RelationshipMatrix.RelationShipType.Friend:
+                                relationshipType = RelationshipMatrix.RelationShipType.Acquaintance;
+                                relationShipLevel = 50;
+                                break;
+                            case RelationshipMatrix.RelationShipType.Acquaintance:
+                                break;
+                        }
+                    }
+                    break;
+                case RelationshipMatrix.RelationshipStatus.Terrible:
+                    if (changeRate < 0.4)
+                    {
+                        switch (relationshipType)
+                        {
+                            case RelationshipMatrix.RelationShipType.CloseFriend:
+                                relationshipType = RelationshipMatrix.RelationShipType.Friend;
+                                relationShipLevel = 25;
+                                break;
+                            case RelationshipMatrix.RelationShipType.Friend:
+                                relationshipType = RelationshipMatrix.RelationShipType.Acquaintance;
+                                relationShipLevel = 25;
+                                break;
+                            case RelationshipMatrix.RelationShipType.Acquaintance:
+                                break;
+                        }
+                    }
+                    break;
+            }
+        }
+
     }
-    
+
     /// <summary>
     /// Used to create the relationship prompt for the character <br/>
     /// The character who you are asking is the parameter. <br/>

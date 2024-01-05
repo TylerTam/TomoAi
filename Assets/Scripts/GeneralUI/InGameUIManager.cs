@@ -100,7 +100,10 @@ public class InGameUIManager : MonoBehaviour
     }
     private IEnumerator DelayPlayerInteractionEnable(TomoCharPerson tomochar)
     {
-        tomochar.GetComponent<TomoCharInteraction>().EndTap();
+        if (tomochar != null)
+        {
+            tomochar.GetComponent<TomoCharInteraction>().EndTap();
+        }
         yield return new WaitForSeconds(1);
         PlayerController.Instance.ToggleInteractionInput(true);
 

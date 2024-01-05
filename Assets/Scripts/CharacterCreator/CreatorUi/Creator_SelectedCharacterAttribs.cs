@@ -15,6 +15,7 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
     [SerializeField] private TomoCharPerson tomoChar;
     [SerializeField] private Creator_InputSection charName, charDescription, charPersonality, charAppearenceDescription;
     [SerializeField] private Creator_InputSection creatorInput;
+    [SerializeField] private FlexibleColorPicker colorPicker;
 
     [Header("Dialogue Examples")]
     [SerializeField] private GameObject dialogueExPrefab;
@@ -44,6 +45,8 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
         charPersonality.Init(charData.Personality_Summary,this);
         charAppearenceDescription.Init(charData.AppearanceDescription,this);
         creatorInput.Init(charData.Creator, this);
+        colorPicker.SetColor(charData.FavouriteColor);
+
         addedDialogues.Clear();
         
             for (int i = 0; i < charData.Examples_Of_Dialogue.Length; i++)
@@ -186,6 +189,7 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
         savedCharData.Description = charDescription.Text;
         savedCharData.Personality_Summary = charPersonality.Text;
         savedCharData.AppearanceDescription = charAppearenceDescription.Text;
+        savedCharData.FavouriteColor = colorPicker.color;
         //savedCharData.Creator = creatorInput.Text;
         savedCharData.Examples_Of_Dialogue = new string[addedDialogues.Count];
         for (int i = 0; i < addedDialogues.Count; i++)

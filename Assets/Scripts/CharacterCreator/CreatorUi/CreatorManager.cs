@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class CreatorManager : MonoBehaviour
+public class CreatorManager : AreaLoader
 {
     public enum CreatorMenu
     {
@@ -17,16 +17,24 @@ public class CreatorManager : MonoBehaviour
     [SerializeField]private CharacterData SelectedCharacter;
     [SerializeField]private int selectedCharIndex;
 
+    [SerializeField] private TMPro.TextMeshProUGUI deleteCharNameText;
 
     [Header("Cameras")]
     [SerializeField] private GameObject selectorCamera;
     [SerializeField] private GameObject attributeCamera;
     [SerializeField] private TMPro.TMP_InputField newCharName;
 
+
+    public void ReturnToAreaSelect()
+    {
+        GameTick.Instance.ToggleTickSave(true);
+        FindObjectOfType<SceneLoader>().LoadScene(SceneLoader.SceneNames.SceneSelect);
+    }
     public void SetSelectedChar(CharacterData charData, int charIndex)
     {
         SelectedCharacter = charData;
         selectedCharIndex = charIndex;
+        deleteCharNameText.text = charData.Name;
     }
     private void Start()
     {
@@ -73,10 +81,29 @@ public class CreatorManager : MonoBehaviour
     public void CreateNewCharacter()
     {
         CharacterData newChar = new CharacterData(newCharName.text, GameManager.Instance.SaveLoader.LoadedData.Player.PlayerName, GameManager.Instance.SaveLoader.GenerateCharacterId());
+        newChar.FavouriteColor = Color.white;
+        newChar.UpdateForNewVersion();
         GameManager.Instance.SaveLoader.UpdateCharacter(newChar, true, -1);
         SelectorRoot.PopulateCharacters(0, true);
         newCharName.text = "";
         ChangeMenu(1);
+        GameTick.Instance.ForceTick();
+        GameTick.Instance.NpcPlacements.ForceNpcIntoArea(newChar.LocalId, NpcPlacements.AreaType.Apartments, newChar.LocalId);
+    }
 
+    public void ConfirmDelete()
+    {
+        GameManager.Instance.SaveLoader.DeleteCharacter(SelectedCharacter.LocalId);
+        ChangeMenu(0);
+    }
+    public override void LoadArea()
+    {
+        StartCoroutine(DelayTickDisable());
+    }
+
+    private IEnumerator DelayTickDisable()
+    {
+        yield return new WaitForSeconds(.3f);
+        GameTick.Instance.ToggleTickSave(false);
     }
 }

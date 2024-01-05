@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class RestaurantLoader : MonoBehaviour
+public class RestaurantLoader : AreaLoader
 {
     [SerializeField] private GameObject npcPrefab;
     [SerializeField] private Transform tomoCharParent;
@@ -17,6 +17,7 @@ public class RestaurantLoader : MonoBehaviour
     {
         GameTick.Instance.Ticked -= LoadCharacters;
     }
+    
     private void OnDisable()
     {
         ExitScene();
@@ -57,5 +58,15 @@ public class RestaurantLoader : MonoBehaviour
             }
 
         }
+    }
+
+    public void ExitToMain()
+    {
+        FindObjectOfType<SceneLoader>().LoadScene(SceneLoader.SceneNames.SceneSelect);
+    }
+
+    public override void LoadArea()
+    {
+        LoadCharacters();
     }
 }

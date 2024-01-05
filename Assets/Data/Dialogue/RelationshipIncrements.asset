@@ -35,22 +35,22 @@ MonoBehaviour:
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
     isExpanded: 1
-    _keyValues: 000000000100000002000000
-    _keys: 000000000100000002000000
+    _keyValues: 00000000010000000200000003000000
+    _keys: 00000000010000000200000003000000
     _values:
     - rangeWeights:
       - incrementRange: {x: -5, y: -4}
         weight: 0.025
       - incrementRange: {x: -4, y: -3}
-        weight: 0.05
+        weight: 0.075
       - incrementRange: {x: -3, y: -2}
-        weight: 0.1
-      - incrementRange: {x: -2, y: 2}
-        weight: 0.7
+        weight: 0.15
+      - incrementRange: {x: 0, y: 0}
+        weight: 0.5
       - incrementRange: {x: 2, y: 3}
-        weight: 0.1
+        weight: 0.15
       - incrementRange: {x: 3, y: 4}
-        weight: 0.05
+        weight: 0.075
       - incrementRange: {x: 4, y: 5}
         weight: 0.025
     - rangeWeights:
@@ -82,4 +82,19 @@ MonoBehaviour:
       - incrementRange: {x: 2, y: 3}
         weight: 0.05
       - incrementRange: {x: 3, y: 4}
+        weight: 0.025
+    - rangeWeights:
+      - incrementRange: {x: -5, y: -3}
+        weight: 0.025
+      - incrementRange: {x: -3, y: -1}
+        weight: 0.05
+      - incrementRange: {x: -1, y: 0}
+        weight: 0.1
+      - incrementRange: {x: 1, y: 3}
+        weight: 0.7
+      - incrementRange: {x: 3, y: 5}
+        weight: 0.1
+      - incrementRange: {x: 5, y: 7}
+        weight: 0.05
+      - incrementRange: {x: 7, y: 8}
         weight: 0.025

@@ -141,6 +141,11 @@ public class ServerLink : MonoBehaviour
         using (UnityWebRequest request = UnityWebRequest.Get(serverURL + "csrf-token/"))
         {
             yield return request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Couldn't connect to server");
+                yield break;
+            }
             string SetCookie = request.GetResponseHeader("set-cookie");
             Regex rxCookie = new Regex("X-CSRF-Token=(?<csrf_token>.{64});");
             MatchCollection cookieMatches = rxCookie.Matches(SetCookie);

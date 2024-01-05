@@ -19,19 +19,22 @@ public class CameraManager : MonoBehaviour
     private static CameraManager _instance;
     public enum CamType
     {
-        ApartmentSelectCam,
+        FarCam,
         MainCam,
         DialogueCam
     }
     [SerializeField] private CamType camType;
     [SerializeField] private CinemachineVirtualCamera apartmentSelectCam, mainCam, dialogueCam;
 
-    public void SwitchCam(CamType newCamType)
+    public void SwitchCam(CamType newCamType, bool disableInteract = true)
     {
-        PlayerController.Instance.ToggleInteractionInput(false);
+        if (disableInteract)
+        {
+            PlayerController.Instance.ToggleInteractionInput(false);
+        }
         switch (newCamType)
         {
-            case CamType.ApartmentSelectCam:
+            case CamType.FarCam:
                 apartmentSelectCam.gameObject.SetActive(true);
                 dialogueCam.gameObject.SetActive(false);
                 mainCam.gameObject.SetActive(false);

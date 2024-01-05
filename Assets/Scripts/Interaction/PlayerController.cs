@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneTemplate;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,7 +9,7 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            if(_instance == null) _instance = FindAnyObjectByType<PlayerController>();
+            if (_instance == null) _instance = FindAnyObjectByType<PlayerController>();
             return _instance;
         }
     }
@@ -29,13 +30,17 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private bool canInteract = false;
 
+    [SerializeField] private IInteractable currentHoveredInteractable;
     void Update()
     {
+
+        RaycastForInteractable(Input.mousePosition);
         if (canInteract)
         {
+
             if (Input.GetMouseButtonDown(0))
             {
-                ScreenTapped(Input.mousePosition);
+                ScreenTapped();
             }
         }
         if (Input.GetMouseButton(1))
@@ -61,18 +66,46 @@ public class PlayerController : MonoBehaviour
     {
         canInteract = enable;
     }
-    private void ScreenTapped(Vector2 screenPos)
+    private void RaycastForInteractable(Vector2 screenPos)
     {
+        if (!canInteract)
+        {
+            if (currentHoveredInteractable != null)
+            {
+                currentHoveredInteractable.HoverToggle(false);
+                currentHoveredInteractable = null;
+            }
+            return;
+        }
         Ray ray = CurrentCamera.ScreenPointToRay(screenPos);
         if (Physics.Raycast(ray, out RaycastHit hit, 10000, InteractableLayer))
         {
-            IInteractable interactable = hit.transform.GetComponent<IInteractable>();
-            if (interactable != null)
+            IInteractable tempIteractable = hit.transform.GetComponent<IInteractable>();
+            if (tempIteractable == currentHoveredInteractable) return;
+            if (currentHoveredInteractable != null)
             {
-                interactable.Tapped();
+                currentHoveredInteractable.HoverToggle(false);
             }
+            currentHoveredInteractable = tempIteractable;
+            currentHoveredInteractable.HoverToggle(true);
+        }
+        else
+        {
+            if (currentHoveredInteractable != null)
+            {
+                currentHoveredInteractable.HoverToggle(false);
+            }
+            currentHoveredInteractable = null;
         }
     }
+    private void ScreenTapped()
+    {
+        if (currentHoveredInteractable != null)
+        {
+            currentHoveredInteractable.Tapped();
+        }
+    }
+
 
     private void RotateCam(Vector2 delta)
     {

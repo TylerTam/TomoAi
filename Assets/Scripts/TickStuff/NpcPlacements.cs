@@ -17,7 +17,11 @@ public class NpcPlacements : TickUpdate
     }
 
     [SerializeField] private RotaryHeart.Lib.SerializableDictionary.SerializableDictionaryBase<AreaType, AreaData> allAreaData;
+#if UNITY_EDITOR
+    [SerializeField] private RotaryHeart.Lib.SerializableDictionary.SerializableDictionaryBase<int, NpcAreaData> npcAreaData;
+#else
     private Dictionary<int, NpcAreaData> npcAreaData = new Dictionary<int, NpcAreaData>();
+#endif
     [System.Serializable]
     public class AreaData
     {
@@ -71,9 +75,8 @@ public class NpcPlacements : TickUpdate
             {
                 default:
                 case AreaType.Apartments:
-                    NpcAreaData_Apartments apartmentData = new NpcAreaData_Apartments();
-                    apartmentData.ApartmentOwnerId = allChars[i].LocalId;
-                    areaData = apartmentData;
+
+                    areaData.ApartmentOwnerId = allChars[i].LocalId;
                     break;
                 case AreaType.Restaurant:
                     break;
@@ -132,6 +135,26 @@ public class NpcPlacements : TickUpdate
             return newArea;
         }
     }
+
+
+    public void ForceNpcIntoArea(int npcId, AreaType area, int areaOwnerId)
+    {
+        NpcAreaData areaData = new NpcAreaData();
+        switch (area)
+        {
+            case AreaType.Apartments:
+                areaData.npcId = npcId;
+                areaData.area = AreaType.Apartments;
+                areaData.ApartmentOwnerId = areaOwnerId;
+                npcAreaData[npcId] = areaData;
+                break;
+            case AreaType.Restaurant:
+                areaData.npcId = npcId;
+                areaData.area = area;
+                npcAreaData[npcId] = areaData;
+                break;
+        }
+    }
 }
 
 [System.Serializable]
@@ -139,13 +162,6 @@ public class NpcAreaData
 {
     [SerializeField] public int npcId;
     [SerializeField] public NpcPlacements.AreaType area;
-}
-
-[System.Serializable]
-public class NpcAreaData_Apartments:NpcAreaData
-{
-    /// <summary>
-    /// Can be at a friends apartment, so keep the id of the character who's apartment they area at.
-    /// </summary>
     [SerializeField] public int ApartmentOwnerId;
 }
+

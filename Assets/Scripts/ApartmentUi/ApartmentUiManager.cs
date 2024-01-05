@@ -8,6 +8,7 @@ public class ApartmentUiManager : MonoBehaviour
     [SerializeField] private Transform buttonParent;
     [SerializeField] private ApartmentSelectButton apartmentSelectBtnPrefab;
     [SerializeField] private ApartmentLoader apartmentLoader;
+    [SerializeField] private TMPro.TextMeshProUGUI summaryText, btnText;
 
     [Header("Hide UI Anim")]
     [SerializeField] private RectTransform uiContainer;
@@ -21,6 +22,12 @@ public class ApartmentUiManager : MonoBehaviour
     private void Start()
     {
         LoadButtons();
+        SetText("", "Enter Apartment");
+    }
+    public void SetText(string descriptionText, string buttonText)
+    {
+        summaryText.text = descriptionText;
+        btnText.text = buttonText;
     }
     private void LoadButtons()
     {
@@ -35,6 +42,11 @@ public class ApartmentUiManager : MonoBehaviour
             newBtn.InitButton(chars[i], this);
         }
     }
+    public void ExitToAreaSelect()
+    {
+        PlayerController.Instance.ToggleInteractionInput(false);
+        FindObjectOfType<SceneLoader>().LoadScene(SceneLoader.SceneNames.SceneSelect);
+    }
     public void LoadApartment(CharacterData charData)
     {
         apartmentLoader.LoadApartment(charData);
@@ -42,14 +54,15 @@ public class ApartmentUiManager : MonoBehaviour
 
     public void SelectApartment()
     {
-        CameraManager.Instance.OpenApartmentCam();
         StartCoroutine(ToggleUi(false));
+        apartmentLoader.CheckAiHome(delegate { CameraManager.Instance.OpenApartmentCam(); });
     }
+
     public void OpenSelectMenu()
     {
         InGameUIManager.Instance.OpenMenu(InGameUIManager.InGameUIType.None);
         DialogueSystem_Main.Instance.EndConversation();
-        CameraManager.Instance.SwitchCam(CameraManager.CamType.ApartmentSelectCam);
+        CameraManager.Instance.SwitchCam(CameraManager.CamType.FarCam);
         StartCoroutine(ToggleUi(true));
     }
 

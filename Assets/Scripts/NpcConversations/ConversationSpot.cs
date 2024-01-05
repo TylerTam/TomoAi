@@ -148,5 +148,9 @@ public class ConversationSpot : MonoBehaviour, IInteractable
 
         }
     }
-    
+
+    public void HoverToggle(bool hoverOn)
+    {
+        
+    }
 }

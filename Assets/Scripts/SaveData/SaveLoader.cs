@@ -19,13 +19,13 @@ public class SaveLoader : MonoBehaviour
 #endif
     public string PATH
     {
-        get { return System.IO.Path.Combine( Application.persistentDataPath, "Save.sav"); }
+        get { return System.IO.Path.Combine(Application.persistentDataPath, "Save.sav"); }
     }
     private void Awake()
     {
         LoadSaveData();
     }
-    
+
     private void LoadSaveData()
     {
         if (System.IO.File.Exists(PATH))
@@ -43,24 +43,24 @@ public class SaveLoader : MonoBehaviour
             saveLoaded = true;
         }
     }
-    
+
     public void SaveData()
     {
-        if(!CanSaveData)
+        if (!CanSaveData)
         {
             Debug.Log("Saving disabled!!!!!");
             return;
         }
-        System.IO.File.WriteAllText(PATH, JsonUtility.ToJson(LoadedData,true));
+        System.IO.File.WriteAllText(PATH, JsonUtility.ToJson(LoadedData, true));
         Debug.Log("Save Loc: " + PATH);
     }
 
 
     public CharacterData GetCharacterByID(int characterId)
     {
-        foreach(CharacterData chardata in LoadedData.SavedCharacters)
+        foreach (CharacterData chardata in LoadedData.SavedCharacters)
         {
-            if(chardata.LocalId == characterId)
+            if (chardata.LocalId == characterId)
             {
                 return chardata;
             }
@@ -88,20 +88,23 @@ public class SaveLoader : MonoBehaviour
         {
             index = savedIndex;
         }
-        if(index == -1)
+        if (index == -1)
         {
             characterData.UpdateForNewVersion();
-            characterData.LocalId = LoadedData.SavedCharacters.Count;
+            characterData.LocalId = GetUnusedLocalId();
             LoadedData.SavedCharacters.Add(characterData);
         }
         else
         {
             characterData.UpdateForNewVersion();
-            characterData.LocalId = index;
+            characterData.LocalId = GetUnusedLocalId();
             LoadedData.SavedCharacters[index] = characterData;
         }
         SaveData();
-
+    }
+    private int GetUnusedLocalId()
+    {
+        return LoadedData.SavedCharacters[LoadedData.SavedCharacters.Count - 1].LocalId + 1;
     }
 
     public float GenerateCharacterId()
@@ -122,6 +125,20 @@ public class SaveLoader : MonoBehaviour
         LoadedData.SavedCharacters.Add(saveCharData.characterData.Clone());
 
     }
+
+    public bool DeleteCharacter(int characterId)
+    {
+        bool success = LoadedData.RemoveCharacter(characterId);
+        if (success)
+        {
+            SaveData();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 
 #if UNITY_EDITOR
@@ -130,11 +147,11 @@ public class SaveLoaderInspector : Editor
 {
     public override void OnInspectorGUI()
     {
-        if(GUILayout.Button("Save Data"))
+        if (GUILayout.Button("Save Data"))
         {
             (target as SaveLoader).SaveData();
         }
-        if(GUILayout.Button("Add Test Char Data"))
+        if (GUILayout.Button("Add Test Char Data"))
         {
             (target as SaveLoader).TestSaveCharToData();
         }
@@ -149,13 +166,35 @@ public class SaveData
     [SerializeField] public PlayerData Player;
     [SerializeField] public List<CharacterData> SavedCharacters;
 
+    public bool RemoveCharacter(int charId)
+    {
+        int id = -1;
+        try
+        {
+            id = SavedCharacters.IndexOf(SavedCharacters.Find(x => x.LocalId == charId));
+        }
+        catch
+        {
+            id = -1;
+        }
+        if (id != -1)
+        {
+            SavedCharacters.RemoveAt(id);
+            foreach(CharacterData charData in SavedCharacters)
+            {
+                charData.DeleteRelationship(charId);
+            }
+            return true;
+        }
+        else return false;
+    }
     public void InitSaveData()
     {
         InitCharacterDatas();
     }
     private void InitCharacterDatas()
     {
-        foreach(CharacterData charData in SavedCharacters)
+        foreach (CharacterData charData in SavedCharacters)
         {
             charData.UpdateForNewVersion();
             charData.InitRuntimeData();

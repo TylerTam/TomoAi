@@ -41,4 +41,9 @@ public class TomoCharInteraction : MonoBehaviour, IInteractable
         SelectEnded?.Invoke();
         CameraManager.Instance.SetDialogueCam(null);
     }
+
+    public void HoverToggle(bool hoverOn)
+    {
+        
+    }
 }

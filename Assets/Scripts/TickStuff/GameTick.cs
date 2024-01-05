@@ -58,10 +58,14 @@ public class GameTick : MonoBehaviour
         PerformTick();
     }
 
-    private void PerformTick()
+    public void ForceTick()
+    {
+        PerformTick(true);
+    }
+    private void PerformTick(bool force = false)
     {
 
-        if (stopTick)
+        if (stopTick && !force)
         {
             performTickOnUnpause = true;
             return;
