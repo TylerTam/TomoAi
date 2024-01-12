@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 using Unity.VisualScripting;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,6 +12,7 @@ using UnityEditor;
 public class SaveLoader : MonoBehaviour
 {
     public SaveData LoadedData;
+    public Settings LoadedSettings;
     public UnityEvent SaveDataLoaded;
     public bool saveLoaded = false;
     public TestingCharacterData saveCharData;
@@ -21,9 +23,14 @@ public class SaveLoader : MonoBehaviour
     {
         get { return System.IO.Path.Combine(Application.persistentDataPath, "Save.sav"); }
     }
+    public string SETTINGSPATH
+    {
+        get { return System.IO.Path.Combine(Application.persistentDataPath, "Settings.sav"); }
+    }
     private void Awake()
     {
         LoadSaveData();
+        LoadSettings();
     }
 
     private void LoadSaveData()
@@ -43,6 +50,21 @@ public class SaveLoader : MonoBehaviour
             saveLoaded = true;
         }
     }
+    private void LoadSettings()
+    {
+        if (System.IO.File.Exists(SETTINGSPATH))
+        {
+            string settingsFileData = System.IO.File.ReadAllText(SETTINGSPATH);
+            LoadedSettings = JsonUtility.FromJson<Settings>(settingsFileData);
+        }
+        else
+        {
+            LoadedSettings = new Settings();
+            SaveSettings(LoadedSettings);
+
+            saveLoaded = true;
+        }
+    }
 
     public void SaveData()
     {
@@ -55,6 +77,19 @@ public class SaveLoader : MonoBehaviour
 #endif
         System.IO.File.WriteAllText(PATH, JsonUtility.ToJson(LoadedData, true));
         Debug.Log("Save Loc: " + PATH);
+    }    
+    public void SaveSettings(Settings newSettings)
+    {
+        LoadedSettings = newSettings;
+#if UNITY_EDITOR
+        if (!CanSaveData)
+        {
+            Debug.Log("Saving disabled!!!!!");
+            return;
+        }
+#endif
+        System.IO.File.WriteAllText(SETTINGSPATH, JsonUtility.ToJson(LoadedSettings, true));
+        Debug.Log("Save Loc: " + SETTINGSPATH);
     }
 
 
@@ -167,6 +202,7 @@ public class SaveData
 {
     [SerializeField] public PlayerData Player;
     [SerializeField] public List<CharacterData> SavedCharacters;
+    
 
     public bool RemoveCharacter(int charId)
     {
@@ -218,4 +254,10 @@ public class PlayerData
         playerChar.FavouriteColor = new Color(0.5f, 0.5f, 0.5f);
         return playerChar;
     }
+}
+
+[SerializeField]
+public class Settings
+{
+    [SerializeField] public string apiUrl;
 }

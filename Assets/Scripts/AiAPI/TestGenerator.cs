@@ -22,8 +22,6 @@ public class TestGenerator : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-
-            
             ServerLink.Instance.StartGenerator(BuildTestConvo(), testingChar.characterData.LocalId, testingChar.characterData.GetIntensity, Response);
         }
         if (Input.GetKeyDown(KeyCode.L))
@@ -67,6 +65,8 @@ public class TestGenerator : MonoBehaviour
         currentConversation.startingActionPrompt = "";
 
         currentConversation.AddDialogue(PlayerData.LocalId, prompt);
+
+
 
         return currentConversation.BuildCurrentPrompt() + " \n" + testingChar.characterData.Name + ":";
     }

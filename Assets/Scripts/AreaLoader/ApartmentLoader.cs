@@ -16,12 +16,14 @@ public class ApartmentLoader : MonoBehaviour
 
     [SerializeField] private Vector3 spawnBounds;
     [SerializeField] private Vector3 spawnBoundOffset;
+    [SerializeField] private bool loadFirstCharacter;
 
 
 
 #if UNITY_EDITOR
     [SerializeField] private bool debugBounds;
     [SerializeField] private Color debugBoundsColor;
+    
 #endif
     [Header("ApartmentConfig")]
     [SerializeField] private Renderer floorRenderer;
@@ -32,12 +34,22 @@ public class ApartmentLoader : MonoBehaviour
 
     private bool isAiHome = true;
     private CharacterData apartmentResident;
+    
     private void Awake()
     {
         floorPropBlock = new MaterialPropertyBlock();
         floorRenderer.GetPropertyBlock(floorPropBlock);
     }
-
+    private void Start()
+    {
+        if (loadFirstCharacter)
+        {
+            if (GameManager.Instance.SaveLoader.LoadedData.SavedCharacters.Count > 0)
+            {
+                LoadApartment(GameManager.Instance.SaveLoader.LoadedData.SavedCharacters[0]);
+            }
+        }
+    }
 
     public void LoadApartment(CharacterData charData)
     {

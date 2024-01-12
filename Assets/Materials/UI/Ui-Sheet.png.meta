@@ -440,7 +440,7 @@ TextureImporter:
         width: 126
         height: 126
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -461,7 +461,7 @@ TextureImporter:
         width: 126
         height: 126
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -482,7 +482,7 @@ TextureImporter:
         width: 126
         height: 126
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -490,6 +490,27 @@ TextureImporter:
       bones: []
       spriteID: 5b76097cfc05fb240a571d997a7c0b90
       internalID: 809107881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_Gear
+      rect:
+        serializedVersion: 2
+        x: 662
+        y: 622
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5a2ab25560174149a415270e6182db6
+      internalID: 206942895
       vertices: []
       indices: 
       edges: []
@@ -513,6 +534,7 @@ TextureImporter:
       Ui-Sheet_CollapseButton: 1441040984
       Ui-Sheet_Dialogue-Left: 257390338
       Ui-Sheet_Dialogue-Right: -1835107624
+      Ui-Sheet_Gear: 206942895
       Ui-Sheet_MicrophoneBtn: 1896939387
       Ui-Sheet_RoundExit: 377454477
       Ui-Sheet_RoundMessage: 1104630462

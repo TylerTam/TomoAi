@@ -50,6 +50,10 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368131, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: speakFirstChance
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8828255345468368132, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
       propertyPath: dialogueCamPos
       value: 

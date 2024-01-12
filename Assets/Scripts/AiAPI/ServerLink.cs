@@ -22,7 +22,10 @@ public class ServerLink : MonoBehaviour
         }
     }
     private static ServerLink _instance;
-    const string serverURL = "http://192.168.50.178:8000/";
+    private string serverURL
+    {
+        get { return GameManager.Instance.SaveLoader.LoadedSettings.apiUrl + "/api"; }
+    } 
 
     private string csrfToken;
     private bool isCalling = false;
@@ -50,10 +53,11 @@ public class ServerLink : MonoBehaviour
     }
     private void Awake()
     {
-        if (shouldConnect)
-        {
-            StartCoroutine(LoginToServer());
-        }
+        //if (shouldConnect)
+        //{
+        //    StartCoroutine(LoginToServer());
+        //}
+        isConnected = true;
         sentenceCleaner = new GeneratorCleaner();
     }
 
@@ -100,7 +104,7 @@ public class ServerLink : MonoBehaviour
         isCalling = true;
 
 
-        using (UnityWebRequest wr = new UnityWebRequest(serverURL + "generate_unity/", "POST"))
+        using (UnityWebRequest wr = new UnityWebRequest(serverURL + "/v1/generate", "POST"))
         {
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(data);
             wr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
@@ -177,4 +181,7 @@ public class ServerLink : MonoBehaviour
             [SerializeField] public string text;
         }
     }
+
+
+
 }
