@@ -9,6 +9,7 @@ public class RestaurantLoader : AreaLoader
     [SerializeField] private Transform tomoCharParent;
     [SerializeField] private List<TomoCharPerson> persons = new List<TomoCharPerson>();
     [SerializeField] private List<ConversationSpot> conversationSpots;
+    
     private void Start()
     {
         GameTick.Instance.Ticked += LoadCharacters;
@@ -68,5 +69,6 @@ public class RestaurantLoader : AreaLoader
     public override void LoadArea()
     {
         LoadCharacters();
+        PlayerController.Instance.ToggleInteractionInput(true);
     }
 }

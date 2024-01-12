@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEditor.UI;
 #if UNITY_EDITOR
+using UnityEditor.UI;
 using UnityEditor;
 #endif
 

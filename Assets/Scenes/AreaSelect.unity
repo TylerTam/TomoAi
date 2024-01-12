@@ -1613,6 +1613,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1466853541054481796, guid: ae2f9bacfa277c44e99ea705c1f048fa, type: 3}
+      propertyPath: shouldConnect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1466853541142810306, guid: ae2f9bacfa277c44e99ea705c1f048fa, type: 3}
       propertyPath: m_Name
       value: GameManager

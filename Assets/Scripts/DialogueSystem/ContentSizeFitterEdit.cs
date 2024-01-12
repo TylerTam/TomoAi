@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor.Profiling.Memory.Experimental;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,8 +28,9 @@ public class ContentSizeFitterEdit : ContentSizeFitter
         RectTransform rect = GetComponent<RectTransform>();
         rect.sizeDelta = new Vector2(Mathf.Clamp(rect.sizeDelta.x, MinLength, MaxLength) + LengthAdditive, Mathf.Clamp(rect.sizeDelta.y, MinHeight, MaxHeight) + HeightAdditive);
     }
-    public void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         SetLayoutHorizontal();
         SetLayoutVertical();
         Canvas.ForceUpdateCanvases();

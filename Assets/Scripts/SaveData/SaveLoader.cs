@@ -46,11 +46,13 @@ public class SaveLoader : MonoBehaviour
 
     public void SaveData()
     {
+#if UNITY_EDITOR
         if (!CanSaveData)
         {
             Debug.Log("Saving disabled!!!!!");
             return;
         }
+#endif
         System.IO.File.WriteAllText(PATH, JsonUtility.ToJson(LoadedData, true));
         Debug.Log("Save Loc: " + PATH);
     }

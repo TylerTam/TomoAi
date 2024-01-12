@@ -27,6 +27,7 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
     [SerializeField] private ContentSizeFitterEdit dialogueEditor;
     [SerializeField] private VerticalLayoutGroup dialogueLayout;
     [SerializeField] private ScrollRect scrollRect;
+    [SerializeField] private RectTransform scrollContent;
     private CharacterData loadedCharacter;
     [SerializeField] private int maxDialogueExamples = 11;
 
@@ -37,6 +38,7 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
     }
     public void LoadTomoChar(CharacterData charData)
     {
+
         ClearAttribs();
         loadedCharacter = charData;
 
@@ -125,6 +127,7 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
     private void ClearAttribs()
     {
         markedDirty = false;
+        scrollContent.anchoredPosition = new Vector2(scrollContent.anchoredPosition.x, 0);
         addDialogueButton.transform.parent = transform;
         int childCount = dialogueExRoot.childCount;
         for (int i = 0; i < childCount; i++)

@@ -24,10 +24,12 @@ MonoBehaviour:
       prod others, she will quickly retreat should they tease back. That said, Furina
       loves her country of Fontaine and it's people, and would do anything to protect
       them, as deep down she is a very empathetic girl, who wants to be loved
-    AppearanceDescription: Furina is a beautiful young slender woman with white hair
-      and shining blue eyes. She often wears a combination of blues and whites, making
-      sure to match the fashion sense that a god should have.
+    AppearanceDescription: Furina is a young  woman with white hair and shining blue
+      eyes. She often wears a combination of blues and whites, making sure to match
+      the fashion sense that a god should have.
+    ElevatorDescription: 
     FavouriteColor: {r: 0.12156863, g: 0.53333336, b: 1, a: 1}
+    Intensity: 0
     Examples_Of_Dialogue:
     - Boring... Isn't there anything else more interesting to do?
     - '*sigh* Being too popular can be such a hassle. Who knew the people would adore
@@ -76,3 +78,4 @@ MonoBehaviour:
     Creator_Id: 0
     serializedRelationships: []
     LocalId: 2
+    currentMood: 0

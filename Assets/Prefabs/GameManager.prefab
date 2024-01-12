@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20410d7ce256bc649a478f4fa2bcb0e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldConnect: 1
+  shouldConnect: 0
   debugPrompt: 1
   generationTypes:
     reorderableList:
@@ -121,7 +121,7 @@ MonoBehaviour:
     _values:
     - {fileID: 11400000, guid: 1355649e72ab9d248b5ba8809b547ae1, type: 2}
     - {fileID: 11400000, guid: 1355649e72ab9d248b5ba8809b547ae1, type: 2}
-    - {fileID: 11400000, guid: a93dd8a8e6c36ae42a8f1d36dd1b1df6, type: 2}
+    - {fileID: 11400000, guid: 1355649e72ab9d248b5ba8809b547ae1, type: 2}
 --- !u!1 &1466853541142810306
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,7 +207,6 @@ MonoBehaviour:
     serializedRelationships: []
     LocalId: 0
     currentMood: 0
-  NpcsPlacements: {fileID: 0}
 --- !u!1 &1466853541250856815
 GameObject:
   m_ObjectHideFlags: 0

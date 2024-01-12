@@ -102,12 +102,14 @@ public class ConversationSpot : MonoBehaviour, IInteractable
         {
             isGenerating = true;
             DialogueSystem_Main.Instance.ContinueWithAiGenerate(RecievedDialogue);
+            
         }
     }
     private void RecievedDialogue(bool success, int characterId, string text)
     {
         if (wasReset) return;
         isGenerating = false;
+        DialogueSystem_Main.Instance.AddDialogue(characterId, false, text);
         if (dialogueBacklog.Count == 0 && speakingPerson == null)
         {
             TomoCharPerson person = GetChar(characterId);
