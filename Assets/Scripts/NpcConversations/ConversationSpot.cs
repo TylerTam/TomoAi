@@ -105,7 +105,7 @@ public class ConversationSpot : MonoBehaviour, IInteractable
             
         }
     }
-    private void RecievedDialogue(bool success, int characterId, string text)
+    private void RecievedDialogue(bool success, int characterId, string text, EmotionAnalysis emotionalAnalysis)
     {
         if (wasReset) return;
         isGenerating = false;
@@ -114,6 +114,7 @@ public class ConversationSpot : MonoBehaviour, IInteractable
         {
             TomoCharPerson person = GetChar(characterId);
             person.WorldDialoguePopUp(text, CurrentDialogueDone);
+            person.UpdateEmotions(emotionalAnalysis);
             speakingPerson = person;
             StartNextGeneration();
         }

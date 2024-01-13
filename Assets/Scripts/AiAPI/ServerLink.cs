@@ -1,7 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
+using Unity.VisualScripting;
 
 public class ServerLink : MonoBehaviour
 {
@@ -25,6 +28,10 @@ public class ServerLink : MonoBehaviour
     private string serverURL
     {
         get { return GameManager.Instance.SaveLoader.LoadedSettings.apiUrl + "/api"; }
+    } 
+    private string eaUrl//emotional analysis
+    {
+        get { return GameManager.Instance.SaveLoader.LoadedSettings.emotionAnalysisUrl + "/getemotion/"; }
     } 
 
     private string csrfToken;
@@ -61,7 +68,7 @@ public class ServerLink : MonoBehaviour
         sentenceCleaner = new GeneratorCleaner();
     }
 
-    public void StartGenerator(string prompt,int speakingCharId, double aiTemperature, System.Action<bool, int, string> resonseAction, GenerationType genType = GenerationType.Default)
+    public void StartGenerator(string prompt,int speakingCharId, double aiTemperature, System.Action<bool, int, string, EmotionAnalysis> resonseAction, GenerationType genType = GenerationType.Default)
     {
         if (!isCalling)
         {
@@ -70,7 +77,7 @@ public class ServerLink : MonoBehaviour
         StartCoroutine(GenerateText(prompt, speakingCharId, aiTemperature, resonseAction, genType));
     }
 
-    public IEnumerator GenerateText(string inputPrompt, int speakingCharId, double aiTemperature, System.Action<bool, int, string> response,  GenerationType genType = GenerationType.Default, bool debugResponse = false)
+    public IEnumerator GenerateText(string inputPrompt, int speakingCharId, double aiTemperature, System.Action<bool, int, string, EmotionAnalysis> response,  GenerationType genType = GenerationType.Default, bool debugResponse = false)
     {
 
         GenerationSettings settings = generationTypes[genType].generationSettings.Clone();
@@ -84,7 +91,7 @@ public class ServerLink : MonoBehaviour
             if (!shouldConnect)
             {
                 yield return new WaitForSeconds(2f);
-                response.Invoke(false, speakingCharId, "Not Connected");
+                response.Invoke(false, speakingCharId, "Not Connected", null);
                 
                 yield break;
             }
@@ -92,7 +99,7 @@ public class ServerLink : MonoBehaviour
             if (!isConnected)
             {
                 yield return new WaitForSeconds(2f);
-                response.Invoke(false, speakingCharId, "Not Connected");
+                response.Invoke(false, speakingCharId, "Not Connected", null);
                 yield break;
             }
         }
@@ -124,13 +131,36 @@ public class ServerLink : MonoBehaviour
 
                     ServerResponse res = JsonUtility.FromJson<ServerResponse>(wr.downloadHandler.text);
                     string scentence = sentenceCleaner.CleanSentence(res.results[0].text);
-                    response?.Invoke(true, speakingCharId, scentence);
+
+                    EmotionAnalysis analysis = new EmotionAnalysis();
+                    using (UnityWebRequest emotionReq = UnityWebRequest.Get(eaUrl + scentence))
+                    {
+                        emotionReq.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+                        yield return emotionReq.SendWebRequest();
+                        if (emotionReq.result != UnityWebRequest.Result.Success)
+                        {
+                            Debug.Log("Couldn't connect to server");
+                            yield break;
+                        }
+                        
+                        switch (emotionReq.result)
+                        {
+                            case UnityWebRequest.Result.Success:
+                                analysis = sentenceCleaner.CleanEmotion(emotionReq.downloadHandler.text);
+                                break;
+                            default:
+                                Debug.LogWarning("Emotional Analysis api not connected");
+                                break;
+                        }
+                       
+                    }
+                    response?.Invoke(true, speakingCharId, scentence, analysis);
                     
 
                     break;
                 default:
                     Debug.Log("Error: " + wr.responseCode);
-                    response?.Invoke(false, speakingCharId, "oops");
+                    response?.Invoke(false, speakingCharId, "oops", null);
                     
                     break;
             }
@@ -182,6 +212,31 @@ public class ServerLink : MonoBehaviour
         }
     }
 
-
+    public IEnumerator TestGetEmotion(string text)
+    {
+        using (UnityWebRequest emotionReq = UnityWebRequest.Get(eaUrl + text))
+        {
+            emotionReq.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            yield return emotionReq.SendWebRequest();
+            if (emotionReq.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Couldn't connect to server");
+                yield break;
+            }
+            if (emotionReq.result == UnityWebRequest.Result.Success)
+            {
+                isConnected = true;
+                sentenceCleaner.CleanEmotion(emotionReq.downloadHandler.text);
+                
+                //EmotionAnalysis newEmotions = JsonUtility.FromJson<EmotionAnalysis>(serializeScore);
+                //EmotionAnalysis newEmotions = JsonConvert.DeserializeObject<EmotionAnalysis>(serializeScore);
+                
+            }
+            else
+            {
+                Debug.Log("Error: " + emotionReq.responseCode);
+            }
+        }
+    }
 
 }

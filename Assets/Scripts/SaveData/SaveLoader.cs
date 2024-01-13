@@ -260,4 +260,5 @@ public class PlayerData
 public class Settings
 {
     [SerializeField] public string apiUrl;
+    [SerializeField] public string emotionAnalysisUrl;
 }

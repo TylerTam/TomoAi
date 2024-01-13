@@ -48,7 +48,7 @@ public class TestGenerator : MonoBehaviour
         sb.AppendLine(testingChar.characterData.Name + ": ");
         return sb.ToString();
     }
-    private void Response(bool success, int speakingCharId, string response)
+    private void Response(bool success, int speakingCharId, string response, EmotionAnalysis emA)
     {
         string charName = GameManager.Instance.SaveLoader.GetCharacterByID(speakingCharId).Name;
         Debug.Log("Success: " + success + " | Char: " + charName + " | Res: " + response);

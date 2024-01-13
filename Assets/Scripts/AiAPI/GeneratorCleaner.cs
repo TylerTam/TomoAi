@@ -1,5 +1,8 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class GeneratorCleaner
@@ -124,5 +127,30 @@ public class GeneratorCleaner
             }
         }
         return returnString;
+    }
+
+    public EmotionAnalysis CleanEmotion(string text)
+    {
+        string serialized = text;
+        serialized = serialized.Replace("[", "");
+        serialized = serialized.Replace("]", "");
+
+        int count = 0;
+        for (int i = 0; ; i++)
+        {
+            int index = serialized.IndexOf(",", i);
+            if (index == -1) break;
+            if (count % 2 == 0)
+            {
+                serialized = serialized.Remove(index, 1).Insert(index, ":");
+            }
+            i = index;
+            count++;
+        }
+
+        serialized = "{" + serialized + "}";
+        Debug.Log(serialized);
+        return new EmotionAnalysis(JsonConvert.DeserializeObject<Dictionary<string, float>>(serialized));
+
     }
 }

@@ -55,4 +55,9 @@ public class TomoCharPerson : MonoBehaviour
         tomoCharUi.SetNextSpeechText(CharData, ServerLink.sentenceCleaner.AdjustScentenceForRichText(dialogue));
         tomoCharUi.DisplayUi(TomoCharUi.UiState.SpeechBubble, null, dialogueFinished);
     }
+
+    public void UpdateEmotions(EmotionAnalysis emotions)
+    {
+        Debug.Log("To Do: Do something with the emotional analysis data");
+    }
 }

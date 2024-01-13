@@ -46,7 +46,7 @@ public class DialogueSystem_Main : MonoBehaviour
         currentConversation = new ConversationData();
         currentConversation.RelevantCharacters.Add(GameManager.Instance.PlayerCharacterData.LocalId, GameManager.Instance.PlayerCharacterData);
         currentConversation.currentConversationGenSettings = ServerLink.Instance.GetGenSettType(currentGenerationType).generationSettings;
-        
+
         currentConversation.AddNpc(targetTomoChar);
 
 
@@ -64,10 +64,10 @@ public class DialogueSystem_Main : MonoBehaviour
         //SetupPersonaPrompt
         if (aiSpeaksFirst)
         {
-            SendToGenerator(targetData.LocalId,true, GeneratorResponse);
+            SendToGenerator(targetData.LocalId, true, GeneratorResponse);
         }
     }
-    public void StartConversationWithNpcsOnly(List<TomoCharPerson> relevantCharacters, System.Action<bool, int, string> dialogueRecieved, string startingActionPrompt = "", string scenarioPrompt = "")
+    public void StartConversationWithNpcsOnly(List<TomoCharPerson> relevantCharacters, System.Action<bool, int, string, EmotionAnalysis> dialogueRecieved, string startingActionPrompt = "", string scenarioPrompt = "")
     {
         currentConversation = new ConversationData();
         currentConversation.currentConversationGenSettings = ServerLink.Instance.GetGenSettType(currentGenerationType).generationSettings;
@@ -89,23 +89,23 @@ public class DialogueSystem_Main : MonoBehaviour
         currentConversation.startingActionPrompt = startingActionPrompt;
 
 
-        SendToGenerator(relevantCharacters[Random.Range(0, relevantCharacters.Count)].CharData.LocalId, true, dialogueRecieved) ;
+        SendToGenerator(relevantCharacters[Random.Range(0, relevantCharacters.Count)].CharData.LocalId, true, dialogueRecieved);
 
     }
-    
+
     /// <summary>
     /// If the user submits a blank sentence, and also used for multiple npc dialogues
     /// </summary>
-    public void ContinueWithAiGenerate(System.Action<bool, int, string> dialogueRecieved)
+    public void ContinueWithAiGenerate(System.Action<bool, int, string, EmotionAnalysis> dialogueRecieved)
     {
 
-        SendToGenerator(currentConversation.RelevantCharacters[currentConversation.GetRandomCharIndex()].LocalId,false, dialogueRecieved);
+        SendToGenerator(currentConversation.RelevantCharacters[currentConversation.GetRandomCharIndex()].LocalId, false, dialogueRecieved);
     }
     public void AddPlayerDialogue(string playerText)
     {
 
         AddDialogue(GameManager.Instance.PlayerCharacterData.LocalId, true, playerText);
-        SendToGenerator(currentConversation.GetNextSpeaker(playerText),true, GeneratorResponse);
+        SendToGenerator(currentConversation.GetNextSpeaker(playerText), true, GeneratorResponse);
     }
     public void AddDialogue(int speakingCharId, bool isPlayer, string spokenText)
     {
@@ -116,7 +116,7 @@ public class DialogueSystem_Main : MonoBehaviour
         currentConversation.AddDialogue(speakingCharId, isPlayer, spokenText);
     }
 
-    public void SendToGenerator(int speakingCharId, bool showThinkingBubble, System.Action<bool, int, string> response)
+    public void SendToGenerator(int speakingCharId, bool showThinkingBubble, System.Action<bool, int, string, EmotionAnalysis> response)
     {
         if (currentConversation != null)
         {
@@ -142,7 +142,7 @@ public class DialogueSystem_Main : MonoBehaviour
     /// <param name="generated"></param>
     /// <param name="speakingCharId"></param>
     /// <param name="generatedText"></param>
-    private void GeneratorResponse(bool generated, int speakingCharId, string generatedText)
+    private void GeneratorResponse(bool generated, int speakingCharId, string generatedText, EmotionAnalysis emotionalAnalysis)
     {
 
 
@@ -164,11 +164,12 @@ public class DialogueSystem_Main : MonoBehaviour
         if (currentConversation.RelevantCharsController.ContainsKey(speakingCharId))
         {
             currentConversation.RelevantCharsController[speakingCharId].WorldDialoguePopUp(generatedText);
+            currentConversation.RelevantCharsController[speakingCharId].UpdateEmotions(emotionalAnalysis);
         }
 
     }
 
-    
+
 
 
     public void EndConversation()
@@ -430,7 +431,7 @@ public class ConversationData
         }
         return sb.Replace("\r", "").ToString();
     }*/
-    
+
     #endregion
 
     /// <summary>
@@ -487,4 +488,31 @@ public class ConversationData
     }
 
 
+}
+
+[System.Serializable]
+public class EmotionAnalysis
+{
+    public enum Emotion
+    {
+        fear,
+        anger,
+        anticipation,
+        trust,
+        surprise,
+        positive,
+        negative,
+        sadness,
+        disgust,
+        joy,
+    }
+    public EmotionAnalysis(Dictionary<string, float> score)
+    {
+        this.score = score;
+    }
+    public EmotionAnalysis()
+    {
+    }
+
+    [SerializeField] public Dictionary<string, float> score;
 }
