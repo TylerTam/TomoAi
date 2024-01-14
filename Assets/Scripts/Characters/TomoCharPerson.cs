@@ -58,6 +58,7 @@ public class TomoCharPerson : MonoBehaviour
 
     public void UpdateEmotions(EmotionAnalysis emotions)
     {
+        Debug.Log(emotions.ToString());
         Debug.Log("To Do: Do something with the emotional analysis data");
     }
 }

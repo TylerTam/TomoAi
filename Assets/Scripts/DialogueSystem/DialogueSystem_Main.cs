@@ -513,6 +513,15 @@ public class EmotionAnalysis
     public EmotionAnalysis()
     {
     }
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach(KeyValuePair<string, float> key in score)
+        {
+            sb.Append(" | " + key.Key + " : " + key.Value);
+        }
+        return sb.ToString();
+    }
 
     [SerializeField] public Dictionary<string, float> score;
 }

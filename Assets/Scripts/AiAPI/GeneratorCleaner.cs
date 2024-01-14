@@ -149,7 +149,6 @@ public class GeneratorCleaner
         }
 
         serialized = "{" + serialized + "}";
-        Debug.Log(serialized);
         return new EmotionAnalysis(JsonConvert.DeserializeObject<Dictionary<string, float>>(serialized));
 
     }

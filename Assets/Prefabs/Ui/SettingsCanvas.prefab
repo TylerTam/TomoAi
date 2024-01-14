@@ -861,9 +861,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5023525850818669034}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+      - m_Target: {fileID: 5023525850857035322}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: ToggleSettingsMenu
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1153,7 +1153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsMenu: {fileID: 5023525850818669034}
   apiUrlField: {fileID: 5023525849879468622}
-  emotionalAnalysisUrlField: {fileID: 0}
+  emotionalAnalysisUrlField: {fileID: 5023525851703106009}
 --- !u!1 &5023525851142442290
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,7 +1903,7 @@ GameObject:
   - component: {fileID: 5023525851703106014}
   - component: {fileID: 5023525851703106009}
   m_Layer: 0
-  m_Name: Inp-URL
+  m_Name: Inp-EAURL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
