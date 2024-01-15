@@ -125,8 +125,14 @@ public class DialogueSystem_Main : MonoBehaviour
                 currentConversation.RelevantCharsController[speakingCharId].ShowThinkingBubble();
             }
 
-            ServerLink.Instance.GetReactionEmotion( speakingCharId, currentConversation.PrevScentence, EmotionReactionResponse, delegate { BuildResponseAndSend(speakingCharId, response); });
-
+            if (!string.IsNullOrWhiteSpace(currentConversation.PrevScentence))
+            {
+                ServerLink.Instance.GetReactionEmotion(speakingCharId, currentConversation.PrevScentence, EmotionReactionResponse, delegate { BuildResponseAndSend(speakingCharId, response); });
+            }
+            else
+            {
+                BuildResponseAndSend(speakingCharId, response);
+            }
         }
         else
         {

@@ -9,10 +9,13 @@ public class TomoCharEmotions : MonoBehaviour
 #if UNITY_EDITOR
     [SerializeField] private RotaryHeart.Lib.SerializableDictionary.SerializableDictionaryBase<EmotionAnalysis.Emotion, float> debugEmotions = new RotaryHeart.Lib.SerializableDictionary.SerializableDictionaryBase<EmotionAnalysis.Emotion, float>();
 #endif
+    [SerializeField] private bool playParticleOnReaction;
+    [SerializeField] private bool alwaysPlayEmotionParticle;
     private Dictionary<EmotionAnalysis.Emotion, float> currentEmotions = new Dictionary<EmotionAnalysis.Emotion, float>();
 
     [SerializeField] private RotaryHeart.Lib.SerializableDictionary.SerializableDictionaryBase<EmotionAnalysis.Emotion, GameObject> emotionParticles;
     public System.Action MainEmotionUpdated;
+    private bool skipReaction;
 
     private void Awake()
     {
@@ -25,7 +28,7 @@ public class TomoCharEmotions : MonoBehaviour
             AddToEmotion(key.Key, key.Value);
         }
         EmotionAnalysis.Emotion newEmotion = MeasureEmotions(currentEmotions);
-        if (newEmotion != MainEmotion)
+        if (newEmotion != MainEmotion || alwaysPlayEmotionParticle)
         {
             MainEmotion = newEmotion;
             MainEmotionUpdated?.Invoke();
@@ -117,9 +120,13 @@ public class TomoCharEmotions : MonoBehaviour
         }
 
         EmotionAnalysis.Emotion newEmotion = MeasureEmotions(currentEmotions);
-        if(newEmotion != MainEmotion)
+        if (newEmotion != MainEmotion )
         {
             MainEmotion = newEmotion;
+            if (!playParticleOnReaction)
+            {
+                skipReaction = true;
+            }
             MainEmotionUpdated?.Invoke();
         }
 
@@ -151,6 +158,11 @@ public class TomoCharEmotions : MonoBehaviour
 
     public void PlayCurrentEmotionParticle()
     {
+        if(skipReaction)
+        {
+            skipReaction = false;
+            return;
+        }
         if (emotionParticles.ContainsKey(MainEmotion))
         {
             emotionParticles[MainEmotion].gameObject.SetActive(false);

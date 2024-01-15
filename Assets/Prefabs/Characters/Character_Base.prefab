@@ -826,6 +826,7 @@ MonoBehaviour:
     _keyValues: 
     _keys: 
     _values: []
+  playParticleOnReaction: 1
   emotionParticles:
     reorderableList:
       canAdd: 1

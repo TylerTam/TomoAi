@@ -35,6 +35,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3402094648709060698, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: playParticleOnReaction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3402094648709060698, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: alwaysPlayEmotionParticle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4843650836523036624, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
       propertyPath: m_Layer
       value: 0

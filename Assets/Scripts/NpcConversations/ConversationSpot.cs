@@ -23,13 +23,15 @@ public class ConversationSpot : MonoBehaviour, IInteractable
     [System.Serializable]
     private struct CharacterDialogueBacklog
     {
-        public CharacterDialogueBacklog(int charId, string charText)
+        public CharacterDialogueBacklog(int charId, string charText,EmotionAnalysis ea)
         {
             characterId = charId;
             characterText = charText;
+            emotAnalysis = ea;
         }
         public int characterId;
         public string characterText;
+        public EmotionAnalysis emotAnalysis;
     }
 
     private TomoCharPerson GetChar(int id) => npcsHere.Find(x => x.CharData.LocalId == id);
@@ -120,7 +122,7 @@ public class ConversationSpot : MonoBehaviour, IInteractable
         }
         else
         {
-            dialogueBacklog .Add(new CharacterDialogueBacklog(characterId, text));
+            dialogueBacklog .Add(new CharacterDialogueBacklog(characterId, text,emotionalAnalysis));
             if (dialogueBacklog.Count < maxBacklogSize)
             {
                 StartNextGeneration();
@@ -147,6 +149,7 @@ public class ConversationSpot : MonoBehaviour, IInteractable
             TomoCharPerson person = GetChar(backlog.characterId);
             speakingPerson = person;
             person.WorldDialoguePopUp(backlog.characterText, CurrentDialogueDone);
+            person.UpdateEmotions(backlog.emotAnalysis);
             dialogueBacklog.RemoveAt(0);
 
         }
