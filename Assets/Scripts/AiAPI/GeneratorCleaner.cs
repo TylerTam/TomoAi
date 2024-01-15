@@ -1,9 +1,5 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Security.Cryptography;
-using UnityEditor.PackageManager.Requests;
-using UnityEngine;
 
 public class GeneratorCleaner
 {
@@ -149,7 +145,10 @@ public class GeneratorCleaner
         }
 
         serialized = "{" + serialized + "}";
-        return new EmotionAnalysis(JsonConvert.DeserializeObject<Dictionary<string, float>>(serialized));
+        
+        //Do this, because the emotion analysis sometiems returns anticipation as anticip, but not always. But if I only replace 'anticip', I can get 'anticipationation'
+        serialized = serialized.Replace("anticipation", "anticip").Replace("anticip", "anticipation");
+        return new EmotionAnalysis(JsonConvert.DeserializeObject<Dictionary<EmotionAnalysis.Emotion, float>>(serialized));
 
     }
 }

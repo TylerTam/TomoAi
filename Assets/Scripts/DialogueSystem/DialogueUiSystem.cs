@@ -29,9 +29,6 @@ public class DialogueUiSystem : ToggleableInGameUI
     public float LerpHistoryTime;
     public AnimationCurve LerpHistoryCurve;
     public RectTransform MenuParent;
-    public Image ToggleMenuImage;
-    public Sprite OpenHistorySprite, MinimizeHistorySprite;
-
     private bool chatHistoryOpen;
     private Coroutine lerpHistoryCor;
     #endregion
@@ -50,7 +47,7 @@ public class DialogueUiSystem : ToggleableInGameUI
         DialogueSystem_Main.Instance.StartedDataFetch += TextGenerationStarted;
         DialogueSystem_Main.Instance.DataFetchRes += RecievedGeneratedDialogue;
         TypingBubble.gameObject.SetActive(false);
-        ToggleChatHistory(true);
+        ToggleChatHistory(false,true);
         PlayerInput.InputSubmit += PlayerSubmitDialogue;
     }
 
@@ -107,20 +104,21 @@ public class DialogueUiSystem : ToggleableInGameUI
     }
 
 
-    public override bool ToggleMenu(bool enable)
+    public override bool ToggleMenu()
     {
-        if (!base.ToggleMenu(enable)) return false;
+        if (!base.ToggleMenu()) return false;
 
-        if (enable)
-        {
-            ToggleChatHistory(true);
-            StartCoroutine(ToggleTypingBox(true));
-        }
-        else
-        {
-            StartCoroutine(ToggleTypingBox(false));
-            if(chatHistoryOpen) ToggleChatHistory(false);
-        }
+            StartCoroutine(ToggleTypingBox(isOpen));
+            ToggleChatHistory(isOpen, false);
+
+        return true;
+    }
+
+    public override bool CloseMenu()
+    {
+        if (!base.CloseMenu()) return false;
+        StartCoroutine(ToggleTypingBox(isOpen));
+        ToggleChatHistory(isOpen, false);
         return true;
     }
 
@@ -133,7 +131,7 @@ public class DialogueUiSystem : ToggleableInGameUI
     public override void ForceClose()
     {
         typingBoxRect.anchoredPosition = new Vector2(typingBoxRect.anchoredPosition.x, typingBoxHiddenPos);
-        ToggleChatHistory(true);
+        ToggleChatHistory(false, true);
         base.ForceClose();
     }
 
@@ -154,17 +152,15 @@ public class DialogueUiSystem : ToggleableInGameUI
     /// <summary>
     /// Called from the unity button event;
     /// </summary>
-    public void ToggleChatHistory(bool forceClosed = false)
+    public void ToggleChatHistory(bool enable, bool forceClosed)
     {
-        chatHistoryOpen = !chatHistoryOpen;
+        chatHistoryOpen = enable;
         if (forceClosed)
         {
             chatHistoryOpen = false;
             LerpHistoryMenu(0);
-            ToggleMenuImage.sprite = OpenHistorySprite;
             return;
         }
-        ToggleMenuImage.sprite = chatHistoryOpen ? MinimizeHistorySprite : OpenHistorySprite;
         if (lerpHistoryCor == null)
         {
             lerpHistoryCor = StartCoroutine(LerpHistoryAnim(chatHistoryOpen ? 0 : LerpHistoryTime));
@@ -201,7 +197,7 @@ public class DialogueUiSystem : ToggleableInGameUI
         lerpHistoryCor = null;
     }
 
-    public void CloseMenu()
+    public void BTNCloseMenu()
     {
         InGameUIManager.Instance.CloseMenu(InGameUIManager.InGameUIType.Dialogue);
     }

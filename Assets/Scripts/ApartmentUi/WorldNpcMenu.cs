@@ -21,12 +21,12 @@ public class WorldNpcMenu : ToggleableInGameUI
         cg.gameObject.SetActive(false);
     }
 
-    public override bool ToggleMenu(bool enable, TomoCharPerson tomoChar)
+    public override bool ToggleMenu(TomoCharPerson tomoChar)
     {
-        if (!base.ToggleMenu(enable, tomoChar)) return false;
+        if (!base.ToggleMenu(tomoChar)) return false;
         
 
-        if (enable)
+        if (isOpen)
         {
             transform.position = tomoChar.transform.position;
             targetTomochar = tomoChar.GetComponent<TomoCharInteraction>();
@@ -35,10 +35,17 @@ public class WorldNpcMenu : ToggleableInGameUI
         cg.interactable = false;
         cg.gameObject.SetActive(true);
         StopAllCoroutines();
-        if (enable) StartCoroutine(ShowMenu());
+        if (isOpen) StartCoroutine(ShowMenu());
         else StartCoroutine(HideMenu());
         return true;
 
+    }
+
+    public override bool CloseMenu()
+    {
+        if (!base.CloseMenu()) return false;
+        StartCoroutine(HideMenu());
+        return true;
     }
 
     public override void ForceClose()
@@ -106,6 +113,9 @@ public class WorldNpcMenu : ToggleableInGameUI
             //open relation ship menu
             case 2:
                 InGameUIManager.Instance.OpenMenu(InGameUIManager.InGameUIType.Relationship);
+                break;
+            case 3:
+                InGameUIManager.Instance.OpenMenu(InGameUIManager.InGameUIType.Happiness);
                 break;
             default:
                 break;

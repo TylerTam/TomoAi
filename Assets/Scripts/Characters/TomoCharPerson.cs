@@ -9,8 +9,10 @@ public class TomoCharPerson : MonoBehaviour
     [SerializeField] private CharacterData personData;
     [SerializeField] private float speakFirstChance;
     [SerializeField] private TMPro.TextMeshProUGUI charNameTemp;
+    [SerializeField] private TomoCharEmotions tomoCharEmotions;
 
     public CharacterData CharData => personData;
+    public EmotionAnalysis.Emotion CurrentEmotion => tomoCharEmotions.MainEmotion;
     public void ConstructTomoChar(CharacterData characterData)
     {
         personData = characterData;
@@ -58,7 +60,12 @@ public class TomoCharPerson : MonoBehaviour
 
     public void UpdateEmotions(EmotionAnalysis emotions)
     {
-        Debug.Log(emotions.ToString());
-        Debug.Log("To Do: Do something with the emotional analysis data");
+//        Debug.Log(emotions.ToString());
+        if (tomoCharEmotions) tomoCharEmotions.AddEmotion(emotions);
+        //Debug.Log("To Do: Do something with the emotional analysis data");
+    }
+    public void ReactionEmotion(EmotionAnalysis emotions)
+    {
+        if (tomoCharEmotions) tomoCharEmotions.CalculateReaction(emotions);
     }
 }

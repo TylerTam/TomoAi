@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shouldConnect: 0
-  debugPrompt: 1
+  debugPrompt: 0
   generationTypes:
     reorderableList:
       canAdd: 1

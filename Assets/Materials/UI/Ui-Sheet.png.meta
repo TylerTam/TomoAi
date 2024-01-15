@@ -515,6 +515,111 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_Emotion_Neutral
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 742
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e21d5ab462588d4cbf1cbb6a5ca91e6
+      internalID: 1586386876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_Emotion_Happy
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 613
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 348be1ea469775c4880b9e7f2fb5f5a7
+      internalID: -1521041519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_Emotion_Sad
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 482
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e15410534058694591b616de512dd24
+      internalID: -1248482828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_Emotion_Mad
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 352
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b5863fdb3876c14da7cd2c7b9e4d069
+      internalID: -1447018764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ui-Sheet_Round_Happy
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 399
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d771f0ec23b45c4daf2e46ef56ab2f8
+      internalID: -2035667961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -534,11 +639,16 @@ TextureImporter:
       Ui-Sheet_CollapseButton: 1441040984
       Ui-Sheet_Dialogue-Left: 257390338
       Ui-Sheet_Dialogue-Right: -1835107624
+      Ui-Sheet_Emotion_Happy: -1521041519
+      Ui-Sheet_Emotion_Mad: -1447018764
+      Ui-Sheet_Emotion_Neutral: 1586386876
+      Ui-Sheet_Emotion_Sad: -1248482828
       Ui-Sheet_Gear: 206942895
       Ui-Sheet_MicrophoneBtn: 1896939387
       Ui-Sheet_RoundExit: 377454477
       Ui-Sheet_RoundMessage: 1104630462
       Ui-Sheet_RoundRelationship: 809107881
+      Ui-Sheet_Round_Happy: -2035667961
       Ui-Sheet_SendButton: -1920982522
       Ui-Sheet_SharperBar: -1133508870
       Ui-Sheet_SharperBox: 2043270536

@@ -8,7 +8,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class CharacterData: IComparable
+public class CharacterData : IComparable
 {
     [SerializeField] public string Name;
     [SerializeField][TextArea] public string Description; //Personality and other characteristics
@@ -25,47 +25,40 @@ public class CharacterData: IComparable
     [SerializeField] public int LocalId;
     private Dictionary<int, CharacterRelationShip> searchableRelationships;
 
-    public Mood currentMood = Mood.Neutral;
-    public enum Mood
+    public double GetIntensity(EmotionAnalysis.Emotion currentEmotion)
     {
-        Neutral,
-        Happy,
-        Excited,
-        Sad,
-        Depressed,
-        Mad,
-        Furious
-    }
-    public double GetIntensity
-    {
-        get
-        {
-            double ret = Intensity;
-            switch (currentMood)
-            {
-                case Mood.Happy:
-                case Mood.Mad:
-                    ret += 0.1;
-                    break;
-                case Mood.Excited:
-                case Mood.Furious:
-                    ret += 0.2;
-                    break;
-                case Mood.Sad:
-                    ret -= 0.1;
-                    break;
-                case Mood.Depressed:
-                    ret -= 0.2;
-                    break;
 
-                default:
-                case Mood.Neutral:
-                    break;
-            }
-            return ret;
+        double ret = Intensity;
+        switch (currentEmotion)
+        {
+
+            case EmotionAnalysis.Emotion.sadness:
+                ret += -0.2f;
+                break;
+            case EmotionAnalysis.Emotion.negative:
+                ret += -0.1f;
+                break;
+            case EmotionAnalysis.Emotion.neutral:
+                break;
+
+            case EmotionAnalysis.Emotion.anticipation:
+            case EmotionAnalysis.Emotion.trust:
+            case EmotionAnalysis.Emotion.surprise:
+            case EmotionAnalysis.Emotion.positive:
+                ret += 0.1;
+                break;
+
+            case EmotionAnalysis.Emotion.fear:
+            case EmotionAnalysis.Emotion.disgust:
+            case EmotionAnalysis.Emotion.joy:
+            case EmotionAnalysis.Emotion.anger:
+                ret += 0.2f;
+                break;
         }
+        return ret;
+
     }
-    public CharacterData (string charName, string creator, float creatorId)
+    public CharacterData(string charName, string creator, float creatorId)
     {
         Name = charName;
         Creator = creator;
@@ -75,7 +68,7 @@ public class CharacterData: IComparable
         serializedRelationships = new List<CharacterRelationShip>();
     }
 
-    
+
     public void UpdateForNewVersion()
     {
 
@@ -94,7 +87,7 @@ public class CharacterData: IComparable
     public void InitRuntimeData()
     {
         searchableRelationships = new Dictionary<int, CharacterRelationShip>();
-        foreach(CharacterRelationShip relation in serializedRelationships)
+        foreach (CharacterRelationShip relation in serializedRelationships)
         {
             searchableRelationships.Add(relation.characterId, relation);
         }
@@ -153,7 +146,7 @@ public class CharacterData: IComparable
             {
                 sb.Append(BuildRelationshipPrompt(relId) + " " /*+ CharacterData.GetQuickCharDescription(relId) + " "*/);
             }
-            
+
             sb.AppendLine("<START>");
         }
         return sb.ToString();
@@ -210,7 +203,7 @@ public class CharacterData: IComparable
             serializedRelationships.Add(relationshipShip);
             searchableRelationships.Add(charData.LocalId, relationshipShip);
         }
-        
+
     }
 
     public void AdjustRelationshipLevel(CharacterData charData, int incrementAmount)
@@ -302,7 +295,7 @@ public class CharacterAppearance
 }
 
 [System.Serializable]
-public class CharacterRelationShip: System.IComparable
+public class CharacterRelationShip : System.IComparable
 {
     [SerializeField] public string characterName;
     [SerializeField] public int characterId;
@@ -311,7 +304,7 @@ public class CharacterRelationShip: System.IComparable
 
     [SerializeField] private float relationShipLevel;
 
-    public CharacterRelationShip (string charName, int charId, RelationshipMatrix.RelationShipType relType, RelationshipMatrix.RelationshipStatus relStat = RelationshipMatrix.RelationshipStatus.Okay)
+    public CharacterRelationShip(string charName, int charId, RelationshipMatrix.RelationShipType relType, RelationshipMatrix.RelationshipStatus relStat = RelationshipMatrix.RelationshipStatus.Okay)
     {
         characterName = charName;
         characterId = charId;
@@ -462,7 +455,7 @@ public class CharacterRelationShip: System.IComparable
         string prompt = GameManager.Instance.RelationshipMatrix.GetRelation(relationshipType, relationshipStatus, char1Name, otherPerson.Name);
 
         return prompt;
-        
+
     }
 
     public static string GetNoRelationshipPrompt(string char1Name, string char2Name)

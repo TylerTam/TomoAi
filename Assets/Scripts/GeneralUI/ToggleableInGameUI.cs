@@ -4,18 +4,23 @@ using UnityEngine;
 
 public abstract class ToggleableInGameUI : MonoBehaviour
 {
-    private bool isOpen;
-    public virtual bool ToggleMenu(bool enable)
+    protected bool isOpen;
+    public virtual bool ToggleMenu()
     {
-        if (enable == isOpen) return false;
-        isOpen = enable;
+        
+        isOpen = !isOpen;
         return true;
     }    
-    public virtual bool ToggleMenu(bool enable, TomoCharPerson tomoChar)
+    public virtual bool ToggleMenu(TomoCharPerson tomoChar)
     {
+        isOpen = !isOpen;
+        return true;
+    }
 
-        if (enable == isOpen) return false;
-        isOpen = enable;
+    public virtual bool CloseMenu()
+    {
+        if (!isOpen) return false;
+        isOpen = false;
         return true;
     }
 

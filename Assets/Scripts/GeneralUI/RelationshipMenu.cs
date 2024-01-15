@@ -16,16 +16,16 @@ public class RelationshipMenu : ToggleableInGameUI
     [SerializeField] private float hiddenPos;
     [SerializeField] private AnimationCurve animCurve;
     [SerializeField] private float animTime;
-    public override bool ToggleMenu(bool enable)
+    public override bool ToggleMenu()
     {
-        return base.ToggleMenu(enable);
+        return base.ToggleMenu();
     }
-    public override bool ToggleMenu(bool enable, TomoCharPerson tomoChar)
+    public override bool ToggleMenu(TomoCharPerson tomoChar)
     {
-        if (!base.ToggleMenu(enable, tomoChar)) return false;
+        if (!base.ToggleMenu(tomoChar)) return false;
 
 
-        if (enable)
+        if (isOpen)
         {
             charData = tomoChar.CharData;
             OpenMenu();
@@ -36,6 +36,14 @@ public class RelationshipMenu : ToggleableInGameUI
         }
 
 
+        return true;
+    }
+
+
+    public override bool CloseMenu()
+    {
+        if (!base.CloseMenu()) return false;
+        StartCoroutine(ShowHideAnim(false));
         return true;
     }
     public override void ForceClose()

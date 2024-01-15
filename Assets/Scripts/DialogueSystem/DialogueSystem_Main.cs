@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
@@ -126,14 +125,27 @@ public class DialogueSystem_Main : MonoBehaviour
                 currentConversation.RelevantCharsController[speakingCharId].ShowThinkingBubble();
             }
 
-            string dialogueToSend = currentConversation.BuildCurrentPrompt() + " \n" + currentConversation.RelevantCharacters[speakingCharId].Name + ":";
-            //Debug.Log(dialogueToSend);
-            ServerLink.Instance.StartGenerator(dialogueToSend, speakingCharId, currentConversation.GetGeneratorTemperature(speakingCharId), response);
+            ServerLink.Instance.GetReactionEmotion( speakingCharId, currentConversation.PrevScentence, EmotionReactionResponse, delegate { BuildResponseAndSend(speakingCharId, response); });
+
         }
         else
         {
             Debug.LogError("There is no conversation data to send to the generator");
         }
+    }
+
+    private void EmotionReactionResponse(int charId, EmotionAnalysis emotion)
+    {
+        if (currentConversation.RelevantCharsController.ContainsKey(charId))
+        {
+            currentConversation.RelevantCharsController[charId].ReactionEmotion(emotion);
+        }
+    }
+
+    private void BuildResponseAndSend(int speakingCharId, System.Action<bool, int, string, EmotionAnalysis> response)
+    {
+        string dialogueToSend = currentConversation.BuildCurrentPrompt() + " \n" + currentConversation.RelevantCharacters[speakingCharId].Name + ":";
+        ServerLink.Instance.StartGenerator(dialogueToSend, speakingCharId, currentConversation.GetGeneratorTemperature(speakingCharId), response);
     }
 
     /// <summary>
@@ -215,6 +227,7 @@ public class ConversationData
 
     public int currentSpeakerId;
     private List<int> relevantCharIds = new List<int>();
+    public string PrevScentence;
     public int GetRandomCharIndex()
     {
         return relevantCharIds[Random.Range(0, relevantCharIds.Count)];
@@ -228,7 +241,7 @@ public class ConversationData
     public double GetGeneratorTemperature(int speakingCharId)
     {
         if (!RelevantCharacters.ContainsKey(speakingCharId)) return 0.8f + tempAddition;
-        return RelevantCharacters[speakingCharId].GetIntensity + tempAddition;
+        return RelevantCharacters[speakingCharId].GetIntensity(RelevantCharsController[speakingCharId].CurrentEmotion) + tempAddition;
     }
     public List<string> GetRelevantCharactersInText()
     {
@@ -308,18 +321,18 @@ public class ConversationData
         if (scenarioPrompt != "" && !string.IsNullOrWhiteSpace(scenarioPrompt))
         {
             sb.AppendLine("Scenario:" + scenarioPrompt);
-            if (RelevantCharacters[currentSpeakerId].currentMood != CharacterData.Mood.Neutral)
+            if (RelevantCharsController[currentSpeakerId].CurrentEmotion != EmotionAnalysis.Emotion.neutral)
             {
-                sb.AppendLine(" " + RelevantCharacters[currentSpeakerId].Name + " is " + RelevantCharacters[currentSpeakerId].currentMood + " at something. ");
+                sb.AppendLine(" " + RelevantCharacters[currentSpeakerId].Name + " is feeling " + RelevantCharsController[currentSpeakerId].CurrentEmotion);
             }
         }
         else
         {
 
             sb.Append("Scenario:");
-            if (RelevantCharacters[currentSpeakerId].currentMood != CharacterData.Mood.Neutral)
+            if (RelevantCharsController[currentSpeakerId].CurrentEmotion != EmotionAnalysis.Emotion.neutral)
             {
-                sb.AppendLine(" " + RelevantCharacters[currentSpeakerId].Name + " is " + RelevantCharacters[currentSpeakerId].currentMood + " at something. ");
+                sb.AppendLine(" " + RelevantCharacters[currentSpeakerId].Name + " is feeling " + RelevantCharsController[currentSpeakerId].CurrentEmotion);
             }
         }
         #endregion
@@ -338,102 +351,6 @@ public class ConversationData
         return sb.Replace("\r", "").ToString();
     }
 
-    #region original prompt builder (commented out)
-    //Original Prompt Builder
-    /*public string BuildCurrentPrompt()
-    {
-        #region Relevant Characters
-        List<string> relationshipNames = GetRelevantCharactersInText();
-        foreach (string nam in relationshipNames)
-        {
-            List<int> sharedCharacterIndexes = new List<int>();
-            sharedCharacterIndexes = GameManager.Instance.SaveLoader.GetCharacterIdsByName(nam);
-            bool hasIndex = false;
-            for (int i = 0; i < sharedCharacterIndexes.Count; i++)
-            {
-                if (appendedRelationshipPrompts.ContainsKey(sharedCharacterIndexes[i]))
-                {
-                    appendedRelationshipPrompts[sharedCharacterIndexes[i]] = keepRelationshipPrompt;
-                    hasIndex = true;
-                    break;
-                }
-            }
-            if (!hasIndex)
-            {
-                appendedRelationshipPrompts.Add(sharedCharacterIndexes[Random.Range(0, sharedCharacterIndexes.Count)], keepRelationshipPrompt);
-            }
-
-
-        }
-
-        List<int> characterIds = new List<int>();
-        foreach (KeyValuePair<int, int> nam in appendedRelationshipPrompts)
-        {
-            characterIds.Add(nam.Key);
-        }
-        #endregion
-
-        #region Persona / Scenario
-        StringBuilder sb = new StringBuilder();
-
-        foreach (KeyValuePair<int, CharacterData> keys in RelevantCharacters)
-        {
-            if (keys.Value.LocalId != GameManager.Instance.PlayerCharacterData.LocalId)
-            {
-                sb.Append(keys.Value.BuildPersona(characterIds));
-            }
-        }
-
-        if (scenarioPrompt != "" && !string.IsNullOrWhiteSpace(scenarioPrompt))
-        {
-            sb.AppendLine("Scenario:" + scenarioPrompt);
-            foreach (KeyValuePair<int, CharacterData> key in RelevantCharacters)
-            {
-                if (key.Value.LocalId == GameManager.Instance.PlayerCharacterData.LocalId) continue;
-                if (key.Value.currentMood != CharacterData.Mood.Neutral)
-                {
-                    sb.Append(" " + key.Value.Name + " is " + key.Value.currentMood + " at something. ");
-                }
-            }
-            sb.Append("\n");
-        }
-        else
-        {
-            StringBuilder moodSb = new StringBuilder();
-            bool hasMood = false;
-            moodSb.Append("Scenario:");
-            foreach (KeyValuePair<int, CharacterData> key in RelevantCharacters)
-            {
-                if (key.Value.LocalId == GameManager.Instance.PlayerCharacterData.LocalId) continue;
-                if (key.Value.currentMood != CharacterData.Mood.Neutral)
-                {
-                    hasMood = true;
-                    moodSb.Append(" " + key.Value.Name + " is " + key.Value.currentMood + " at something. ");
-                }
-            }
-            if (hasMood)
-            {
-                sb.AppendLine(moodSb.ToString());
-            }
-        }
-        #endregion
-
-
-        sb.AppendLine("<START>");
-        foreach (SpokenDialogue sd in SpokenDialogues)
-        {
-            sb.AppendLine(sd.ToString());
-        }
-        if (startingActionPrompt != "" && !string.IsNullOrWhiteSpace(startingActionPrompt))
-        {
-            sb.AppendLine(startingActionPrompt);
-            startingActionPrompt = "";
-        }
-        return sb.Replace("\r", "").ToString();
-    }*/
-
-    #endregion
-
     /// <summary>
     /// Typically Player Dialogue
     /// </summary>
@@ -443,6 +360,7 @@ public class ConversationData
         SpokenDialogue spokenDialogue = new SpokenDialogue(isPlayer ? "You" : RelevantCharacters[speakingCharId].Name, spokenText);
         SpokenDialogues.Add(spokenDialogue);
         ReduceReleventCharacterCounters();
+        PrevScentence = spokenText;
     }
 
     /// <summary>
@@ -459,6 +377,7 @@ public class ConversationData
             SpokenDialogues.RemoveAt(0);
         }
         ReduceReleventCharacterCounters();
+        PrevScentence = spokenText;
     }
 
     public void ReduceReleventCharacterCounters()
@@ -495,6 +414,7 @@ public class EmotionAnalysis
 {
     public enum Emotion
     {
+        neutral,
         fear,
         anger,
         anticipation,
@@ -506,7 +426,16 @@ public class EmotionAnalysis
         disgust,
         joy,
     }
-    public EmotionAnalysis(Dictionary<string, float> score)
+
+    public enum DisplayEmotions
+    {
+        neutral,
+        sad,
+        angry,
+        happy
+    }
+
+    public EmotionAnalysis(Dictionary<Emotion, float> score)
     {
         this.score = score;
     }
@@ -516,12 +445,12 @@ public class EmotionAnalysis
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
-        foreach(KeyValuePair<string, float> key in score)
+        foreach(KeyValuePair<Emotion, float> key in score)
         {
             sb.Append(" | " + key.Key + " : " + key.Value);
         }
         return sb.ToString();
     }
 
-    [SerializeField] public Dictionary<string, float> score;
+    [SerializeField] public Dictionary<Emotion, float> score;
 }

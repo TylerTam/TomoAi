@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json;
-using Unity.VisualScripting;
 
 public class ServerLink : MonoBehaviour
 {
@@ -77,8 +74,11 @@ public class ServerLink : MonoBehaviour
         StartCoroutine(GenerateText(prompt, speakingCharId, aiTemperature, resonseAction, genType));
     }
 
-    public IEnumerator GenerateText(string inputPrompt, int speakingCharId, double aiTemperature, System.Action<bool, int, string, EmotionAnalysis> response,  GenerationType genType = GenerationType.Default, bool debugResponse = false)
+
+
+    public IEnumerator GenerateText(string inputPrompt, int speakingCharId, double aiTemperature,  System.Action<bool, int, string, EmotionAnalysis> response,  GenerationType genType = GenerationType.Default, bool debugResponse = false)
     {
+       
 
         GenerationSettings settings = generationTypes[genType].generationSettings.Clone();
         settings.prompt = inputPrompt;
@@ -123,7 +123,7 @@ public class ServerLink : MonoBehaviour
             switch (wr.result)
             {
                 case UnityWebRequest.Result.Success:
-                    Debug.Log("Success");
+                    //Debug.Log("Success");
                     if (debugResponse)
                     {
                         Debug.Log(wr.downloadHandler.text);
@@ -168,8 +168,40 @@ public class ServerLink : MonoBehaviour
         }
 
     }
+    public void GetReactionEmotion(int speakingCharId, string previousSentence, System.Action<int, EmotionAnalysis> response, System.Action nextAction)
+    {
+        StartCoroutine(GetReactionEmotion_API(speakingCharId, previousSentence, response, nextAction));
+    }
 
+    private IEnumerator GetReactionEmotion_API(int speakingCharId, string previousSentence, System.Action<int, EmotionAnalysis> response, System.Action nextAction)
+    {
+        if (!string.IsNullOrWhiteSpace(previousSentence))
+        {
+            using (UnityWebRequest reactionEmotion = UnityWebRequest.Get(eaUrl + previousSentence))
+            {
+                reactionEmotion.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+                yield return reactionEmotion.SendWebRequest();
+                if (reactionEmotion.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log("Couldn't connect to server");
+                    yield break;
+                }
 
+                switch (reactionEmotion.result)
+                {
+                    case UnityWebRequest.Result.Success:
+                        response?.Invoke(speakingCharId, sentenceCleaner.CleanEmotion(reactionEmotion.downloadHandler.text));
+                        nextAction?.Invoke();
+                        yield break;
+                    default:
+                        Debug.LogWarning("Emotional Analysis api not connected");
+                        break;
+                }
+
+            }
+            nextAction?.Invoke();
+        }
+    }
     private IEnumerator LoginToServer()
     {
         using (UnityWebRequest request = UnityWebRequest.Get(serverURL + "csrf-token/"))
@@ -226,7 +258,7 @@ public class ServerLink : MonoBehaviour
             if (emotionReq.result == UnityWebRequest.Result.Success)
             {
                 isConnected = true;
-                sentenceCleaner.CleanEmotion(emotionReq.downloadHandler.text);
+                Debug.Log( sentenceCleaner.CleanEmotion(emotionReq.downloadHandler.text).ToString());
                 
                 //EmotionAnalysis newEmotions = JsonUtility.FromJson<EmotionAnalysis>(serializeScore);
                 //EmotionAnalysis newEmotions = JsonConvert.DeserializeObject<EmotionAnalysis>(serializeScore);

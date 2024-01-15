@@ -14,21 +14,5 @@ public class TestEmotion : MonoBehaviour
         {
             StartCoroutine( ServerLink.Instance.TestGetEmotion(text));
         }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            TestSerialize();
-        }
-    }
-
-    private void TestSerialize()
-    {
-        Dictionary<string, float> dic = new Dictionary<string, float>();
-        dic.Add("Happy", 0.3f);
-        dic.Add("Sad", 0.3f);
-        dic.Add("Angry", 0.3f);
-        dic.Add("Scared", 0.3f);
-        Debug.Log(JsonConvert.SerializeObject(dic));
-
-        
     }
 }

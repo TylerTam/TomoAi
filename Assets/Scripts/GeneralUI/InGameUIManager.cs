@@ -16,6 +16,7 @@ public class InGameUIManager : MonoBehaviour
 
     [SerializeField] public DialogueUiSystem dialogueUi;
     [SerializeField] public ToggleableInGameUI relationshipMenu;
+    [SerializeField] public ToggleableInGameUI happinessMenu;
     [SerializeField] public ToggleableInGameUI worldNpcMenu;
 
     private TomoCharPerson targetChar;
@@ -26,12 +27,15 @@ public class InGameUIManager : MonoBehaviour
         WorldNpcMenu,
         Dialogue,
         Relationship,
+        Happiness,
     }
     private void Awake()
     {
         dialogueUi.ForceClose();
         relationshipMenu.ForceClose();
+        happinessMenu.ForceClose();
         worldNpcMenu.ForceClose();
+
 
         openMenus.Add(InGameUIType.None, false);
         openMenus.Add(InGameUIType.WorldNpcMenu, false);
@@ -40,16 +44,17 @@ public class InGameUIManager : MonoBehaviour
     }
     public void OpenMenu(InGameUIType menuType, TomoCharPerson character = null)
     {
-        if (openMenus[menuType]) return;
+        //if (openMenus[menuType]) return;
         
         if (character != null) targetChar = character;
         PlayerController.Instance.ToggleInteractionInput(false);
         switch (menuType)
         {
             case InGameUIType.None:
-                worldNpcMenu.ToggleMenu(false, null);
-                dialogueUi.ToggleMenu(false);
-                relationshipMenu.ToggleMenu(false, null);
+                worldNpcMenu.CloseMenu();
+                dialogueUi.CloseMenu();
+                relationshipMenu.CloseMenu();
+                happinessMenu.CloseMenu();
                 StartCoroutine(DelayPlayerInteractionEnable(targetChar));
                 dialogueUi.ResetConversation();
                 targetChar = null;
@@ -60,17 +65,24 @@ public class InGameUIManager : MonoBehaviour
                 break;
             case InGameUIType.WorldNpcMenu:
                 worldNpcMenu.gameObject.SetActive(true);
-                worldNpcMenu.ToggleMenu(true, targetChar);
+                worldNpcMenu.ToggleMenu( targetChar);
                 openMenus[menuType] = true;
                 break;
             case InGameUIType.Dialogue:
                 dialogueUi.gameObject.SetActive(true);
                 openMenus[menuType] = true;
-                dialogueUi.ToggleMenu(true);
+                dialogueUi.ToggleMenu();
                 break;
             case InGameUIType.Relationship:
                 relationshipMenu.gameObject.SetActive(true);
-                relationshipMenu.ToggleMenu(true,targetChar);
+                relationshipMenu.ToggleMenu(targetChar);
+                happinessMenu.CloseMenu();
+                openMenus[menuType] = true;
+                break;
+            case InGameUIType.Happiness:
+                happinessMenu.gameObject.SetActive(true);
+                happinessMenu.ToggleMenu(targetChar);
+                relationshipMenu.CloseMenu();
                 openMenus[menuType] = true;
                 break;
         }
@@ -81,19 +93,19 @@ public class InGameUIManager : MonoBehaviour
         switch (menuType)
         {
             case InGameUIType.WorldNpcMenu:
-                worldNpcMenu.ToggleMenu(false, null);
-                dialogueUi.ToggleMenu(false);
-                relationshipMenu.ToggleMenu(false, null);
+                worldNpcMenu.CloseMenu();
+                dialogueUi.CloseMenu();
+                relationshipMenu.CloseMenu();
                 openMenus[InGameUIType.WorldNpcMenu] = false;
                 openMenus[InGameUIType.Dialogue] = false;
                 openMenus[InGameUIType.Relationship] = false;
                 break;
             case InGameUIType.Dialogue:
-                dialogueUi.ToggleMenu(false);
+                dialogueUi.CloseMenu();
                 openMenus[InGameUIType.Dialogue] = false;
                 break;
             case InGameUIType.Relationship:
-                relationshipMenu.ToggleMenu(false, null);
+                relationshipMenu.CloseMenu();
                 openMenus[InGameUIType.Relationship] = false;
                 break;
         }
