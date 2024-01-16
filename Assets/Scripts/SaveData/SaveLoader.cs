@@ -131,7 +131,6 @@ public class SaveLoader : MonoBehaviour
         else
         {
             characterData.UpdateForNewVersion();
-            characterData.LocalId = GetUnusedLocalId();
             LoadedData.SavedCharacters[index] = characterData;
         }
         SaveData();

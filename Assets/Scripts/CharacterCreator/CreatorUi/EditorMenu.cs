@@ -17,7 +17,7 @@ public class EditorMenu : MonoBehaviour
     public void SaveCharacterData(CharacterData saveCharData)
     {
         charData = saveCharData;
-        Debug.Log(savedCharacterIndex);
+        //Debug.Log(savedCharacterIndex);
         GameManager.Instance.SaveLoader.UpdateCharacter(charData, false, savedCharacterIndex);
     }
 }

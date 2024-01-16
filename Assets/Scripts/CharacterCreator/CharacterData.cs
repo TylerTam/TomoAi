@@ -11,19 +11,30 @@ using UnityEngine;
 public class CharacterData : IComparable
 {
     [SerializeField] public string Name;
+    [SerializeField] public Gender CharGender;
+    [SerializeField] public Gender RelationshipPreference;
     [SerializeField][TextArea] public string Description; //Personality and other characteristics
     [SerializeField][TextArea] public string Personality_Summary;
     [SerializeField][TextArea] public string AppearanceDescription;
     [SerializeField][TextArea] public string ElevatorDescription;//Used for when they are brought up in other character dialogues
     [SerializeField] public Color FavouriteColor;
-    [SerializeField] public double Intensity = 0.7f;
+    [SerializeField] public double Intensity = 0.97f;
     [SerializeField][TextArea] public string[] Examples_Of_Dialogue;
     [SerializeField] public CharacterAppearance CharacterAppearence;
     [SerializeField] public string Creator;
     [SerializeField] public float Creator_Id;
     [SerializeField] public List<CharacterRelationShip> serializedRelationships;
-    [SerializeField] public int LocalId;
     private Dictionary<int, CharacterRelationShip> searchableRelationships;
+    [SerializeField] public int LocalId;
+    [Flags]
+    public enum Gender
+    {
+        None = 0,
+        Male = 1,
+        Female = 2,
+        Other = 4,
+
+    }
 
     public double GetIntensity(EmotionAnalysis.Emotion currentEmotion)
     {
@@ -80,7 +91,6 @@ public class CharacterData : IComparable
             selfRelation.relationshipType = RelationshipMatrix.RelationShipType.Themself;
             selfRelation.relationshipStatus = RelationshipMatrix.RelationshipStatus.Okay;
             serializedRelationships.Add(selfRelation);
-
         }
     }
 
@@ -95,12 +105,27 @@ public class CharacterData : IComparable
     public CharacterData Clone()
     {
         CharacterData cloneChar = new CharacterData(Name, Creator, Creator_Id);
-
+        cloneChar.CharGender = CharGender;
+        cloneChar.RelationshipPreference = RelationshipPreference;
         cloneChar.Description = Description;
+        cloneChar.ElevatorDescription = ElevatorDescription;
         cloneChar.Personality_Summary = Personality_Summary;
+        cloneChar.FavouriteColor = FavouriteColor;
+        cloneChar.Intensity = Intensity;
         cloneChar.AppearanceDescription = AppearanceDescription;
         cloneChar.Examples_Of_Dialogue = Examples_Of_Dialogue;
         cloneChar.CharacterAppearence = CharacterAppearence;
+        cloneChar.Creator = Creator;
+        cloneChar.Creator_Id = Creator_Id;
+        cloneChar.serializedRelationships = new List<CharacterRelationShip>( serializedRelationships);
+        if(searchableRelationships == null || serializedRelationships.Count == 0)
+        {
+            InitRuntimeData();
+        }
+        cloneChar.searchableRelationships = new Dictionary<int, CharacterRelationShip>(searchableRelationships);
+
+        cloneChar.LocalId = LocalId;
+        
 
         return cloneChar;
     }

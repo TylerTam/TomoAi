@@ -78,4 +78,5 @@ MonoBehaviour:
     Creator_Id: 0
     serializedRelationships: []
     LocalId: 2
-    currentMood: 0
+    CharGender: 0
+    RelationshipPreference: 0

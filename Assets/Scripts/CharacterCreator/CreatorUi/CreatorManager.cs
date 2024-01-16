@@ -81,6 +81,8 @@ public class CreatorManager : AreaLoader
     public void CreateNewCharacter()
     {
         CharacterData newChar = new CharacterData(newCharName.text, GameManager.Instance.SaveLoader.LoadedData.Player.PlayerName, GameManager.Instance.SaveLoader.GenerateCharacterId());
+        newChar.CharGender = CharacterData.Gender.Male;
+        newChar.RelationshipPreference = CharacterData.Gender.None;
         newChar.FavouriteColor = Color.white;
         newChar.UpdateForNewVersion();
         GameManager.Instance.SaveLoader.UpdateCharacter(newChar, true, -1);

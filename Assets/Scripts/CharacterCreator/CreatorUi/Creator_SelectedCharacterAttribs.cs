@@ -15,7 +15,9 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
     [SerializeField] private TomoCharPerson tomoChar;
     [SerializeField] private Creator_InputSection charName, charDescription, charPersonality, charAppearenceDescription;
     [SerializeField] private Creator_InputSection creatorInput;
+    [SerializeField] private Creator_GenderSelect charGender, charPreference;
     [SerializeField] private FlexibleColorPicker colorPicker;
+    [SerializeField] private Creator_Slider charIntensity;
 
     [Header("Dialogue Examples")]
     [SerializeField] private GameObject dialogueExPrefab;
@@ -43,11 +45,14 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
         loadedCharacter = charData;
 
         charName.Init(charData.Name,this);
+        charGender.InitGender(charData.CharGender);
+        charPreference.InitGender(charData.RelationshipPreference);
         charDescription.Init(charData.Description,this);
         charPersonality.Init(charData.Personality_Summary,this);
         charAppearenceDescription.Init(charData.AppearanceDescription,this);
         creatorInput.Init(charData.Creator, this);
         colorPicker.SetColor(charData.FavouriteColor);
+        charIntensity.Init(charData.Intensity);
 
         addedDialogues.Clear();
         
@@ -189,10 +194,13 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
         //[SerializeField] private Creator_InputSection charName, charDescription, charPersonality, charAppearenceDescription;
         //[SerializeField] private Creator_InputSection creatorInput;
         savedCharData.Name = charName.Text;
+        savedCharData.CharGender = charGender.GetGender();
+        savedCharData.RelationshipPreference = charPreference.GetGender();
         savedCharData.Description = charDescription.Text;
         savedCharData.Personality_Summary = charPersonality.Text;
         savedCharData.AppearanceDescription = charAppearenceDescription.Text;
         savedCharData.FavouriteColor = colorPicker.color;
+        savedCharData.Intensity = charIntensity.GetIntensity;
         //savedCharData.Creator = creatorInput.Text;
         savedCharData.Examples_Of_Dialogue = new string[addedDialogues.Count];
         for (int i = 0; i < addedDialogues.Count; i++)
