@@ -428,6 +428,7 @@ MonoBehaviour:
   editorMenu: {fileID: 2005952852}
   creatorManager: {fileID: 556890922}
   tomoChar: {fileID: 147386556}
+  tomoCharAppearenceConstructor: {fileID: 0}
   charName: {fileID: 1854813461}
   charDescription: {fileID: 1327406839}
   charPersonality: {fileID: 3156428513893983935}
@@ -976,7 +977,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 401797897008846317, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
   m_PrefabInstance: {fileID: 9157852657026269269}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 668796379}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 536b3b02552af2b4c9a88b914b3741e9, type: 3}
@@ -3814,6 +3815,7 @@ MonoBehaviour:
     serializedRelationships: []
     LocalId: 0
   selectedCharIndex: 0
+  tomoChar: {fileID: 147386556}
   deleteCharNameText: {fileID: 1924877101}
   selectorCamera: {fileID: 148623216}
   attributeCamera: {fileID: 1117324380}
@@ -4412,6 +4414,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e885afa0819cd429291b91beebcedd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &668796379 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 401797897008846288, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+  m_PrefabInstance: {fileID: 9157852657026269269}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &668796386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668796379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1209b0fff64516a4d885e3cb89864e2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GeneralHeadSlot: {fileID: 1273394007}
+  LeftEyeSlot: {fileID: 1024916513}
+  RightEyeSlot: {fileID: 1443720497}
+  MouthSlot: {fileID: 691609382}
+  currentOutfit: {fileID: 1779714832}
+  tomoCharOutfit: {fileID: 1779714832}
 --- !u!1001 &670891319
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4599,6 +4624,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: -8, y: -5, z: -8, w: -5}
   m_Softness: {x: 0, y: 0}
+--- !u!114 &691609382 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2425535717990885713, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+  m_PrefabInstance: {fileID: 9157852657026269269}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9854a5e21a69dae449acdd3c5b0a504e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &697308822
 GameObject:
   m_ObjectHideFlags: 0
@@ -6239,6 +6275,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1024916513 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3160419208861506757, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+  m_PrefabInstance: {fileID: 9157852657026269269}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9854a5e21a69dae449acdd3c5b0a504e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1054457383
@@ -7897,6 +7944,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8789222516120290021, guid: 12cb4f4992afc624881893096dd1abb7, type: 3}
   m_PrefabInstance: {fileID: 1250636553}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1273394007 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 858558999502603116, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+  m_PrefabInstance: {fileID: 9157852657026269269}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9854a5e21a69dae449acdd3c5b0a504e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1284272733
 GameObject:
   m_ObjectHideFlags: 0
@@ -9774,6 +9832,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1443720497 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7699364664557860068, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+  m_PrefabInstance: {fileID: 9157852657026269269}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9854a5e21a69dae449acdd3c5b0a504e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1447658480
 GameObject:
   m_ObjectHideFlags: 0
@@ -12888,6 +12957,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1779714828 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2717851776988462312, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+  m_PrefabInstance: {fileID: 9157852657026269269}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1779714831 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1663057876409796368, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+  m_PrefabInstance: {fileID: 9157852657026269269}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1779714832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779714828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a99553adca6724d89f60e8284f7d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outfitData: {fileID: 11400000, guid: 236ad039aaff56541a3a13b8adf2928b, type: 2}
+  outfitMesh: {fileID: 1779714831}
+  shirtMatIndex: 2
+  slevesMatIndex: 0
+  pantsMatIndex: 3
 --- !u!1 &1797998484
 GameObject:
   m_ObjectHideFlags: 0
@@ -19984,7 +20080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e885afa0819cd429291b91beebcedd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputField: {fileID: 0}
+  inputField: {fileID: 614789895}
 --- !u!114 &2342975823044461691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22181,6 +22277,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 668796386}
+        m_TargetAssemblyTypeName: Creator_TomoCharAppearenceConstructor, Assembly-CSharp
+        m_MethodName: ChangeFavoriteColor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   advancedSettings:
     mainStatic: 1
     r:
@@ -22995,5 +23103,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 401797897008846317, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+      propertyPath: tomoCharAppearenceConstructor
+      value: 
+      objectReference: {fileID: 668796386}
+    m_RemovedComponents:
+    - {fileID: 2487100570508160289, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
+    - {fileID: 2181707400375091449, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 32f37be52f90f7d4faff6603d445b534, type: 3}

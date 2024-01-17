@@ -56,7 +56,8 @@ public class ObjectPooler : MonoBehaviour
     public static GameObject NewObject(GameObject requestedObject, Transform spawner, bool moveToTransform = true, bool rotateToTransform = true, bool isActive = true)
     {
         return Instance.GetNewObject(requestedObject.name, requestedObject, spawner, moveToTransform, rotateToTransform, isActive);
-    }
+    }    
+
 
     GameObject GetNewObject(string poolName, GameObject requestedObject, Transform spawner, bool moveToTransform = true, bool rotateToTransform = true, bool isActive = true)
     {
@@ -104,6 +105,10 @@ public class ObjectPooler : MonoBehaviour
     public static GameObject NewObject(GameObject requestedObject, Vector3 spawnPosition, Quaternion angle, bool isActive = true)
     {
         return Instance.GetNewObject(requestedObject.name, requestedObject, spawnPosition, angle, isActive);
+    }
+    public static GameObject NewObject(GameObject requestedObject)
+    {
+        return NewObject(requestedObject, Vector3.zero, Quaternion.identity);
     }
 
     GameObject GetNewObject(string poolName, GameObject requestedObject, Vector3 spawnPostion, Quaternion angle, bool isActive)

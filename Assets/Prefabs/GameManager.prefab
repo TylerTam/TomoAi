@@ -169,11 +169,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8b52ee506afe446bf77f50593a3ce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllItems: {fileID: 0}
+  AllAppearenceItems: {fileID: 0}
+  AllItems: {fileID: 11400000, guid: 47c65d37aaed3a24893a4d9ec1189310, type: 2}
   SaveLoader: {fileID: 1466853541250828432}
   RelationshipMatrix: {fileID: 11400000, guid: 21f96b6382df2f04496946f3e309bdf1, type: 2}
   PlayerCharacterData:
     Name: 
+    CharGender: 0
+    RelationshipPreference: 0
     Description: 
     Personality_Summary: 
     AppearanceDescription: 
@@ -206,7 +209,6 @@ MonoBehaviour:
     Creator_Id: 0
     serializedRelationships: []
     LocalId: 0
-    currentMood: 0
 --- !u!1 &1466853541250856815
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +258,8 @@ MonoBehaviour:
       PlayerName: Tyler
     SavedCharacters:
     - Name: Furina
+      CharGender: 0
+      RelationshipPreference: 0
       Description: Furina loves observing the people of Fontaine, and their daily
         lives. While she still enjoys watching shows at the opera, they quickly became
         repetitive to her, and she recently became interested in the real, unscripted,
@@ -321,7 +325,7 @@ MonoBehaviour:
       Creator_Id: 0
       serializedRelationships: []
       LocalId: 0
-      currentMood: 0
+    SavedApartmentConfigs: []
   SaveDataLoaded:
     m_PersistentCalls:
       m_Calls: []

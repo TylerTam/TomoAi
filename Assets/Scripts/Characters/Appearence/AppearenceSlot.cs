@@ -56,7 +56,7 @@ public class AppearenceSlot : MonoBehaviour
 
     private void AddPiece(CharacterAppearance.AppearancePieces pieceData)
     {
-        GameObject newPiece = GameManager.Instance.AllItems.GetAppearenceItem(pieceData.ItemId); 
+        GameObject newPiece = GameManager.Instance.AllAppearenceItems.GetAppearenceItem(pieceData.ItemId); 
         
         newPiece.transform.parent = transform;
         newPiece.transform.localPosition = pieceData.PiecePos;

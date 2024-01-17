@@ -9,14 +9,16 @@ public class TomoCharAppearenceConstructor : MonoBehaviour
     [SerializeField] protected AppearenceSlot RightEyeSlot;
     [SerializeField] protected AppearenceSlot MouthSlot;
 
-
-    public void ConstructCharacter(CharacterAppearance appearenceData)
+    public TomoCharOutfit currentOutfit;
+    public void ConstructCharacter( CharacterData charData)
     {
-        GeneralHeadSlot.Init(appearenceData.HeadSlot);
-        LeftEyeSlot.Init(appearenceData.Eyes);
-        RightEyeSlot.Init(appearenceData.Eyes);
-        MouthSlot.Init(appearenceData.MouthSlot);
+        GeneralHeadSlot.Init(charData.CharacterAppearence.HeadSlot);
+        LeftEyeSlot.Init(charData.CharacterAppearence.Eyes);
+        RightEyeSlot.Init(charData.CharacterAppearence.Eyes);
+        MouthSlot.Init(charData.CharacterAppearence.MouthSlot);
 
+        //Do the clothes
+        currentOutfit.InitOutfit(charData);
     }
     
 }

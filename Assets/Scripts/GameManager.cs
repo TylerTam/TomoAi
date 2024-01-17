@@ -18,7 +18,8 @@ public class GameManager : MonoBehaviour
         }
     }
     private static GameManager _instance;
-    public ItemDictionary AllItems;
+    public AppearenceItems AllAppearenceItems;
+    public AllItems AllItems;
     public SaveLoader SaveLoader;
     public RelationshipMatrix RelationshipMatrix;
     public CharacterData PlayerCharacterData;

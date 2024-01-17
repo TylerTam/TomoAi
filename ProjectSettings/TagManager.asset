@@ -15,8 +15,8 @@ TagManager:
   - WorldUI
   - InteractableTrigger
   - FaceCanvas
-  - 
-  - 
+  - Obstacle
+  - FloorObstacle
   - 
   - 
   - 

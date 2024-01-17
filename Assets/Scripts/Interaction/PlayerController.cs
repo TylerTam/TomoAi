@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool canInteract = false;
 
     [SerializeField] private IInteractable currentHoveredInteractable;
+
+    public bool CanInteract { get { return canInteract; } }
     void Update()
     {
 

@@ -16,7 +16,7 @@ public class TomoCharPerson : MonoBehaviour
     public void ConstructTomoChar(CharacterData characterData)
     {
         personData = characterData;
-        tomoCharAppearenceConstructor.ConstructCharacter(characterData.CharacterAppearence);
+        tomoCharAppearenceConstructor.ConstructCharacter(characterData);
         charNameTemp.text = characterData.Name;
         tomoCharUi.SetBubbleColors(characterData.FavouriteColor);
     }

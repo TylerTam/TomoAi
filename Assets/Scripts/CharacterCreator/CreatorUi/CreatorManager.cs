@@ -16,13 +16,15 @@ public class CreatorManager : AreaLoader
     [SerializeField] private EditorMenu EditorRoot;
     [SerializeField]private CharacterData SelectedCharacter;
     [SerializeField]private int selectedCharIndex;
-
+    [SerializeField] private TomoCharPerson tomoChar;
     [SerializeField] private TMPro.TextMeshProUGUI deleteCharNameText;
 
     [Header("Cameras")]
     [SerializeField] private GameObject selectorCamera;
     [SerializeField] private GameObject attributeCamera;
     [SerializeField] private TMPro.TMP_InputField newCharName;
+
+    
 
 
     public void ReturnToAreaSelect()
@@ -35,6 +37,7 @@ public class CreatorManager : AreaLoader
         SelectedCharacter = charData;
         selectedCharIndex = charIndex;
         deleteCharNameText.text = charData.Name;
+        tomoChar.ConstructTomoChar(charData);
     }
     private void Start()
     {

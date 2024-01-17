@@ -38,6 +38,50 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5461089468562868260, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: raycastDis
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: RotateSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: debugRaycast
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: raycastCol.a
+      value: 0.9372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: raycastCol.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: idleStateTimes.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: idleStateTimes.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: performGroundCheck
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: blockingMask.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828255345468368128, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
+      propertyPath: chanceOfIdleMovement
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8828255345468368129, guid: 6d8833ef9a191ec47ab88177ceb3ab4f, type: 3}
       propertyPath: m_Enabled
       value: 1

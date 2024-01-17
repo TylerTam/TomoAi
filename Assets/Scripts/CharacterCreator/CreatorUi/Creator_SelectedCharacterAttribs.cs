@@ -13,6 +13,7 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
     [SerializeField] private EditorMenu editorMenu;
     [SerializeField] private CreatorManager creatorManager;
     [SerializeField] private TomoCharPerson tomoChar;
+    [SerializeField] private TomoCharAppearenceConstructor tomoCharAppearenceConstructor;
     [SerializeField] private Creator_InputSection charName, charDescription, charPersonality, charAppearenceDescription;
     [SerializeField] private Creator_InputSection creatorInput;
     [SerializeField] private Creator_GenderSelect charGender, charPreference;
@@ -101,6 +102,11 @@ public class Creator_SelectedCharacterAttribs : MonoBehaviour
         editorMenu.SaveCharacterData(ConstructCharacterData());
         
         markedDirty = false;
+    }
+
+    public void UpdateTomoCharAppearence(Color col)
+    {
+        
     }
 
     public void AddMoreDialogue()

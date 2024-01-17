@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Unity.VisualScripting.FullSerializer;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -172,6 +173,54 @@ public class SaveLoader : MonoBehaviour
             return false;
         }
     }
+
+    public void UpdateApartmentConfig(int apartmentOwnerLocalId, ApartmentConfig config)
+    {
+        try
+        {
+            int id = LoadedData.SavedApartmentConfigs.IndexOf( LoadedData.SavedApartmentConfigs.Find(x => x.apartmentOwnerLocalId == apartmentOwnerLocalId));
+            if(id == -1)
+            {
+                LoadedData.SavedApartmentConfigs.Add(config);
+            }
+            else
+            {
+                LoadedData.SavedApartmentConfigs[id] = config;
+            }
+        }
+        catch
+        {
+            LoadedData.SavedApartmentConfigs.Add(config);
+        }
+        SaveData();
+    }
+    public ApartmentConfig GetApartmentConfig(int ownerLocalId)
+    {
+        try
+        {
+            int id = LoadedData.SavedApartmentConfigs.IndexOf(LoadedData.SavedApartmentConfigs.Find(x => x.apartmentOwnerLocalId == ownerLocalId));
+            if (id == -1)
+            {
+                ApartmentConfig newConfig = new ApartmentConfig();
+                newConfig.apartmentOwnerLocalId = ownerLocalId;
+                LoadedData.SavedApartmentConfigs.Add(newConfig);
+                SaveData();
+                return newConfig;
+            }
+            else
+            {
+                return LoadedData.SavedApartmentConfigs[id];
+            }
+        }
+        catch
+        {
+            ApartmentConfig newConfig = new ApartmentConfig();
+            newConfig.apartmentOwnerLocalId = ownerLocalId;
+            LoadedData.SavedApartmentConfigs.Add(newConfig);
+            SaveData();
+            return newConfig;
+        }
+    }
 }
 
 #if UNITY_EDITOR
@@ -198,7 +247,7 @@ public class SaveData
 {
     [SerializeField] public PlayerData Player;
     [SerializeField] public List<CharacterData> SavedCharacters;
-    
+    [SerializeField] public List<ApartmentConfig> SavedApartmentConfigs;
 
     public bool RemoveCharacter(int charId)
     {
@@ -258,3 +307,4 @@ public class Settings
     [SerializeField] public string apiUrl;
     [SerializeField] public string emotionAnalysisUrl;
 }
+
