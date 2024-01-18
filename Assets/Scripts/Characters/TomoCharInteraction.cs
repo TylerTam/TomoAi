@@ -13,6 +13,7 @@ public class TomoCharInteraction : MonoBehaviour, IInteractable
     private void Awake()
     {
         person = GetComponent<TomoCharPerson>();
+        controller = GetComponent<TomoCharController>();
     }
     #region Interactable functions
     public virtual void Tapped()
@@ -27,12 +28,12 @@ public class TomoCharInteraction : MonoBehaviour, IInteractable
 
     public virtual void TapHold()
     {
-        throw new System.NotImplementedException();
+        controller.SwitchState(TomoCharController.ControllerState.Dragging);
     }
 
     public virtual void TapReleased()
     {
-        throw new System.NotImplementedException();
+        controller.SwitchState(TomoCharController.ControllerState.Idle);
     }
     #endregion
 

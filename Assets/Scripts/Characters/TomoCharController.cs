@@ -10,7 +10,8 @@ public class TomoCharController : MonoBehaviour
     {
         Idle,
         LookAtCamera,
-        Speaking
+        Speaking,
+        Dragging
     }
     private ControllerState _state;
     [SerializeField] private float MaxSpeed;
@@ -74,6 +75,8 @@ public class TomoCharController : MonoBehaviour
                 PerformLookAtCamera();
                 break;
             case ControllerState.Speaking:
+                break;
+            case ControllerState.Dragging:
                 break;
         }
 
@@ -139,6 +142,10 @@ public class TomoCharController : MonoBehaviour
                 cameraLookPos = Camera.main.transform.position;
                 break;
             case ControllerState.Speaking:
+                break;
+            case ControllerState.Dragging:
+                _rigidBody.velocity = Vector3.zero;
+                _currentSpeed = 0;
                 break;
         }
     }

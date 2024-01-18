@@ -35,7 +35,7 @@ public class GameTick : MonoBehaviour
     private bool performTickOnUnpause;
 
 
-
+    [SerializeField] private int performTickAmount = 0;
 
     public UpdateRelationships UpdateRelationships;
     public NpcPlacements NpcPlacements;
@@ -48,13 +48,29 @@ public class GameTick : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         tickPeriod = new WaitForSeconds(tickRate);
+
         StartCoroutine(DelayInitialTick());
     }
+    private void PerformMultipleTicks()
+    {
+        for (int i = 0; i < performTickAmount; i++)
+        {
+            Debug.Log("Performed Tick!");
+            UpdateRelationships.UpdateFromTick();
+            NpcPlacements.UpdateFromTick();
 
+            Ticked?.Invoke();
+            GameManager.Instance.SaveLoader.SaveData();
+        }
+    }
     private IEnumerator DelayInitialTick()
     {
         yield return null;
         yield return null;
+        if (performTickAmount > 0)
+        {
+            PerformMultipleTicks();
+        }
         PerformTick();
     }
 
