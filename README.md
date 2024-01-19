@@ -1,5 +1,5 @@
 <h1>Tomo AI</h1>
-<i>Last updated 2024-01-12</i>
+<i>Last updated 2024-01-19</i>
 <h2>About</h2>
 Tomo Ai is a project I started that is inspired by the game Tomodachi Life, when I wanted to create a project with AI Text generation systems. <br/>
 This project is meant to work with Kobold AI, and uses web requests to send prompts, and recieve the generated texts. 
@@ -34,4 +34,36 @@ On windows, you can do this by opening command prompt, and typing in <b>ipconfig
 
 Nowopen the unity project, or the build, and there will be a settings button in the top right corner of the starting screen. Open it, and you'll see the input field to paste the IP. After this, you should be connected.
 
+<h2>Emotional Analysis - NRCLex</h2>
+This project also has an option for emotion analysis on both the user's input text and the generated text from the AI. This is used to adjust the AI's mood depending on what the player says. <br/>
+I used NRCLex for this, and hile there may be better options for emotion analysis, my server was already tied up with Kobold AI, and for research purposes NRCLex worked fine.<br>
 
+
+<h3>Setting Up NRCLex</h3>
+If you want to set up the sentiment analysis, you'll need to install NRCLex through python. Here is the <a href = "https://pypi.org/project/NRCLex/">link on pypi</a> <br/>
+
+To create the server to run this, you can simply paste this code into a python script, and run it. 
+```
+from flask import Flask
+
+from nrclex import NRCLex
+
+app = Flask(__name__)
+
+@app.route('/')
+def checkConnect():
+    return 'connected'
+
+@app.route('/getemotion/<text>')
+def get_emotion(text):
+    emotion = NRCLex(text)
+    return emotion.top_emotions
+    
+
+    
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
+```
+<h3>Alternate emotional analysis</h3>
+If you want to use another method for emotional analysis, it's pretty simple to change it in this project. You'll just need to change the emotional analysis url when running the game.<br/>
+That said, you'll need to make sure that the output is identical to NRCLex's output. That, or you adjust how this project reads the new output.
